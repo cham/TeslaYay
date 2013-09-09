@@ -1,0 +1,25 @@
+{
+  "name": "TeslaAPI",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.1.0",
+    "hogan-express": "0.3.3",
+    "moment": "2.0.0",
+    "request": "2.16.6",
+    "restler": "2.0.1",
+    "sanitizer": "~0.0.15",
+    "underscore": "1.4.4",
+    "socket.io": "0.9.14",
+    "process": "0.5.1",
+    "argsparser": "0.0.6",
+    "winston": "0.7.2",
+    "expectations": "~0.1.0",
+    "sinon": "~1.7.2",
+    "mongoose": "3.6.19",
+    "crypto": "0.0.3"
+  }
+}
