@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>YayHooray</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/css/forum.css?v=28" />
+    <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="/js/underscore-min.js"></script>
+  </head>
+
+<body class="yh_auth yh_register" >
+
+  <a name="top"></a>
+
+  <div id="wrapper">
+    <div id="middle">
+      <div id="left-column">
+        <a href="/" id="header">New Yay</a>
+
+        <div class="lc-node login" id="login-box">
+          <h5>Not a member?</h5>
+          <p><img src="/img/pinkies/07.gif" width="14" height="14" align="absmiddle"/>
+            <a href="/auth/register" class="white">Click to register, n00b!</a></p>
+      <p class="error"></p>
+          <form action="/auth/login" method="post" id="login-form">
+        <div>
+          <label for="username">U:</label>
+              <input type="text" name="username" tabindex="1" id="username" />
+              <button tabindex="3" type="submit">Booya!</button>
+        </div>
+        <div>
+          <label for="password">P:</label>
+              <input type="password" name="password" tabindex="2" id="password" />
+              <a href="#" id="forgot-password">Forgot it?</a>
+            </div>
+          </form>
+    </div>
+
+        <div class="lc-node" id="threads">
+          <h3><a href="/">Threads</a></h3>
+          <ul id="thread-categories">
+            <li><a href="/f/discussions">Discussions</a>
+              (8 minutes ago)</li>
+            <li><a href="/f/projects">Projects</a>
+              (2 hours ago)</li>
+            <li><a href="/f/advice">Advice</a>
+              (2 minutes ago)</li>
+            <li><a href="/f/meaningless">Meaningless</a>
+              (6 minutes ago)</li>
+          </ul>
+          <ul id="special-threads">
+            <li><a href="/">All Forums</a></li>
+            <li><a href="/f/meaningful">All But Meaningless</a></li>
+          </ul>
+
+           <ul id="search-title">
+             <li>
+               <strong>Search Thread Titles</strong><br/>
+               <form name="search-box" id="search-box" method="" action="">
+                 <input type="text" value="" name="search-phrase" id="search-phrase" placeholder="Search" />
+                 <!--<label><input type="checkbox" id="search-titles" /> Titles</label>-->
+                 <input type="submit" value="Go" />
+               </form>
+             </li>
+           </ul>
+         </div>
+
+        <p><a href="http://www.rockethub.com/projects/27882-everything-will-be-okay-an-epic-documentary-about-als" class="everythingpic">Everything Will Be Ok</a></p>
+        <div id="ad-space">
+        <div id="the-deck">
+         <iframe src="/deck.html"></iframe>
+         <div id="deck-title">
+           <a href="http://www.coudal.com/deck">Ads Via The Deck</a>
+                    </div>
+        </div>
+
+        </div>
+        <a href="http://patrickobrienfoundation.org/" id="pobf"><img src="/img/pobf.gif" /></a>
+
+     </div>
+
+     <div id="right-column">
+<div id="main-title"><h3>OMG, you can Register?</h3></div>
+
+<div id="new-thread">
+  <form method="post" action="register" id="register-form">
+    <div class="inp">
+            <label for="username">Username:</label>      <input type="text" name="username" value="" id="username" maxlength="32" size="30"  />    </div>
+    <div class="inp">
+            <label for="email">Email Address:</label>      <input type="text" name="email" value="" id="email" maxlength="255" size="30"  />    </div>
+    <div class="inp">
+            <label for="password">Password:</label>      <input type="password" name="password" value="" id="password" size="30"  />    </div>
+
+        <input type="submit" value="Register" />
+  </form>
+</div>          </div>
+
+        </div>
+
+    </div>
+
+    <a name="bottom"></a>
+
+    <div id="bottom">
+    </div>
+
+        <script src="/js/prettify.js"></script>
+        <script>prettyPrint();</script>
+    <script src="/js/global.js?v=28"></script>
+
+</body>
+</html>

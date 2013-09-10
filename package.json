@@ -1,5 +1,5 @@
 {
-  "name": "TeslaAPI",
+  "name": "YayHooray-TE",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -20,6 +20,8 @@
     "expectations": "~0.1.0",
     "sinon": "~1.7.2",
     "mongoose": "3.6.19",
-    "crypto": "0.0.3"
+    "crypto": "0.0.3",
+    "http-proxy": "0.10.3",
+    "ent": "0.1.0"
   }
 }

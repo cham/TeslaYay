@@ -1,1 +1,198 @@
-foo
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>YayHooray</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/normalise.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/prettify.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/forum.css">
+  </head>
+
+  <body class="yh_home" >
+
+  <!--script src="//code.jquery.com/jquery-2.0.3.min.js"></script-->
+  <!--script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script-->
+  <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+  <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
+
+  <a name="top"></a>
+
+  <div id="wrapper">
+    <div id="middle">
+      <div id="left-column">
+        <a href="/" id="header">New Yay</a>
+
+        <div class="lc-node welcome">
+          <h4>
+            Hi, <a href="/user/cham">cham</a>
+          </h4>
+          <a href="/user/cham">
+        <img src="/img/emoticons/37.gif" class="main_avatar" />
+          </a>
+          <ul>
+        <li><a href="/preferences" id="preferences">Preferences</a></li>
+            <li><form action='/auth/logout' method='POST'>
+              <input type='submit' id="logout_btn" value="logout" /></form></li>
+          </ul>
+        </div>
+        <div class="lc-node" id="messaging">
+          <ul>
+            <li class="messages">
+              <a href="/messages/inbox">No New Messages</a>
+            </li>
+          </ul>
+        </div>
+        <div class="lc-node" id="threads">
+          <h3><a href="/">Threads</a></h3>
+          <ul id="thread-categories">
+            <li><a href="/f/discussions">Discussions</a>
+              (5 minutes ago)</li>
+            <li><a href="/f/projects">Projects</a>
+              (15 minutes ago)</li>
+            <li><a href="/f/advice">Advice</a>
+              (1 minute ago)</li>
+            <li><a href="/f/meaningless">Meaningless</a>
+              (1 minute ago)</li>
+          </ul>
+          <ul id="special-threads">
+            <li><a href="/">All Forums</a></li>
+            <li><a href="/f/meaningful">All But Meaningless</a></li>
+            <li><a href="/f/participated">Participated</a></li>
+            <li><a href="/f/favorites">Favourite</a></li>
+            <li><a href="/f/hidden">Hidden</a></li>
+            <li><a href="/started/cham">Started</a></li>
+          </ul>
+
+           <ul id="search-title">
+             <li>
+               <strong>Search Thread Titles</strong><br/>
+               <form name="search-box" id="search-box" method="" action="">
+                 <input type="text" value="" name="search-phrase" id="search-phrase" placeholder="Search" />
+                 <!--<label><input type="checkbox" id="search-titles" /> Titles</label>-->
+                 <input type="submit" value="Go" />
+               </form>
+             </li>
+           </ul>
+          <hr />
+          <a id="toggle-html" data-active="true">
+             Turn off html</a>
+         </div>
+
+        <p><a href="http://www.rockethub.com/projects/27882-everything-will-be-okay-an-epic-documentary-about-als" class="everythingpic">Everything Will Be Ok</a></p>
+
+         <div class="lc-node" id="buddy-list">
+           <h3><a href="/buddies">Buddies</a>
+            <a href="/users" class="users-link">(All users)</a></h3>
+
+
+           <p>ONLINE BUDDIES (21/194)</p>
+         <div>
+             <span><a href="http://yayhooray.net/user/evanc">EvanC</a>,</span>
+             <span><a href="http://yayhooray.net/user/faisal">Faisal</a>,</span>
+             <span><a href="http://yayhooray.net/user/isbn">ISBN</a>,</span>
+             <span><a href="http://yayhooray.net/user/purekreation">PureKreation</a>,</span>
+             <span><a href="http://yayhooray.net/user/vaskerville">Vaskerville</a>,</span>
+             <span><a href="http://yayhooray.net/user/vord">Vord</a>,</span>
+             <span><a href="http://yayhooray.net/user/animatedgeoff">animatedgeoff</a>,</span>
+             <span><a href="http://yayhooray.net/user/bosk">bosk</a>,</span>
+             <span><a href="http://yayhooray.net/user/donwaylo">donwaylo</a>,</span>
+             <span><a href="http://yayhooray.net/user/epohs">epohs</a>,</span>
+             <span><a href="http://yayhooray.net/user/jamesomega">jamesomega</a>,</span>
+             <span><a href="http://yayhooray.net/user/k3v0">k3v0</a>,</span>
+             <span><a href="http://yayhooray.net/user/lament">lament</a>,</span>
+             <span><a href="http://yayhooray.net/user/millions-of-people">millions of people</a>,</span>
+             <span><a href="http://yayhooray.net/user/morgster">morgster</a>,</span>
+             <span><a href="http://yayhooray.net/user/mwise">mwise</a>,</span>
+             <span><a href="http://yayhooray.net/user/plink">plink</a>,</span>
+             <span><a href="http://yayhooray.net/user/slobirdrop">slobirdrop</a>,</span>
+             <span><a href="http://yayhooray.net/user/stenzor">stenzor</a>,</span>
+             <span><a href="http://yayhooray.net/user/tdc">tdc</a>,</span>
+             <span><a href="http://yayhooray.net/user/tenkai">tenkai</a></span>
+         </div>
+       </div>
+
+        <div id="ad-space">
+        <div id="the-deck">
+         <iframe src="/deck.html"></iframe>
+         <div id="deck-title">
+           <a href="http://www.coudal.com/deck">Ads Via The Deck</a>
+           | <a id="hide-ads">Hide ads</a>          </div>
+        </div>
+
+        </div>
+        <a href="http://patrickobrienfoundation.org/" id="pobf"><img src="/img/pobf.gif" /></a>
+
+     </div>
+
+     <div id="right-column">
+<div id="main-title"  class="changeling" title="Vaskerville">
+  <h3>
+    .  </h3>
+</div>
+
+<div id="thread-navigation" class="pagination top">
+
+  <a href="/newthread" id="post-thread">Post Thread</a>
+
+<div class="main-pagination"><div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div><span class="paging-text">1 - 50 of 25638 Threads</span>
+</div>
+
+<div class="thread" id="thread-headers">
+  <div class="one">Thread Title &amp; Category</div>
+  <div class="two"><a href="/o/started/desc">Started By</a></div>
+  <div class="three"><a href="/o/latest/desc">Last Post</a></div>
+  <div class="four"><a href="/o/posts/desc">Posts</a></div>
+</div>
+
+{{#threads}}
+<div id="thread-{{_id}}" class="thread alt buddy">
+   <div class="one">
+    <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}#bottom" class='end-link'>#</a></div>
+    <div class="category">Advice | Page: <a href="/thread/{{urlname}}">1</a>, <a href="/thread/{{urlname}}">2</a>, <a href="/thread/{{urlname}}">3</a>, <a href="/thread/{{urlname}}">4</a> <a href="/thread/{{urlname}}">...</a> <a href="/thread/{{urlname}}">13</a></div>
+  </div>
+  <div class="two">
+    <div class="username"><a href="/user/{{postedby}}">{{postedby}}</a></div>
+    <div class="time">{{createdago}}</div>
+  </div>
+  <div class="three">
+    <div class="username"><a href="/user/{{last_comment_by}}">{{last_comment_by}}</a></div>
+    <div class="time">{{lastpostedago}}</div>
+  </div>
+  <div class="four">
+    <span>{{numcomments}}</span>
+  </div>
+<div class="five">
+    <a class="favourite" rel="810"></a>
+    <a class="hide-thread" rel="810"></a>
+  </div>
+</div>
+<div class="blueline">&nbsp;</div>
+{{/threads}}
+ 
+<div class="pagination bottom">
+  <a href="/newthread" id="post-thread">Post Thread</a>
+<div class="main-pagination"><div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div><span class="paging-text">1 - 50 of 25638 Threads</span></div>
+
+  <script type="text/html" id="title-input">
+    <input type="text" id="title-input" maxlength="36" />
+    <input type="submit" value="Save" id="save-title" />
+    <input type="button" value="Cancel" id="cancel-title" />
+    (36 chars max)
+  </script>
+            </div>
+
+        </div>
+
+    </div>
+
+    <a name="bottom"></a>
+
+    <div id="bottom">
+    </div>
+
+        <script src="/js/prettify.js"></script>
+        <script>prettyPrint();</script>
+    <script src="/js/global.js?v=28"></script>
+  </body>
+</html>

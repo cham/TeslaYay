@@ -23,8 +23,8 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('0rly?YA,rly!'));
   app.use(sessionGenerator(sessionStore));
-  app.use(routes());
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use(routes());
 });
 
 app.configure('development', function(){
