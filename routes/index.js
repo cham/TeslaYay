@@ -6,6 +6,7 @@
 var _ = require('underscore'),
     express = require('express'),
     moment = require('moment'),
+    api = require('../src/api'),
     request = require('request').defaults({
         encoding: 'utf8',
         jar: false,
@@ -26,16 +27,9 @@ module.exports = function routing(){
 
     // thread listing
     app.get('/', function(req, res, next){
-        request({
-            method: 'get',
-            uri: apiUrl + '/threads'
-        }, function(err, response, json){
-            if(err){
-                return next(err);
-            }
-
+        api.getThreads(res, function(err, threads){
             res.render('index', {
-                threads: _(JSON.parse(json).threads).map(function(thread){
+                threads: _(threads).map(function(thread){
                     thread.createdago = moment(thread.created).fromNow();
                     thread.lastpostedago = moment(thread.last_comment_time).fromNow();
                     thread.numcomments = thread.comments.length;
@@ -52,25 +46,13 @@ module.exports = function routing(){
 
     // view thread
     app.get('/thread/:threadUrlName', function(req, res, next){
-        var thread, comments,
-            uri = apiUrl + '/thread/' + encodeURIComponent(req.route.params.threadUrlName) + '/complete';
-        
-        request({
-            method: 'get',
-            uri: uri
-        }, function(err, response, json){
-            if(err){
-                return next(err);
-            }
-            thread = JSON.parse(json);
-            comments = thread.comments;
-
+        api.getThread(res, {threadUrlName: req.route.params.threadUrlName}, function(err, thread){
             res.render('thread', {
                 title: thread.name,
                 urlname: thread.urlname,
                 author: thread.postedby,
                 threadid: thread._id,
-                comments: comments
+                comments: thread.comments
             });
         });
     });
@@ -82,102 +64,33 @@ module.exports = function routing(){
 
     // post thread
     app.post('/newthread', checkAuth, function(req, res, next){
-        var body = _(req.body || {}).extend({
-                postedby: author
-            });
-
-        request({
-            method: 'post',
-            uri: apiUrl + '/thread',
-            form: body
-        }, function(err, response, body){
-            if(err){
-                return next(err);
-            }
-            if(response.statusCode === 500){
-                return res.end(body);
-            }
-            var json = JSON.parse(body);
-
-            res.redirect('/thread/' + json.urlname);
+        api.postThread(res, req.body, function(err, thread){
+            res.redirect('/thread/' + thread.urlname);
         });
     });
 
     // post comment
     app.post('/thread/:threadUrlName', checkAuth, function(req, res, next){
-        var body = req.body;
-        
-        request({
-            method: 'post',
-            uri: apiUrl + '/comment',
-            form: {
-                postedby: author,
-                content: body.content,
-                threadid: body.threadid
-            }
-        }, function(err, response, comment){
-            if(err){
-                return next(err);
-            }
-            if(response.statusCode === 500){
-                return res.end('API Error! ' + body);
-            }
+        api.postComment(res, req.body, function(err, comment){
             res.redirect('/thread/'+ encodeURIComponent(req.route.params.threadUrlName));
         });
     });
 
     // register
     app.post('/register', function(req, res, next){
-        var body = req.body;
-
-        request({
-            method: 'post',
-            uri: apiUrl + '/user',
-            form: {
-                username: body.username,
-                password: body.password,
-                email: body.email
-            }
-        }, function(err, response, body){
-            if(err){
-                return next(err);
-            }
-            if(response.statusCode === 500){
-                return res.end('API Error! ' + body);
-            }
+        api.registerUser(res, req.body, function(err, user){
             res.redirect('/');
         });
     });
 
-
-
-
-    // crapapi for debugging - delete me when no longer required
-    app.get('/crapapi/fakeuser', checkAuth, function(req, res, next){
-        var body = {
-                username: author,
-                password: 'b33d065',
-                email: 'danneame@gmail.com'
-            };
-
-        request({
-            method: 'post',
-            uri: apiUrl + '/user',
-            form: body
-        }, function(err, response, body){
-            if(err){
-                return next(err);
-            }
-            res.send(body);
-        });
-    });
-
+    // proxy shit
     app.get('/js/*', function(req, res, next){
         return res.end();
     });
 
     app.get('*', function(req, res, next){
         if(!splatProxy){
+            res.status(404);
             return res.end();
         }
         var x = request('http://www.yayhooray.net' + req.route.params[0]);
