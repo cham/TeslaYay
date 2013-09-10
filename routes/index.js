@@ -21,7 +21,11 @@ module.exports = function routing(){
 
     var app = new express.Router();
 
-    function checkAuth(res, req, next){
+    function checkAuth(req, res, next){
+        if(!req.session || !req.session.user){
+            return res.redirect('/');
+            // return next(new Error('Fail'));
+        }
         next();
     }
 
@@ -34,14 +38,17 @@ module.exports = function routing(){
                     thread.lastpostedago = moment(thread.last_comment_time).fromNow();
                     thread.numcomments = thread.comments.length;
                     return thread;
-                })
+                }),
+                user: req.session.user
             });
         });
     });
 
     // new thread
-    app.get('/newthread', function(req, res, next){
-        res.render('post', {});
+    app.get('/newthread', checkAuth, function(req, res, next){
+        res.render('post', {
+            user: req.session.user
+        });
     });
 
     // view thread
@@ -49,30 +56,39 @@ module.exports = function routing(){
         api.getThread(res, {threadUrlName: req.route.params.threadUrlName}, function(err, thread){
             res.render('thread', {
                 title: thread.name,
-                urlname: thread.urlname,
+                threadurlname: thread.urlname,
                 author: thread.postedby,
                 threadid: thread._id,
-                comments: thread.comments
+                comments: _(thread.comments).map(function(comment){
+                    comment.createdago = moment(comment.created).fromNow();
+                    return comment;
+                }),
+                user: req.session.user
             });
         });
     });
 
     // register form
     app.get('/register', function(req, res, next){
-        res.render('register', {});
+        res.render('register', {
+            user: req.session.user
+        });
     });
 
+    // POSTs
     // post thread
     app.post('/newthread', checkAuth, function(req, res, next){
-        api.postThread(res, req.body, function(err, thread){
+        api.postThread(res, req.body, req.session.user, function(err, thread){
             res.redirect('/thread/' + thread.urlname);
         });
     });
 
     // post comment
     app.post('/thread/:threadUrlName', checkAuth, function(req, res, next){
-        api.postComment(res, req.body, function(err, comment){
-            res.redirect('/thread/'+ encodeURIComponent(req.route.params.threadUrlName));
+        var threadUrlName = req.route.params.threadUrlName;
+
+        api.postComment(res, req.body, req.session.user, function(err, comment){
+            res.redirect('/thread/'+ encodeURIComponent(threadUrlName));
         });
     });
 
@@ -81,6 +97,24 @@ module.exports = function routing(){
         api.registerUser(res, req.body, function(err, user){
             res.redirect('/');
         });
+    });
+
+    // login
+    app.post('/login', function(req, res, next){
+        api.handleLogin(res, req.body, function(err, user){
+            if(user.username){
+                req.session.user = user;
+            }else{
+                delete req.session.user;
+            }
+            res.redirect('/');
+        });
+    });
+
+    // logout
+    app.post('/logout', function(req, res, next){
+        delete req.session.user;
+        res.redirect('/');
     });
 
     // proxy shit

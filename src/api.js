@@ -11,6 +11,29 @@ var _ = require('underscore'),
     author = 'cham',
     apiUrl = 'http://localhost:3000';
 
+function checkResponse(err, apiRes, next){
+    if(err){
+        next(err);
+        return false;
+    }
+    if(apiRes.statusCode === 500){
+        next({message:body});
+        return false;
+    }
+    return true;
+}
+function parseJson(json, next, success){
+    try{
+        json = JSON.parse(json);
+    }catch(e){
+        return next(e);
+    }
+    success(json);
+}
+function responseHandler(err, response, json){
+
+}
+
 module.exports = {
 
     getThreads: function(res, cb){
@@ -18,16 +41,13 @@ module.exports = {
             method: 'get',
             uri: apiUrl + '/threads'
         }, function(err, response, json){
-            if(err){
-                return next(err);
+            if(!checkResponse(err, response, cb)){
+                return;
             }
 
-            try{
-                json = JSON.parse(json);
-            }catch(e){
-                return cb(e);
-            }
-            cb(null, json.threads);
+            parseJson(json, cb, function(threadlist){
+                cb(null, threadlist.threads);
+            });
         });
     },
 
@@ -38,22 +58,19 @@ module.exports = {
             method: 'get',
             uri: uri
         }, function(err, response, json){
-            if(err){
-                return next(err);
+            if(!checkResponse(err, response, cb)){
+                return;
             }
             
-            try{
-                json = JSON.parse(json);
-            }catch(e){
-                return cb(e);
-            }
-            cb(null, json);
+            parseJson(json, cb, function(thread){
+                cb(null, thread);
+            });
         });
     },
 
-    postThread: function(res, body, cb){
+    postThread: function(res, body, user, cb){
         body = _(body || {}).extend({
-            postedby: author
+            postedby: user.username
         });
 
         request({
@@ -61,45 +78,33 @@ module.exports = {
             uri: apiUrl + '/thread',
             form: body
         }, function(err, response, json){
-            if(err){
-                return next(err);
+            if(!checkResponse(err, response, cb)){
+                return;
             }
-            if(response.statusCode === 500){
-                return res.end(body);
-            }
-            
-            try{
-                json = JSON.parse(json);
-            }catch(e){
-                return cb(e);
-            }
-            cb(null, json);
+
+            parseJson(json, cb, function(thread){
+                cb(null, thread);
+            });
         });
     },
 
-    postComment: function(res, body, cb){
+    postComment: function(res, body, user, cb){
         request({
             method: 'post',
             uri: apiUrl + '/comment',
             form: {
-                postedby: author,
+                postedby: user.username,
                 content: body.content,
                 threadid: body.threadid
             }
         }, function(err, response, json){
-            if(err){
-                return next(err);
+            if(!checkResponse(err, response, cb)){
+                return;
             }
-            if(response.statusCode === 500){
-                return res.end('API Error! ' + body);
-            }
-            
-            try{
-                json = JSON.parse(json);
-            }catch(e){
-                return cb(e);
-            }
-            cb(null, json);
+
+            parseJson(json, cb, function(comment){
+                cb(null, comment);
+            });
         });
     },
 
@@ -112,20 +117,33 @@ module.exports = {
                 password: body.password,
                 email: body.email
             }
-        }, function(err, response, body){
-            if(err){
-                return next(err);
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)){
+                return;
             }
-            if(response.statusCode === 500){
-                return res.end('API Error! ' + body);
+
+            parseJson(json, cb, function(user){
+                cb(null, user);
+            });
+        });
+    },
+
+    handleLogin: function(res, body, cb){
+        request({
+            method: 'post',
+            uri: apiUrl + '/login',
+            form: {
+                username: body.username,
+                password: body.password
             }
-            
-            try{
-                json = JSON.parse(json);
-            }catch(e){
-                return cb(e);
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)){
+                return;
             }
-            cb(null, json);
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
         });
     }
 };

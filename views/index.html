@@ -22,17 +22,17 @@
     <div id="middle">
       <div id="left-column">
         <a href="/" id="header">New Yay</a>
-
+{{#user}}
         <div class="lc-node welcome">
           <h4>
-            Hi, <a href="/user/cham">cham</a>
+            Hi, <a href="/user/{{urlname}}">{{username}}</a>
           </h4>
-          <a href="/user/cham">
+          <a href="/user/{{urlname}}">
         <img src="/img/emoticons/37.gif" class="main_avatar" />
           </a>
           <ul>
         <li><a href="/preferences" id="preferences">Preferences</a></li>
-            <li><form action='/auth/logout' method='POST'>
+            <li><form action='/logout' method='POST'>
               <input type='submit' id="logout_btn" value="logout" /></form></li>
           </ul>
         </div>
@@ -43,6 +43,27 @@
             </li>
           </ul>
         </div>
+{{/user}}
+{{^user}}
+        <div class="lc-node login" id="login-box">
+          <h5>Not a member?</h5>
+          <p><img src="/img/pinkies/07.gif" width="14" height="14" align="absmiddle"/>
+          <a href="/auth/register" class="white">Click to register, n00b!</a></p>
+          <p class="error"></p>
+          <form action="/login" method="post" id="login-form">
+            <div>
+              <label for="username">U:</label>
+              <input type="text" name="username" tabindex="1" id="username" />
+              <button tabindex="3" type="submit">Booya!</button>
+            </div>
+            <div>
+              <label for="password">P:</label>
+              <input type="password" name="password" tabindex="2" id="password" />
+              <a href="#" id="forgot-password">Forgot it?</a>
+            </div>
+          </form>
+        </div>
+{{/user}}
         <div class="lc-node" id="threads">
           <h3><a href="/">Threads</a></h3>
           <ul id="thread-categories">

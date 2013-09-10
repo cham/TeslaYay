@@ -25,21 +25,21 @@
         <div class="lc-node login" id="login-box">
           <h5>Not a member?</h5>
           <p><img src="/img/pinkies/07.gif" width="14" height="14" align="absmiddle"/>
-            <a href="/auth/register" class="white">Click to register, n00b!</a></p>
-      <p class="error"></p>
-          <form action="/auth/login" method="post" id="login-form">
-        <div>
-          <label for="username">U:</label>
+          <a href="/auth/register" class="white">Click to register, n00b!</a></p>
+          <p class="error"></p>
+          <form action="/login" method="post" id="login-form">
+            <div>
+              <label for="username">U:</label>
               <input type="text" name="username" tabindex="1" id="username" />
               <button tabindex="3" type="submit">Booya!</button>
-        </div>
-        <div>
-          <label for="password">P:</label>
+            </div>
+            <div>
+              <label for="password">P:</label>
               <input type="password" name="password" tabindex="2" id="password" />
               <a href="#" id="forgot-password">Forgot it?</a>
             </div>
           </form>
-    </div>
+        </div>
 
         <div class="lc-node" id="threads">
           <h3><a href="/">Threads</a></h3>
@@ -88,7 +88,7 @@
 <div id="main-title"><h3>OMG, you can Register?</h3></div>
 
 <div id="new-thread">
-  <form method="post" action="register" id="register-form">
+  <form method="post" action="/register" id="register-form">
     <div class="inp">
             <label for="username">Username:</label>      <input type="text" name="username" value="" id="username" maxlength="32" size="30"  />    </div>
     <div class="inp">
