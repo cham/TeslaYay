@@ -12,10 +12,8 @@ var _ = require('underscore'),
         jar: false,
         timeout: 30 * 1000
     }),
-    apiUrl = 'http://localhost:3000',
     skin = 'yayhooray',
-    author = 'cham',
-    splatProxy = true;
+    splatProxy = false;
 
 module.exports = function routing(){
 
@@ -107,7 +105,7 @@ module.exports = function routing(){
             }else{
                 delete req.session.user;
             }
-            res.redirect('/');
+            res.redirect(req.headers['referer']);
         });
     });
 
