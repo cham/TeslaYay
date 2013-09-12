@@ -8,7 +8,11 @@ var _ = require('underscore'),
         timeout: 30 * 1000
     }),
     moment = require('moment'),
-    apiUrl = 'http://localhost:3000';
+    apiUrl = 'http://localhost:3000',
+    userprefs = {
+        numthreads: 3,
+        numcomments: 100
+    };
 
 function checkResponse(err, apiRes, next){
     if(err){
@@ -35,27 +39,40 @@ function responseHandler(err, response, json){
 
 module.exports = {
 
-    getThreads: function(res, cb){
+    getThreads: function(res, params, user, cb){
+        var query;
+        user = user || {};
+
+        query = _(params).defaults({
+            size: userprefs.numthreads
+        });
+        console.log(query);
+
         request({
             method: 'get',
-            uri: apiUrl + '/threads'
+            uri: apiUrl + '/threads',
+            qs: query
         }, function(err, response, json){
             if(!checkResponse(err, response, cb)){
                 return;
             }
 
-            parseJson(json, cb, function(threadlist){
-                cb(null, threadlist.threads);
+            parseJson(json, cb, function(json){
+                cb(null, json);
             });
         });
     },
 
-    getThread: function(res, params, cb){
+    getThread: function(res, params, user, cb){
         var uri = apiUrl + '/thread/' + encodeURIComponent(params.threadUrlName) + '/complete';
-        
+        user = user || {};
+
         request({
             method: 'get',
-            uri: uri
+            uri: uri,
+            qs: {
+                size: userprefs.numcomments
+            }
         }, function(err, response, json){
             if(!checkResponse(err, response, cb)){
                 return;
@@ -68,6 +85,7 @@ module.exports = {
     },
 
     postThread: function(res, body, user, cb){
+        user = user || {};
         body = _(body || {}).extend({
             postedby: user.username
         });
@@ -88,6 +106,7 @@ module.exports = {
     },
 
     postComment: function(res, body, user, cb){
+        user = user || {};
         request({
             method: 'post',
             uri: apiUrl + '/comment',
@@ -107,7 +126,8 @@ module.exports = {
         });
     },
 
-    registerUser: function(res, body, cb){
+    registerUser: function(res, body, user, cb){
+        user = user || {};
         request({
             method: 'post',
             uri: apiUrl + '/user',
@@ -127,7 +147,8 @@ module.exports = {
         });
     },
 
-    handleLogin: function(res, body, cb){
+    handleLogin: function(res, body, user, cb){
+        user = user || {};
         request({
             method: 'post',
             uri: apiUrl + '/login',

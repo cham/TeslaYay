@@ -156,8 +156,15 @@
 {{#user}}
   <a href="/newthread" id="post-thread">Post Thread</a>
 {{/user}}
-<div class="main-pagination"><div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div><span class="paging-text">1 - 50 of 25638 Threads</span>
+<div class="main-pagination">
+{{#pages}}
+  <a href="/threads/{{num}}">{{num}}</a>
+{{/pages}}
+  <span class="paging-text">1 - 50 of {{totaldocs}} Threads</span>
 </div>
+</div>
+  <!--div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div-->
+
 
 <div class="thread" id="thread-headers">
   <div class="one">Thread Title &amp; Category</div>
