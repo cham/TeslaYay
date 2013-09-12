@@ -76,7 +76,7 @@ module.exports = {
             if(!checkResponse(err, response, cb)){
                 return;
             }
-console.log(json);
+
             parseJson(json, cb, function(thread){
                 cb(null, thread);
             });

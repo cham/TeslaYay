@@ -150,7 +150,7 @@ module.exports = function routing(){
         var threadUrlName = req.route.params.threadUrlName;
 
         api.postComment(res, req.body, req.session.user, function(err, comment){
-            res.redirect('/thread/'+ encodeURIComponent(threadUrlName));
+            res.redirect('/thread/' + encodeURIComponent(threadUrlName) + '#bottom');
         });
     });
 
