@@ -48,7 +48,7 @@
         <div class="lc-node login" id="login-box">
           <h5>Not a member?</h5>
           <p><img src="/img/pinkies/07.gif" width="14" height="14" align="absmiddle"/>
-          <a href="/auth/register" class="white">Click to register, n00b!</a></p>
+          <a href="/register" class="white">Click to register, n00b!</a></p>
           <p class="error"></p>
           <form action="/login" method="post" id="login-form">
             <div>
@@ -153,9 +153,9 @@
 </div>
 
 <div id="thread-navigation" class="pagination top">
-
+{{#user}}
   <a href="/newthread" id="post-thread">Post Thread</a>
-
+{{/user}}
 <div class="main-pagination"><div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div><span class="paging-text">1 - 50 of 25638 Threads</span>
 </div>
 
@@ -192,7 +192,9 @@
 {{/threads}}
  
 <div class="pagination bottom">
+{{#user}}
   <a href="/newthread" id="post-thread">Post Thread</a>
+{{/user}}
 <div class="main-pagination"><div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div><span class="paging-text">1 - 50 of 25638 Threads</span></div>
 
   <script type="text/html" id="title-input">

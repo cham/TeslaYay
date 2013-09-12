@@ -21,11 +21,33 @@
     <div id="middle">
       <div id="left-column">
         <a href="/" id="header">New Yay</a>
-
+{{#user}}
+        <div class="lc-node welcome">
+          <h4>
+            Hi, <a href="/user/{{urlname}}">{{username}}</a>
+          </h4>
+          <a href="/user/{{urlname}}">
+        <img src="/img/emoticons/37.gif" class="main_avatar" />
+          </a>
+          <ul>
+        <li><a href="/preferences" id="preferences">Preferences</a></li>
+            <li><form action='/logout' method='POST'>
+              <input type='submit' id="logout_btn" value="logout" /></form></li>
+          </ul>
+        </div>
+        <div class="lc-node" id="messaging">
+          <ul>
+            <li class="messages">
+              <a href="/messages/inbox">No New Messages</a>
+            </li>
+          </ul>
+        </div>
+{{/user}}
+{{^user}}
         <div class="lc-node login" id="login-box">
           <h5>Not a member?</h5>
           <p><img src="/img/pinkies/07.gif" width="14" height="14" align="absmiddle"/>
-          <a href="/auth/register" class="white">Click to register, n00b!</a></p>
+          <a href="/register" class="white">Click to register, n00b!</a></p>
           <p class="error"></p>
           <form action="/login" method="post" id="login-form">
             <div>
@@ -40,7 +62,7 @@
             </div>
           </form>
         </div>
-
+{{/user}}
         <div class="lc-node" id="threads">
           <h3><a href="/">Threads</a></h3>
           <ul id="thread-categories">

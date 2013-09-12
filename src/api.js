@@ -8,7 +8,6 @@ var _ = require('underscore'),
         timeout: 30 * 1000
     }),
     moment = require('moment'),
-    author = 'cham',
     apiUrl = 'http://localhost:3000';
 
 function checkResponse(err, apiRes, next){
@@ -17,7 +16,7 @@ function checkResponse(err, apiRes, next){
         return false;
     }
     if(apiRes.statusCode === 500){
-        next({message:body});
+        next(new Error(apiRes.body));
         return false;
     }
     return true;

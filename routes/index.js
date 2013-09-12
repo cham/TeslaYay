@@ -22,7 +22,12 @@ module.exports = function routing(){
     function checkAuth(req, res, next){
         if(!req.session || !req.session.user){
             return res.redirect('/');
-            // return next(new Error('Fail'));
+        }
+        next();
+    }
+    function checkUnauth(req, res, next){
+        if(req.session && req.session.user){
+            return res.redirect('/');
         }
         next();
     }
@@ -67,7 +72,7 @@ module.exports = function routing(){
     });
 
     // register form
-    app.get('/register', function(req, res, next){
+    app.get('/register', checkUnauth, function(req, res, next){
         res.render('register', {
             user: req.session.user
         });
@@ -77,6 +82,9 @@ module.exports = function routing(){
     // post thread
     app.post('/newthread', checkAuth, function(req, res, next){
         api.postThread(res, req.body, req.session.user, function(err, thread){
+            if(err){
+                return next(err);
+            }
             res.redirect('/thread/' + thread.urlname);
         });
     });
