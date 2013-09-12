@@ -6,6 +6,7 @@
 var _ = require('underscore'),
     express = require('express'),
     moment = require('moment'),
+    fs = require('fs'),
     api = require('../src/api'),
     request = require('request').defaults({
         encoding: 'utf8',
@@ -17,34 +18,54 @@ var _ = require('underscore'),
 
 function generateHomepageRenderer(req, res){
     return function(err, json){
-        var pages;
+        var pages,
+            threads,
+            pagesize,
+            threadindex,
+            lastthreadindex,
+            totaldocs,
+            paginationtext,
+            currentpage = parseInt(req.route.params.page, 10) || 1;
 
         if(err){
             res.status(500);
             return req.send(err);
         }
 
-        pages = _(_.range(json.limit > 0 ? Math.ceil(json.totaldocs / json.limit) : 0))
-                .reduce(function(memo, num){
-                    memo.push({
-                        num: num+1,
-                        active: false
-                    });
-                    return memo;
-                },[]);
+        pagesize = json.limit;
+        totaldocs = json.totaldocs;
+        threadindex = ((currentpage-1) * pagesize) + 1;
+        lastthreadindex = (threadindex + pagesize - 1);
+        if(lastthreadindex > totaldocs){
+            lastthreadindex = totaldocs;
+        }
+        paginationtext =  threadindex + ' - ' + lastthreadindex + ' of ' + json.totaldocs + ' threads';
+
+        pages = _(_.range(pagesize > 0 ? Math.ceil(json.totaldocs / pagesize) : 0))
+            .reduce(function(memo, num){
+                var pnum = num+1,
+                    active = pnum !== currentpage;
+                memo.push({
+                    num: pnum,
+                    active: active,
+                    url: pnum === 1 ? '/' : '/threads/' + pnum
+                });
+                return memo;
+            },[]);
 
         res.render('index', {
+            numthreads: json.threads.length,
+            totaldocs: totaldocs,
+            pages: pages,
+            numpages: pages.length,
+            user: req.session.user,
+            paginationtext: paginationtext,
             threads: _(json.threads).map(function(thread){
                 thread.createdago = moment(thread.created).fromNow();
                 thread.lastpostedago = moment(thread.last_comment_time).fromNow();
                 thread.numcomments = thread.comments.length;
                 return thread;
-            }),
-            numthreads: json.threads.length,
-            totaldocs: json.totaldocs,
-            pages: pages,
-            numpages: pages.length,
-            user: req.session.user
+            })
         });
     };
 }
@@ -71,7 +92,14 @@ module.exports = function routing(){
         api.getThreads(res, req.route.params || {}, req.session.user, generateHomepageRenderer(req, res));
     });
 
+    app.get('/threads', function(req, res, next){
+        res.redirect('/');
+    });
+
     app.get('/threads/:page', function(req, res, next){
+        if(req.route.params.page === '1'){
+            return res.redirect('/');
+        }
         api.getThreads(res, req.route.params || {}, req.session.user, generateHomepageRenderer(req, res));
     });
 
@@ -129,6 +157,7 @@ module.exports = function routing(){
     // register
     app.post('/register', function(req, res, next){
         api.registerUser(res, req.body, req.session.user, function(err, user){
+            req.session.user = user;
             res.redirect('/');
         });
     });
@@ -163,7 +192,12 @@ module.exports = function routing(){
         }
         var x = request('http://www.yayhooray.net' + req.route.params[0]);
         req.pipe(x);
-        x.pipe(fs.createWriteStream('../public' + req.route.params[0])).pipe(res);
+        x.pipe(res);
+        // try{
+        //     x.pipe( fs.createWriteStream('../public' + req.route.params[0], {flags: 'w+'}) );
+        // }catch(e){
+        //     res.send(e);
+        // }
     });
 
     return app.middleware;

@@ -144,25 +144,28 @@
         </div>
         <a href="http://patrickobrienfoundation.org/" id="pobf"><img src="/img/pobf.gif" /></a>
 
-     </div>
+    </div>
 
-     <div id="right-column">
-<div id="main-title"  class="changeling" title="Vaskerville">
-  <h3>
-    .  </h3>
-</div>
-
-<div id="thread-navigation" class="pagination top">
-{{#user}}
-  <a href="/newthread" id="post-thread">Post Thread</a>
-{{/user}}
-<div class="main-pagination">
-{{#pages}}
-  <a href="/threads/{{num}}">{{num}}</a>
-{{/pages}}
-  <span class="paging-text">1 - 50 of {{totaldocs}} Threads</span>
-</div>
-</div>
+    <div id="right-column">
+      <div id="main-title"  class="changeling" title="Vaskerville">
+        <h3>.</h3>
+      </div>
+      <div id="thread-navigation" class="pagination top">
+        {{#user}}
+        <a href="/newthread" id="post-thread">Post Thread</a>
+        {{/user}}
+        <div class="main-pagination">
+          {{#pages}}
+          {{#active}}
+          <a href="{{url}}">{{num}}</a>
+          {{/active}}
+          {{^active}}
+          <div class="selected-page">{{num}}</div>
+          {{/active}}
+          {{/pages}}
+          <span class="paging-text">{{paginationtext}}</span>
+        </div>
+      </div>
   <!--div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div-->
 
 
@@ -202,7 +205,17 @@
 {{#user}}
   <a href="/newthread" id="post-thread">Post Thread</a>
 {{/user}}
-<div class="main-pagination"><div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div><span class="paging-text">1 - 50 of 25638 Threads</span></div>
+<div class="main-pagination">
+  {{#pages}}
+  {{#active}}
+  <a href="{{url}}">{{num}}</a>
+  {{/active}}
+  {{^active}}
+  <div class="selected-page">{{num}}</div>
+  {{/active}}
+  {{/pages}}
+  <span class="paging-text">{{paginationtext}}</span>
+</div>
 
   <script type="text/html" id="title-input">
     <input type="text" id="title-input" maxlength="36" />

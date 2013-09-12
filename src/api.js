@@ -46,7 +46,6 @@ module.exports = {
         query = _(params).defaults({
             size: userprefs.numthreads
         });
-        console.log(query);
 
         request({
             method: 'get',
@@ -77,7 +76,7 @@ module.exports = {
             if(!checkResponse(err, response, cb)){
                 return;
             }
-            
+console.log(json);
             parseJson(json, cb, function(thread){
                 cb(null, thread);
             });
