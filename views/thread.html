@@ -160,11 +160,22 @@
 
   
   <div class="pagination top">
-    
-    <span class="paging-text">
-      1 - 9 of 9      in <a href="/">Threads</a>
-      &gt; <a href="/f/discussions">Discussions</a>      &gt; <a href="/thread/{{urlname}}">{{title}}</a>    </span>
-
+    <div class="main-pagination">
+      {{#pages}}
+      {{#separator}}
+      <span class="ellipsis">...</span>
+      {{/separator}}
+      {{^separator}}
+        {{#active}}
+      <div class="selected-page">{{num}}</div>
+        {{/active}}
+        {{^active}}
+      <a href="/thread/{{threadurlname}}{{url}}">{{num}}</a>
+        {{/active}}
+      {{/separator}}
+      {{/pages}}
+      <span class="paging-text">{{paginationtext}} comments</span>
+    </div>
       </div>
 
 {{#comments}}

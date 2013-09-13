@@ -8,67 +8,19 @@ var _ = require('underscore'),
     moment = require('moment'),
     fs = require('fs'),
     api = require('../src/api'),
+    renderGenerator = require('../src/renderGenerator'),
     request = require('request').defaults({
         encoding: 'utf8',
         jar: false,
         timeout: 30 * 1000
     }),
-    skin = 'yayhooray',
+    userprefs = {
+        numthreads: 50,
+        numcomments: 100
+    },
+    stresstest = false,
+    stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
     splatProxy = true;
-
-function generateHomepageRenderer(req, res){
-    return function(err, json){
-        var pages,
-            threads,
-            pagesize,
-            threadindex,
-            lastthreadindex,
-            totaldocs,
-            paginationtext,
-            currentpage = parseInt(req.route.params.page, 10) || 1;
-
-        if(err){
-            res.status(500);
-            return req.send(err);
-        }
-
-        pagesize = json.limit;
-        totaldocs = json.totaldocs;
-        threadindex = ((currentpage-1) * pagesize) + 1;
-        lastthreadindex = (threadindex + pagesize - 1);
-        if(lastthreadindex > totaldocs){
-            lastthreadindex = totaldocs;
-        }
-        paginationtext =  threadindex + ' - ' + lastthreadindex + ' of ' + json.totaldocs + ' threads';
-
-        pages = _(_.range(pagesize > 0 ? Math.ceil(json.totaldocs / pagesize) : 0))
-            .reduce(function(memo, num){
-                var pnum = num+1,
-                    active = pnum !== currentpage;
-                memo.push({
-                    num: pnum,
-                    active: active,
-                    url: pnum === 1 ? '/' : '/threads/' + pnum
-                });
-                return memo;
-            },[]);
-
-        res.render('index', {
-            numthreads: json.threads.length,
-            totaldocs: totaldocs,
-            pages: pages,
-            numpages: pages.length,
-            user: req.session.user,
-            paginationtext: paginationtext,
-            threads: _(json.threads).map(function(thread){
-                thread.createdago = moment(thread.created).fromNow();
-                thread.lastpostedago = moment(thread.last_comment_time).fromNow();
-                thread.numcomments = thread.comments.length;
-                return thread;
-            })
-        });
-    };
-}
 
 module.exports = function routing(){
 
@@ -86,10 +38,13 @@ module.exports = function routing(){
         }
         next();
     }
+    if(stresstest){
+        stressTester.routing(app);
+    }
 
     // thread listing
     app.get('/', function(req, res, next){
-        api.getThreads(res, req.route.params || {}, req.session.user, generateHomepageRenderer(req, res));
+        api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
     app.get('/threads', function(req, res, next){
@@ -100,7 +55,7 @@ module.exports = function routing(){
         if(req.route.params.page === '1'){
             return res.redirect('/');
         }
-        api.getThreads(res, req.route.params || {}, req.session.user, generateHomepageRenderer(req, res));
+        api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
     // new thread
@@ -112,19 +67,13 @@ module.exports = function routing(){
 
     // view thread
     app.get('/thread/:threadUrlName', function(req, res, next){
-        api.getThread(res, {threadUrlName: req.route.params.threadUrlName}, req.session.user, function(err, thread){
-            res.render('thread', {
-                title: thread.name,
-                threadurlname: thread.urlname,
-                author: thread.postedby,
-                threadid: thread._id,
-                comments: _(thread.comments).map(function(comment){
-                    comment.createdago = moment(comment.created).fromNow();
-                    return comment;
-                }),
-                user: req.session.user
-            });
-        });
+        api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
+    });
+    app.get('/thread/:threadUrlName/:page', function(req, res, next){
+        if(req.route.params.page === '1'){
+            return res.redirect('/thread/' + req.route.params.threadUrlName);
+        }
+        api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
     });
 
     // register form
@@ -147,10 +96,8 @@ module.exports = function routing(){
 
     // post comment
     app.post('/thread/:threadUrlName', checkAuth, function(req, res, next){
-        var threadUrlName = req.route.params.threadUrlName;
-
         api.postComment(res, req.body, req.session.user, function(err, comment){
-            res.redirect('/thread/' + encodeURIComponent(threadUrlName) + '#bottom');
+            res.redirect(req.headers['referer']+'#bottom');
         });
     });
 
@@ -158,6 +105,7 @@ module.exports = function routing(){
     app.post('/register', function(req, res, next){
         api.registerUser(res, req.body, req.session.user, function(err, user){
             req.session.user = user;
+            req.session.user.preferences = userprefs;
             res.redirect('/');
         });
     });
@@ -167,6 +115,7 @@ module.exports = function routing(){
         api.handleLogin(res, req.body, req.session.user, function(err, user){
             if(user.username){
                 req.session.user = user;
+                req.session.user.preferences = userprefs;
             }else{
                 delete req.session.user;
             }

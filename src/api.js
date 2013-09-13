@@ -9,9 +9,9 @@ var _ = require('underscore'),
     }),
     moment = require('moment'),
     apiUrl = 'http://localhost:3000',
-    userprefs = {
-        numthreads: 3,
-        numcomments: 100
+    defaultprefs = {
+        numthreads: 50,
+        numcomments: 50
     };
 
 function checkResponse(err, apiRes, next){
@@ -40,16 +40,15 @@ function responseHandler(err, response, json){
 module.exports = {
 
     getThreads: function(res, params, user, cb){
-        var query;
         user = user || {};
 
-        query = _(params).defaults({
-            size: userprefs.numthreads
+        var query = _(params).defaults({
+            size: (user.preferences && user.preferences.numthreads) || defaultprefs.numthreads
         });
 
         request({
             method: 'get',
-            uri: apiUrl + '/threads',
+            uri: apiUrl + '/threads/summary',
             qs: query
         }, function(err, response, json){
             if(!checkResponse(err, response, cb)){
@@ -63,22 +62,26 @@ module.exports = {
     },
 
     getThread: function(res, params, user, cb){
-        var uri = apiUrl + '/thread/' + encodeURIComponent(params.threadUrlName) + '/complete';
         user = user || {};
+
+        var uri = apiUrl + '/thread/' + encodeURIComponent(params.threadUrlName) + '/complete',
+            query = _(params).defaults({
+                size: (user.preferences && user.preferences.numcomments) || defaultprefs.numcomments
+            });
+        
+        delete query.threadUrlName;
 
         request({
             method: 'get',
             uri: uri,
-            qs: {
-                size: userprefs.numcomments
-            }
+            qs: query
         }, function(err, response, json){
             if(!checkResponse(err, response, cb)){
                 return;
             }
 
-            parseJson(json, cb, function(thread){
-                cb(null, thread);
+            parseJson(json, cb, function(json){
+                cb(null, json);
             });
         });
     },

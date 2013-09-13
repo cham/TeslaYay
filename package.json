@@ -23,5 +23,8 @@
     "crypto": "0.0.3",
     "http-proxy": "0.10.3",
     "ent": "0.1.0"
+  },
+  "devDependencies": {
+    "nodeload": "0.4.0"
   }
 }

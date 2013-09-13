@@ -156,14 +156,19 @@
         {{/user}}
         <div class="main-pagination">
           {{#pages}}
-          {{#active}}
-          <a href="{{url}}">{{num}}</a>
-          {{/active}}
-          {{^active}}
+          {{#separator}}
+          <span class="ellipsis">...</span>
+          {{/separator}}
+          {{^separator}}
+            {{#active}}
           <div class="selected-page">{{num}}</div>
-          {{/active}}
+            {{/active}}
+            {{^active}}
+          <a href="/threads{{url}}">{{num}}</a>
+            {{/active}}
+          {{/separator}}
           {{/pages}}
-          <span class="paging-text">{{paginationtext}}</span>
+          <span class="paging-text">{{paginationtext}} threads</span>
         </div>
       </div>
   <!--div class="selected-page">1</div><a href="/">2</a><span class="ellipsis">...</span>&nbsp;<a href="/">513</a></div-->
@@ -179,8 +184,17 @@
 {{#threads}}
 <div id="thread-{{_id}}" class="thread alt buddy">
    <div class="one">
-    <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}#bottom" class='end-link'>#</a></div>
-    <div class="category">Advice | Page: <a href="/thread/{{urlname}}">1</a>, <a href="/thread/{{urlname}}">2</a>, <a href="/thread/{{urlname}}">3</a>, <a href="/thread/{{urlname}}">4</a> <a href="/thread/{{urlname}}">...</a> <a href="/thread/{{urlname}}">13</a></div>
+    <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}/{{numpages}}#bottom" class='end-link'>#</a></div>
+    <div class="category">{{categories}} | 
+    Page:
+    {{#threadpages}}
+      {{#separator}}
+        <a href="/thread/{{urlname}}">...</a>
+      {{/separator}}
+      {{^separator}}
+        <a href="/thread/{{urlname}}{{url}}">{{num}}</a>
+      {{/separator}}
+    {{/threadpages}}</div>
   </div>
   <div class="two">
     <div class="username"><a href="/user/{{postedby}}">{{postedby}}</a></div>
@@ -205,17 +219,22 @@
 {{#user}}
   <a href="/newthread" id="post-thread">Post Thread</a>
 {{/user}}
-<div class="main-pagination">
-  {{#pages}}
-  {{#active}}
-  <a href="{{url}}">{{num}}</a>
-  {{/active}}
-  {{^active}}
-  <div class="selected-page">{{num}}</div>
-  {{/active}}
-  {{/pages}}
-  <span class="paging-text">{{paginationtext}}</span>
-</div>
+  <div class="main-pagination">
+    {{#pages}}
+    {{#separator}}
+    <span class="ellipsis">...</span>
+    {{/separator}}
+    {{^separator}}
+      {{#active}}
+    <div class="selected-page">{{num}}</div>
+      {{/active}}
+      {{^active}}
+    <a href="/threads{{url}}">{{num}}</a>
+      {{/active}}
+    {{/separator}}
+    {{/pages}}
+    <span class="paging-text">{{paginationtext}} threads</span>
+  </div>
 
   <script type="text/html" id="title-input">
     <input type="text" id="title-input" maxlength="36" />
