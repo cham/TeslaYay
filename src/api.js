@@ -43,12 +43,17 @@ module.exports = {
         user = user || {};
 
         var query = _(params).defaults({
-            size: (user.preferences && user.preferences.numthreads) || defaultprefs.numthreads
-        });
+                size: (user.preferences && user.preferences.numthreads) || defaultprefs.numthreads
+            }),
+            route = '/threads/summary';
+
+        if(params.participated){
+            route = '/user/' + params.participated + '/participated/summary';
+        }
 
         request({
             method: 'get',
-            uri: apiUrl + '/threads/summary',
+            uri: apiUrl + route,
             qs: query
         }, function(err, response, json){
             if(!checkResponse(err, response, cb)){

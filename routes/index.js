@@ -59,7 +59,7 @@ module.exports = function routing(){
     });
 
     app.get('/search', function(req, res, next){
-        api.getThreads(res, _(req.query || {}), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getThreads(res, req.query || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
     app.get('/search/:categories', function(req, res, next){
