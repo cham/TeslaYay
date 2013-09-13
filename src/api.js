@@ -91,6 +91,21 @@ module.exports = {
         });
     },
 
+    getRandomThread: function(res, params, user, cb){
+        request({
+            method: 'get',
+            uri: apiUrl + '/randomthread'
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)){
+                return;
+            }
+
+            parseJson(json, cb, function(json){
+                cb(null, json);
+            });
+        });
+    },
+
     postThread: function(res, body, user, cb){
         user = user || {};
         body = _(body || {}).extend({

@@ -16,9 +16,15 @@ function randomString(memo, length){
     return memo;
 }
 
+var testthread = {
+        _id: '52334830c11df6c26e000002',
+        urlname: 'dan-s-thread',
+        username: 'dan'
+    };
+
 module.exports = {
     routing: function(app){
-        app.get('/stresstarget', this.newcomment);
+        app.get('/stresstarget', this.randomcomment);
         app.get('/stresstest', this.runner);
     },
     runner: function(req, res, next){
@@ -35,12 +41,13 @@ module.exports = {
         });
         loadtest.on('end', function() { console.log('Load test done.'); });
     },
+    // test targets
     newthread: function(req, res, next){
         api.postThread(res, {
             content: randomString('', 255),
             name: randomString('', 30)
         }, {
-            username: 'cham'
+            username: testthread.username
         }, function(err, thread){
             if(err){
                 return next(err);
@@ -48,22 +55,35 @@ module.exports = {
             res.redirect('/thread/' + thread.urlname);
         });
     },
-    newcomment: function(req, res, next){ // manually set threadid
-        var threadUrlName = '064d5450bd570a82a72e3-c81da532';
+    newcomment: function(req, res, next){
         api.postComment(res, {
             content: randomString('', 500),
-            threadid: '5231efd19f0ed10000005952'
+            threadid: testthread._id
         }, {
-            username: 'cham'
+            username: testthread.username
         }, function(err, comment){
-            res.redirect('/thread/' + encodeURIComponent(threadUrlName) + '#bottom');
+            res.redirect('/thread/' + encodeURIComponent(testthread.urlname) + '#bottom');
+        });
+    },
+    randomcomment: function(req, res, next){
+        api.getRandomThread(res, {}, req.session.user, function(err, json){
+            var thread = json.threads[0];
+console.log(thread);
+            api.postComment(res, {
+                content: randomString('', 500),
+                threadid: thread._id
+            }, {
+                username: testthread.username
+            }, function(err, comment){
+                res.redirect('/thread/' + encodeURIComponent(thread.urlname) + '#bottom');
+            });
         });
     },
     getindex: function(req, res, next){
         api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadslistingHandler(req, res, next));
     },
     getthread: function(req, res, next){
-        api.getThread(res, {threadUrlName: '064d5450bd570a82a72e3-c81da532'}, req.session.user, function(err, thread){
+        api.getThread(res, {threadUrlName: testthread._id}, req.session.user, function(err, thread){
             res.render('thread', {
                 title: thread.name,
                 threadurlname: thread.urlname,
