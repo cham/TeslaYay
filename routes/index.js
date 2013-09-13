@@ -18,7 +18,7 @@ var _ = require('underscore'),
         numthreads: 50,
         numcomments: 100
     },
-    stresstest = true,
+    stresstest = false,
     stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
     splatProxy = false;
 
