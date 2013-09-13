@@ -20,7 +20,7 @@ var _ = require('underscore'),
     },
     stresstest = false,
     stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
-    splatProxy = true;
+    splatProxy = false;
 
 module.exports = function routing(){
 
@@ -58,11 +58,14 @@ module.exports = function routing(){
         api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
-    // new thread
-    app.get('/newthread', checkAuth, function(req, res, next){
-        res.render('post', {
-            user: req.session.user
-        });
+    app.get('/search', function(req, res, next){
+        api.getThreads(res, _(req.query || {}), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+
+    app.get('/search/:categories', function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend({
+            categories: req.route.params.categories
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
     // view thread
@@ -74,6 +77,14 @@ module.exports = function routing(){
             return res.redirect('/thread/' + req.route.params.threadUrlName);
         }
         api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
+    });
+
+
+    // new thread
+    app.get('/newthread', checkAuth, function(req, res, next){
+        res.render('post', {
+            user: req.session.user
+        });
     });
 
     // register form
@@ -134,12 +145,12 @@ module.exports = function routing(){
         return res.end();
     });
 
-    app.get('*', function(req, res, next){
+    app.get('/img/*', function(req, res, next){
         if(!splatProxy){
             res.status(404);
             return res.end();
         }
-        var x = request('http://www.yayhooray.net' + req.route.params[0]);
+        var x = request('http://www.yayhooray.net/img/' + req.route.params[0]);
         req.pipe(x);
         x.pipe(res);
         // try{

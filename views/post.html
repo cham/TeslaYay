@@ -1,148 +1,12 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>YayHooray</title>
-
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="/css/forum.css?v=28" />
-    <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
-    <script type="text/javascript" src="/js/underscore-min.js"></script>
-  </head>
-
+{{>head}}
 <body class="yh_newthread" >
 
   <a name="top"></a>
 
   <div id="wrapper">
     <div id="middle">
-      <div id="left-column">
-        <a href="/" id="header">New Yay</a>
-{{#user}}
-        <div class="lc-node welcome">
-          <h4>
-            Hi, <a href="/user/{{urlname}}">{{username}}</a>
-          </h4>
-          <a href="/user/{{urlname}}">
-        <img src="/img/emoticons/37.gif" class="main_avatar" />
-          </a>
-          <ul>
-        <li><a href="/preferences" id="preferences">Preferences</a></li>
-            <li><form action='/logout' method='POST'>
-              <input type='submit' id="logout_btn" value="logout" /></form></li>
-          </ul>
-        </div>
-        <div class="lc-node" id="messaging">
-          <ul>
-            <li class="messages">
-              <a href="/messages/inbox">No New Messages</a>
-            </li>
-          </ul>
-        </div>
-{{/user}}
-{{^user}}
-        <div class="lc-node login" id="login-box">
-          <h5>Not a member?</h5>
-          <p><img src="/img/pinkies/07.gif" width="14" height="14" align="absmiddle"/>
-          <a href="/auth/register" class="white">Click to register, n00b!</a></p>
-          <p class="error"></p>
-          <form action="/login" method="post" id="login-form">
-            <div>
-              <label for="username">U:</label>
-              <input type="text" name="username" tabindex="1" id="username" />
-              <button tabindex="3" type="submit">Booya!</button>
-            </div>
-            <div>
-              <label for="password">P:</label>
-              <input type="password" name="password" tabindex="2" id="password" />
-              <a href="#" id="forgot-password">Forgot it?</a>
-            </div>
-          </form>
-        </div>
-{{/user}}
-        <div class="lc-node" id="threads">
-          <h3><a href="/">Threads</a></h3>
-          <ul id="thread-categories">
-            <li><a href="/f/discussions">Discussions</a>
-              (7 minutes ago)</li>
-            <li><a href="/f/projects">Projects</a>
-              (1 hour ago)</li>
-            <li><a href="/f/advice">Advice</a>
-              (26 minutes ago)</li>
-            <li><a href="/f/meaningless">Meaningless</a>
-              (1 minute ago)</li>
-          </ul>
-          <ul id="special-threads">
-            <li><a href="/">All Forums</a></li>
-            <li><a href="/f/meaningful">All But Meaningless</a></li>
-            <li><a href="/f/participated">Participated</a></li>
-            <li><a href="/f/favorites">Favourite</a></li>
-            <li><a href="/f/hidden">Hidden</a></li>
-            <li><a href="/started/cham">Started</a></li>
-          </ul>
 
-           <ul id="search-title">
-             <li>
-               <strong>Search Thread Titles</strong><br/>
-               <form name="search-box" id="search-box" method="" action="">
-                 <input type="text" value="" name="search-phrase" id="search-phrase" placeholder="Search" />
-                 <!--<label><input type="checkbox" id="search-titles" /> Titles</label>-->
-                 <input type="submit" value="Go" />
-               </form>
-             </li>
-           </ul>
-          <hr />
-          <a id="toggle-html" data-active="true">
-             Turn off html</a>
-         </div>
-
-        <p><a href="http://www.rockethub.com/projects/27882-everything-will-be-okay-an-epic-documentary-about-als" class="everythingpic">Everything Will Be Ok</a></p>
-
-         <div class="lc-node" id="buddy-list">
-           <h3><a href="/buddies">Buddies</a>
-            <a href="/users" class="users-link">(All users)</a></h3>
-
-
-           <p>ONLINE BUDDIES (20/194)</p>
-         <div>
-             <span><a href="http://yayhooray.net/user/laocoon">Laocoon</a>,</span>
-             <span><a href="http://yayhooray.net/user/pifman">Pifman</a>,</span>
-             <span><a href="http://yayhooray.net/user/vord">Vord</a>,</span>
-             <span><a href="http://yayhooray.net/user/aurezio">aurezio</a>,</span>
-             <span><a href="http://yayhooray.net/user/beat">beat</a>,</span>
-             <span><a href="http://yayhooray.net/user/bosk">bosk</a>,</span>
-             <span><a href="http://yayhooray.net/user/cincinnati">cincinnati</a>,</span>
-             <span><a href="http://yayhooray.net/user/epohs">epohs</a>,</span>
-             <span><a href="http://yayhooray.net/user/lament">lament</a>,</span>
-             <span><a href="http://yayhooray.net/user/nicko">nicko</a>,</span>
-             <span><a href="http://yayhooray.net/user/purl">purl</a>,</span>
-             <span><a href="http://yayhooray.net/user/raw">raw</a>,</span>
-             <span><a href="http://yayhooray.net/user/reiver">reiver</a>,</span>
-             <span><a href="http://yayhooray.net/user/roofcano">roofcano</a>,</span>
-             <span><a href="http://yayhooray.net/user/sissypuff">sissypuff</a>,</span>
-             <span><a href="http://yayhooray.net/user/slobirdrop">slobirdrop</a>,</span>
-             <span><a href="http://yayhooray.net/user/sock">sock</a>,</span>
-             <span><a href="http://yayhooray.net/user/tdc">tdc</a>,</span>
-             <span><a href="http://yayhooray.net/user/tenkai">tenkai</a>,</span>
-             <span><a href="http://yayhooray.net/user/warped">warped</a></span>
-         </div>
-       </div>
-
-        <div id="ad-space">
-        <div id="the-deck">
-         <iframe src="/deck.html"></iframe>
-         <div id="deck-title">
-           <a href="http://www.coudal.com/deck">Ads Via The Deck</a>
-           | <a id="hide-ads">Hide ads</a>          </div>
-        </div>
-
-        </div>
-        <a href="http://patrickobrienfoundation.org/" id="pobf"><img src="/img/pobf.gif" /></a>
-
-     </div>
+{{>leftcolumn}}
 
      <div id="right-column">
 
@@ -153,6 +17,9 @@
   <p><strong>Think you have something good enough to say to post a thread about it? Well have it!</strong> Remember that posting a thread is no small thing. Millions of people will read it so make it good!</p>
 
   <div class="dotted-bar"></div>
+
+    <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+    <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
 
   <form method="post" action="/newthread">
     <div class="inp">
@@ -256,8 +123,6 @@
     <div id="bottom">
     </div>
 
-        <script src="/js/prettify.js"></script>
-        <script>prettyPrint();</script>
     <script src="/js/global.js?v=28"></script>
 
 </body>

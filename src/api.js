@@ -114,7 +114,7 @@ module.exports = {
             uri: apiUrl + '/comment',
             form: {
                 postedby: user.username,
-                content: body.content,
+                content: body.content.replace(/\n/g, '<br>'),
                 threadid: body.threadid
             }
         }, function(err, response, json){

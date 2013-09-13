@@ -7,21 +7,37 @@ var _ = require('underscore'),
     renderUtils = require('./renderUtils');
 
 module.exports = {
+    
     threadsListingHandler: function(req, res, next){
         var activepage = parseInt(req.route.params.page, 10) || 1,
-            numcomments = (req.session.user && req.session.user.preferences.numcomments) || 50;
+            numcomments = (req.session.user && req.session.user.preferences.numcomments) || 50,
+            that = this;
 
         return function(err, json){
+            json = json || {};
             if(err) return next(err);
+            if(!json.threads){
+                json.threads = [];
+            }
 
             var totaldocs = json.totaldocs,
                 pagesize = json.limit,
+                pages = [],
+                paginationtext = '0',
+                threadpages;
+
+            if(json.threads.length){
                 pages = renderUtils.generatePaging({
                     setsize: totaldocs,
                     pagesize: pagesize,
                     activepage: activepage
-                }),
-                threadpages;
+                });
+                paginationtext = renderUtils.generatePaginationText({
+                    setsize: totaldocs,
+                    pagesize: pagesize,
+                    activepage: activepage
+                });
+            }
 
             res.render('index', {
                 numthreads: json.threads.length,
@@ -29,11 +45,7 @@ module.exports = {
                 pages: pages,
                 numpages: pages.length,
                 user: req.session.user,
-                paginationtext: renderUtils.generatePaginationText({
-                    setsize: totaldocs,
-                    pagesize: pagesize,
-                    activepage: activepage
-                }),
+                paginationtext: paginationtext,
                 threads: _(json.threads).map(function(thread){
                     thread.numcomments = thread.comments.length;
                     threadpages = renderUtils.generatePaging({
@@ -47,7 +59,8 @@ module.exports = {
                     
                     thread.threadpages = threadpages;
                     thread.numpages = threadpages[threadpages.length-1].num;
-
+                    thread.haspagination = threadpages.length > 1;
+                    
                     return thread;
                 })
             });
@@ -55,7 +68,8 @@ module.exports = {
     },
 
     threadDetailHandler: function(req, res, next){
-        var activepage = parseInt(req.route.params.page, 10) || 1;
+        var activepage = parseInt(req.route.params.page, 10) || 1,
+            that = this;
 
         return function(err, json){
             if(err) return next(err);
