@@ -19,8 +19,7 @@ var _ = require('underscore'),
         numcomments: 100
     },
     stresstest = false,
-    stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
-    splatProxy = false;
+    stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}};
 
 module.exports = function routing(){
 
