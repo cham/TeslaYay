@@ -51,7 +51,7 @@ module.exports = function routing(){
 
     // thread listing
     app.get('/', function(req, res, next){
-        api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getThreads(res, req.query || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
     app.get('/threads', function(req, res, next){
@@ -62,18 +62,38 @@ module.exports = function routing(){
         if(req.route.params.page === '1'){
             return res.redirect('/');
         }
-        api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getThreads(res, _(req.query || {}).extend(req.route.params || {}), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
-    // search
-    app.get('/search', function(req, res, next){
-        api.getThreads(res, req.query || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
-    });
 
     // category search
-    app.get('/search/:categories', function(req, res, next){
+    app.get('/category/:categories', function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
             categories: req.route.params.categories
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+
+    app.get('/participated', checkAuth, function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend({
+            participated: req.session.user.username
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+
+    app.get('/favourites', checkAuth, function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend({
+            favourites: req.session.user.username
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+
+    app.get('/hidden', checkAuth, function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend({
+            hidden: req.session.user.username
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+
+    app.get('/started', checkAuth, function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend({
+            postedby: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 

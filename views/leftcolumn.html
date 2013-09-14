@@ -45,19 +45,19 @@
         <div class="lc-node" id="threads">
           <h3><a href="/">Threads</a></h3>
           <ul id="thread-categories">
-            <li><a href="/search/Discussions">Discussions</a></li>
-            <li><a href="/search/Projects">Projects</a></li>
-            <li><a href="/search/Advice">Advice</a></li>
-            <li><a href="/search/Meaningless">Meaningless</a></li>
+            <li><a href="/category/Discussions">Discussions</a></li>
+            <li><a href="/category/Projects">Projects</a></li>
+            <li><a href="/category/Advice">Advice</a></li>
+            <li><a href="/category/Meaningless">Meaningless</a></li>
           </ul>
 {{#user}}
           <ul id="special-threads">
             <li><a href="/">All Forums</a></li>
-            <li><a href="/search/-Meaningless">All But Meaningless</a></li>
-            <li><a href="/search?participated={{username}}">Participated</a></li>
-            <li><a href="/search?favourites={{username}}">Favourite</a></li>
-            <li><a href="/search?hidden={{username}}">Hidden</a></li>
-            <li><a href="/search?postedby={{username}}">Started</a></li>
+            <li><a href="/category/-Meaningless">All But Meaningless</a></li>
+            <li><a href="/participated">Participated</a></li>
+            <li><a href="/favourites">Favourite</a></li>
+            <li><a href="/hidden">Hidden</a></li>
+            <li><a href="/started">Started</a></li>
           </ul>
 {{/user}}
           <ul id="search-title">
@@ -69,51 +69,51 @@
               </form>
             </li>
           </ul>
+{{#user}}
           <hr />
-          <a id="toggle-html" data-active="true">
-             Turn off html</a>
+          <a id="toggle-html" data-active="true">Turn off html</a>
+{{/user}}
          </div>
-
         <p><a href="http://www.rockethub.com/projects/27882-everything-will-be-okay-an-epic-documentary-about-als" class="everythingpic">Everything Will Be Ok</a></p>
+{{#user}}
+        <div class="lc-node" id="buddy-list">
+          <h3><a href="/buddies">Buddies</a>
+          <a href="/users" class="users-link">(All users)</a></h3>
 
-         <div class="lc-node" id="buddy-list">
-           <h3><a href="/buddies">Buddies</a>
-            <a href="/users" class="users-link">(All users)</a></h3>
 
-
-           <p>ONLINE BUDDIES (20/194)</p>
-         <div>
-             <span><a href="http://yayhooray.net/user/laocoon">Laocoon</a>,</span>
-             <span><a href="http://yayhooray.net/user/pifman">Pifman</a>,</span>
-             <span><a href="http://yayhooray.net/user/vord">Vord</a>,</span>
-             <span><a href="http://yayhooray.net/user/aurezio">aurezio</a>,</span>
-             <span><a href="http://yayhooray.net/user/beat">beat</a>,</span>
-             <span><a href="http://yayhooray.net/user/bosk">bosk</a>,</span>
-             <span><a href="http://yayhooray.net/user/cincinnati">cincinnati</a>,</span>
-             <span><a href="http://yayhooray.net/user/epohs">epohs</a>,</span>
-             <span><a href="http://yayhooray.net/user/lament">lament</a>,</span>
-             <span><a href="http://yayhooray.net/user/nicko">nicko</a>,</span>
-             <span><a href="http://yayhooray.net/user/purl">purl</a>,</span>
-             <span><a href="http://yayhooray.net/user/raw">raw</a>,</span>
-             <span><a href="http://yayhooray.net/user/reiver">reiver</a>,</span>
-             <span><a href="http://yayhooray.net/user/roofcano">roofcano</a>,</span>
-             <span><a href="http://yayhooray.net/user/sissypuff">sissypuff</a>,</span>
-             <span><a href="http://yayhooray.net/user/slobirdrop">slobirdrop</a>,</span>
-             <span><a href="http://yayhooray.net/user/sock">sock</a>,</span>
-             <span><a href="http://yayhooray.net/user/tdc">tdc</a>,</span>
-             <span><a href="http://yayhooray.net/user/tenkai">tenkai</a>,</span>
-             <span><a href="http://yayhooray.net/user/warped">warped</a></span>
-         </div>
-       </div>
-
-        <div id="ad-space">
-        <div id="the-deck">
-         <iframe src="/deck.html"></iframe>
-         <div id="deck-title">
-           <a href="http://www.coudal.com/deck">Ads Via The Deck</a>
-           | <a id="hide-ads">Hide ads</a>          </div>
+          <p>ONLINE BUDDIES (20/194)</p>
+          <div>
+            <span><a href="http://yayhooray.net/user/laocoon">Laocoon</a>,</span>
+            <span><a href="http://yayhooray.net/user/pifman">Pifman</a>,</span>
+            <span><a href="http://yayhooray.net/user/vord">Vord</a>,</span>
+            <span><a href="http://yayhooray.net/user/aurezio">aurezio</a>,</span>
+            <span><a href="http://yayhooray.net/user/beat">beat</a>,</span>
+            <span><a href="http://yayhooray.net/user/bosk">bosk</a>,</span>
+            <span><a href="http://yayhooray.net/user/cincinnati">cincinnati</a>,</span>
+            <span><a href="http://yayhooray.net/user/epohs">epohs</a>,</span>
+            <span><a href="http://yayhooray.net/user/lament">lament</a>,</span>
+            <span><a href="http://yayhooray.net/user/nicko">nicko</a>,</span>
+            <span><a href="http://yayhooray.net/user/purl">purl</a>,</span>
+            <span><a href="http://yayhooray.net/user/raw">raw</a>,</span>
+            <span><a href="http://yayhooray.net/user/reiver">reiver</a>,</span>
+            <span><a href="http://yayhooray.net/user/roofcano">roofcano</a>,</span>
+            <span><a href="http://yayhooray.net/user/sissypuff">sissypuff</a>,</span>
+            <span><a href="http://yayhooray.net/user/slobirdrop">slobirdrop</a>,</span>
+            <span><a href="http://yayhooray.net/user/sock">sock</a>,</span>
+            <span><a href="http://yayhooray.net/user/tdc">tdc</a>,</span>
+            <span><a href="http://yayhooray.net/user/tenkai">tenkai</a>,</span>
+            <span><a href="http://yayhooray.net/user/warped">warped</a></span>
+          </div>
         </div>
-
+{{/user}}
+        <div id="ad-space">
+          <div id="the-deck">
+            <iframe src="/deck.html"></iframe>
+            <div id="deck-title">
+              <a href="http://www.coudal.com/deck">Ads Via The Deck</a> |
+              <a id="hide-ads">Hide ads</a>
+            </div>
+          </div>
         </div>
         <a href="http://patrickobrienfoundation.org/" id="pobf"><img src="/img/pobf.gif" /></a>
 

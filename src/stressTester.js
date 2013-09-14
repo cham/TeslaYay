@@ -39,7 +39,7 @@ var testthread = {
 
 module.exports = {
     routing: function(app){
-        app.get('/stresstarget', this.randomcomment);
+        app.get('/stresstarget', this.newthread);
         app.get('/stresstest', this.runner);
     },
     runner: function(req, res, next){
