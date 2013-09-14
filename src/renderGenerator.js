@@ -103,6 +103,7 @@ module.exports = {
                 threadurlname: thread.urlname,
                 author: thread.postedby,
                 threadid: thread._id,
+                firstcategory: (thread.categories || []).pop(),
                 pages: pages,
                 paginationtext: renderUtils.generatePaginationText({
                     setsize: totaldocs,

@@ -34,8 +34,13 @@
         {{/active}}
       {{/separator}}
       {{/pages}}
-      <span class="paging-text">{{paginationtext}} comments</span>
     </div>
+    <span class="paging-text">
+      {{paginationtext}}
+      in <a href="/">Threads</a> &gt;
+      <a href="/search/{{firstcategory}}">{{firstcategory}}</a> &gt;
+      <a href="/thread/{{threadurlname}}">{{title}}</a>
+    </span>
       </div>
 
 {{#comments}}

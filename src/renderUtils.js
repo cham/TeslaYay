@@ -61,6 +61,7 @@ module.exports = {
             pages.push(obj);
         }
 
+        if(pages.length<2){ pages = []; }
         return pages;
     },
 
