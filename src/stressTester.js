@@ -1,3 +1,13 @@
+/*
+ * stressTester
+ * stress testing and database population for Tesla
+ * specify the test you would like to run in the routing method
+ *   stresstarget is the rest to run - feel free to change to any of the tests
+ *   stresstest is the test runner - you shouldn't need to change this
+ * set your stresstarget, then GET /stresstest
+ * an HTML file will appear in your project root with the test results
+ */
+
 var nl = require('nodeload'),
     renderGenerator = require('./renderGenerator'),
     api = require('./api');
@@ -17,8 +27,8 @@ function randomString(memo, length){
 }
 
 var testthread = {
-        _id: '52334830c11df6c26e000002',
-        urlname: 'dan-s-thread',
+        _id: '52343e0881f2730000000004',
+        urlname: 'new-thred-ok',
         username: 'dan'
     };
 
@@ -36,7 +46,7 @@ module.exports = {
         var loadtest = nl.run({
             host: 'localhost',
             port: 3100,
-            timeLimit: 120,
+            timeLimit: 30*60,
             targetRps: 500,
             requestGenerator: function(client){
                 var request = client.request('GET', "/stresstarget?_=" + Math.floor(Math.random()*100000000));
@@ -46,7 +56,8 @@ module.exports = {
         });
         loadtest.on('end', function() { console.log('Load test done.'); });
     },
-    // test targets
+
+    // tests
     newthread: function(req, res, next){
         api.postThread(res, {
             content: randomString('', 255),
