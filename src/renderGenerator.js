@@ -64,7 +64,7 @@ module.exports = {
                     thread.lastpostedago = moment(thread.last_comment_time).fromNow();
                     
                     thread.threadpages = threadpages;
-                    thread.numpages = threadpages[threadpages.length-1].num;
+                    thread.numpages = (threadpages[threadpages.length-1] || {num:1}).num;
                     thread.haspagination = threadpages.length > 1;
 
                     thread.favourite = _userFavourites.indexOf(thread._id) > -1;
