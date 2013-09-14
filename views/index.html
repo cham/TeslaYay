@@ -72,9 +72,11 @@
   <div class="four">
     <span>{{numcomments}}</span>
   </div>
-<div class="five">
-    <a class="favourite" rel="810"></a>
-    <a class="hide-thread" rel="810"></a>
+  <div class="five">
+{{^favourite}}
+    <a class="favourite" href="/thread/{{urlname}}/favourite" data-id="{{id}}"></a>
+{{/favourite}}
+    <a class="hide-thread" href="/thread/{{urlname}}/hide" data-id="{{id}}"></a>
   </div>
 </div>
 <div class="blueline">&nbsp;</div>

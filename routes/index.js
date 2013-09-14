@@ -26,9 +26,17 @@ module.exports = function routing(){
 
     var app = new express.Router();
 
+    function setUser(req, user){
+        req.session.user = user;
+        req.session.user.preferences = userprefs;
+    }
     function checkAuth(req, res, next){
         if(!req.session || !req.session.user){
-            return res.redirect('/');
+            if(req.route.method === 'get'){
+                return res.redirect('/');
+            }
+            res.status(401);
+            return res.end();
         }
         next();
     }
@@ -58,10 +66,12 @@ module.exports = function routing(){
         api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
+    // search
     app.get('/search', function(req, res, next){
         api.getThreads(res, req.query || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
+    // category search
     app.get('/search/:categories', function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
             categories: req.route.params.categories
@@ -79,8 +89,7 @@ module.exports = function routing(){
         api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
     });
 
-
-    // new thread
+    // post thread form
     app.get('/newthread', checkAuth, function(req, res, next){
         res.render('post', {
             user: req.session.user
@@ -115,8 +124,7 @@ module.exports = function routing(){
     // register
     app.post('/register', function(req, res, next){
         api.registerUser(res, req.body, req.session.user, function(err, user){
-            req.session.user = user;
-            req.session.user.preferences = userprefs;
+            setUser(req, user);
             res.redirect('/');
         });
     });
@@ -125,8 +133,7 @@ module.exports = function routing(){
     app.post('/login', function(req, res, next){
         api.handleLogin(res, req.body, req.session.user, function(err, user){
             if(user.username){
-                req.session.user = user;
-                req.session.user.preferences = userprefs;
+                setUser(req, user);
             }else{
                 delete req.session.user;
             }
@@ -134,30 +141,45 @@ module.exports = function routing(){
         });
     });
 
+
+    /*
+     * puts
+     */
+    // add favourite
+    app.put('/thread/:threadUrlName/favourite', checkAuth, function(req, res, next){
+        api.addToUserList(res, {
+            listval: req.body.threadid,
+            route: 'favourite'
+        }, req.session.user, function(err, user){
+            if(err) return next(err);
+
+            if(user._id){
+                setUser(req, user);
+            }
+
+            res.send(user);
+        });
+    });
+    // hide thread
+    app.put('/thread/:threadUrlName/hide', checkAuth, function(req, res, next){
+        api.addToUserList(res, {
+            listval: req.body.threadid,
+            route: 'hide'
+        }, req.session.user, function(err, user){
+            if(err) return next(err);
+
+            if(user._id){
+                setUser(req, user);
+            }
+
+            res.send(user);
+        });
+    });
+
     // logout
     app.post('/logout', function(req, res, next){
         delete req.session.user;
         res.redirect('/');
-    });
-
-    // proxy shit
-    app.get('/js/*', function(req, res, next){
-        return res.end();
-    });
-
-    app.get('/img/*', function(req, res, next){
-        if(!splatProxy){
-            res.status(404);
-            return res.end();
-        }
-        var x = request('http://www.yayhooray.net/img/' + req.route.params[0]);
-        req.pipe(x);
-        x.pipe(res);
-        // try{
-        //     x.pipe( fs.createWriteStream('../public' + req.route.params[0], {flags: 'w+'}) );
-        // }catch(e){
-        //     res.send(e);
-        // }
     });
 
     return app.middleware;

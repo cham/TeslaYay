@@ -11,6 +11,7 @@ module.exports = {
     threadsListingHandler: function(req, res, next){
         var activepage = parseInt(req.route.params.page, 10) || 1,
             numcomments = (req.session.user && req.session.user.preferences.numcomments) || 50,
+            user = req.session.user || {},
             that = this;
 
         return function(err, json){
@@ -39,6 +40,9 @@ module.exports = {
                 });
             }
 
+            var _userFavourites = _(user.favourites || []),
+                _userHidden = _(user.hidden || []);
+
             res.render('index', {
                 numthreads: json.threads.length,
                 totaldocs: totaldocs,
@@ -47,6 +51,8 @@ module.exports = {
                 user: req.session.user,
                 paginationtext: paginationtext,
                 threads: _(json.threads).map(function(thread){
+                    thread.id = thread._id;
+
                     thread.numcomments = thread.comments.length;
                     threadpages = renderUtils.generatePaging({
                         setsize: thread.numcomments,
@@ -60,6 +66,9 @@ module.exports = {
                     thread.threadpages = threadpages;
                     thread.numpages = threadpages[threadpages.length-1].num;
                     thread.haspagination = threadpages.length > 1;
+
+                    thread.favourite = _userFavourites.indexOf(thread._id) > -1;
+                    thread.hidden = _userHidden.indexOf(thread._id) > -1;
                     
                     return thread;
                 })

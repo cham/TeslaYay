@@ -15,10 +15,8 @@ var _ = require('underscore'),
     };
 
 function checkResponse(err, apiRes, next){
-    if(err){
-        next(err);
-        return false;
-    }
+    if(err) return next(err);
+
     if(apiRes.statusCode === 500){
         next(new Error(apiRes.body));
         return false;
@@ -50,15 +48,19 @@ module.exports = {
         if(params.participated){
             route = '/user/' + params.participated + '/participated/summary';
         }
+        if(params.favourites){
+            route = '/user/' + params.favourites + '/favourites/summary';
+        }
+        if(params.hidden){
+            route = '/user/' + params.hidden + '/hidden/summary';
+        }
 
         request({
             method: 'get',
             uri: apiUrl + route,
             qs: query
         }, function(err, response, json){
-            if(!checkResponse(err, response, cb)){
-                return;
-            }
+            if(!checkResponse(err, response, cb)) return;
 
             parseJson(json, cb, function(json){
                 cb(null, json);
@@ -81,9 +83,7 @@ module.exports = {
             uri: uri,
             qs: query
         }, function(err, response, json){
-            if(!checkResponse(err, response, cb)){
-                return;
-            }
+            if(!checkResponse(err, response, cb)) return;
 
             parseJson(json, cb, function(json){
                 cb(null, json);
@@ -96,9 +96,7 @@ module.exports = {
             method: 'get',
             uri: apiUrl + '/randomthread'
         }, function(err, response, json){
-            if(!checkResponse(err, response, cb)){
-                return;
-            }
+            if(!checkResponse(err, response, cb)) return;
 
             parseJson(json, cb, function(json){
                 cb(null, json);
@@ -117,9 +115,7 @@ module.exports = {
             uri: apiUrl + '/thread',
             form: body
         }, function(err, response, json){
-            if(!checkResponse(err, response, cb)){
-                return;
-            }
+            if(!checkResponse(err, response, cb)) return;
 
             parseJson(json, cb, function(thread){
                 cb(null, thread);
@@ -129,6 +125,7 @@ module.exports = {
 
     postComment: function(res, body, user, cb){
         user = user || {};
+
         request({
             method: 'post',
             uri: apiUrl + '/comment',
@@ -138,9 +135,7 @@ module.exports = {
                 threadid: body.threadid
             }
         }, function(err, response, json){
-            if(!checkResponse(err, response, cb)){
-                return;
-            }
+            if(!checkResponse(err, response, cb)) return;
 
             parseJson(json, cb, function(comment){
                 cb(null, comment);
@@ -150,6 +145,7 @@ module.exports = {
 
     registerUser: function(res, body, user, cb){
         user = user || {};
+
         request({
             method: 'post',
             uri: apiUrl + '/user',
@@ -159,9 +155,7 @@ module.exports = {
                 email: body.email
             }
         }, function(err, response, json){
-            if(!checkResponse(err, response, cb)){
-                return;
-            }
+            if(!checkResponse(err, response, cb)) return;
 
             parseJson(json, cb, function(user){
                 cb(null, user);
@@ -171,6 +165,7 @@ module.exports = {
 
     handleLogin: function(res, body, user, cb){
         user = user || {};
+
         request({
             method: 'post',
             uri: apiUrl + '/login',
@@ -179,9 +174,25 @@ module.exports = {
                 password: body.password
             }
         }, function(err, response, json){
-            if(!checkResponse(err, response, cb)){
-                return;
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
+    addToUserList: function(res, body, user, cb){
+        user = user || {};
+
+        request({
+            method: 'put',
+            url: apiUrl + '/user/' + user.username + '/' + body.route,
+            form: {
+                listval: body.listval
             }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
 
             parseJson(json, cb, function(data){
                 cb(null, data);

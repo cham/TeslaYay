@@ -26,7 +26,7 @@
         <div class="lc-node login" id="login-box">
           <h5>Not a member?</h5>
           <p><img src="/img/pinkies/07.gif" width="14" height="14" align="absmiddle"/>
-          <a href="/auth/register" class="white">Click to register, n00b!</a></p>
+          <a href="/register" class="white">Click to register, n00b!</a></p>
           <p class="error"></p>
           <form action="/login" method="post" id="login-form">
             <div>
@@ -55,8 +55,8 @@
             <li><a href="/">All Forums</a></li>
             <li><a href="/search/-Meaningless">All But Meaningless</a></li>
             <li><a href="/search?participated={{username}}">Participated</a></li>
-            <li><a href="/f/favorites">Favourite</a></li>
-            <li><a href="/f/hidden">Hidden</a></li>
+            <li><a href="/search?favourites={{username}}">Favourite</a></li>
+            <li><a href="/search?hidden={{username}}">Hidden</a></li>
             <li><a href="/search?postedby={{username}}">Started</a></li>
           </ul>
 {{/user}}

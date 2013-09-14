@@ -22,6 +22,11 @@ var testthread = {
         username: 'dan'
     };
 
+// current yay stats
+// users: 2875
+// comments: 1073586
+// threads: 25714
+
 module.exports = {
     routing: function(app){
         app.get('/stresstarget', this.randomcomment);

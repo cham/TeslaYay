@@ -5,7 +5,7 @@
 
   <div id="wrapper">
     <div id="middle">
-      
+
 {{>leftcolumn}}
 
      <div id="right-column">
@@ -90,6 +90,10 @@
 <div class="dotted-bar replypad"></div>
 
 </div>
+
+<script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+<script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
+
 {{#user}}
 <div id="reply-lc">
   <h4>Post A Reply</h4>
@@ -181,9 +185,6 @@
 </div>
 </div>
 {{/user}}
-
-    <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
-    <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
 
   <div id="notifications">
     <a id="closenotify"></a>
