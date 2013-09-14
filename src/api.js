@@ -43,7 +43,7 @@ module.exports = {
         var query = _(params).defaults({
                 size: (user.preferences && user.preferences.numthreads) || defaultprefs.numthreads
             }),
-            route = '/threads/summary';
+            route = user.username ? '/user/' + user.username + '/threads/summary' : '/threads/summary';
 
         if(params.participated){
             route = '/user/' + params.participated + '/participated/summary';
