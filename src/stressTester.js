@@ -61,7 +61,8 @@ module.exports = {
     newthread: function(req, res, next){
         api.postThread(res, {
             content: randomString('', 255),
-            name: randomString('', 30)
+            name: randomString('', 30),
+            categories: ['Discussions']
         }, {
             username: testthread.username
         }, function(err, thread){
