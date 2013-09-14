@@ -121,7 +121,11 @@ module.exports = function routing(){
     // post comment
     app.post('/thread/:threadUrlName', checkAuth, function(req, res, next){
         api.postComment(res, req.body, req.session.user, function(err, comment){
-            res.redirect(req.headers['referer']+'#bottom');
+            if(req.body.redirect){
+                res.redirect(req.headers['referer']+'#bottom');
+            }else{
+                res.send(comment);
+            }
         });
     });
 

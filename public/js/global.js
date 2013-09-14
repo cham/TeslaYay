@@ -219,12 +219,16 @@ function isThread() {
     $form.find('[type=submit]').attr('disabled', 'disabled');
 
     var data = {
-      content: $input.val()
-    };
+          content: $input.val()
+        },
+        mode = document.location.pathname === '/newthread' ? 'newthread' : 'comment';
 
-    if (document.location.pathname === '/newthread') {
+    if(mode === 'newthread') {
       data.name = $form.find('#name').val();
       data['category[]'] = $form.find('#category-selector input:checked').val();
+    }
+    if(mode === 'comment'){
+      data.threadid = $form.find('input[name=threadid]').val();
     }
 
     $.ajax({
@@ -235,7 +239,7 @@ function isThread() {
       if(hasStorage){
         localStorage.removeItem(key);
       }
-      if(response.status === 200){
+      if(response.status === 200 && mode === 'newthread'){
         document.location.href = '/thread/' + data.urlname;
       }else{
         document.location.reload();

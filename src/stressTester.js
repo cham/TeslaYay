@@ -70,10 +70,10 @@ module.exports = {
             res.redirect('/thread/' + encodeURIComponent(testthread.urlname) + '#bottom');
         });
     },
-    randomcomment: function(req, res, next){
+    randomcomment: function(req, res, next){ // 2 async calls
         api.getRandomThread(res, {}, req.session.user, function(err, json){
             var thread = json.threads[0];
-console.log(thread);
+
             api.postComment(res, {
                 content: randomString('', 500),
                 threadid: thread._id

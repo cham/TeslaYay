@@ -98,6 +98,7 @@ module.exports = {
             thread = json.threads[0];
 
             res.render('thread', {
+                id: thread._id,
                 title: thread.name,
                 threadurlname: thread.urlname,
                 author: thread.postedby,
