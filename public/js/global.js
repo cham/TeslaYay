@@ -105,16 +105,6 @@ NestedQuote.prototype.applyNesting = function($childQuote){
   });
 })();
 
-$('#search-box').submit(function() {
-  window.location.href="find/" + $('#search-phrase').val();
-  return false;
-});
-
-$('#search-box-user').submit(function() {
-  window.location.href="users/0/" + $('#search-phrase-user').val();
-  return false;
-});
-
 $('#toggle-html').bind('click', function(){
   $.get('/ajax/toggle_html/'+ session_id, function(data) {
     window.location.reload(true);
@@ -225,7 +215,7 @@ function isThread() {
 
     if(mode === 'newthread') {
       data.name = $form.find('#name').val();
-      data['category[]'] = $form.find('#category-selector input:checked').val();
+      data['categories[]'] = $form.find('#category-selector input:checked').val();
     }
     if(mode === 'comment'){
       data.threadid = $form.find('input[name=threadid]').val();
