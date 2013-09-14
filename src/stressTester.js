@@ -59,10 +59,11 @@ module.exports = {
 
     // tests
     newthread: function(req, res, next){
+        var possibleCategories = ['Discussions','Advice','Projects','Meaningless'];
         api.postThread(res, {
             content: randomString('', 255),
             name: randomString('', 30),
-            categories: ['Discussions']
+            categories: possibleCategories[Math.floor(Math.random()*4)]
         }, {
             username: testthread.username
         }, function(err, thread){
