@@ -219,34 +219,31 @@ function isThread() {
     $form.find('[type=submit]').attr('disabled', 'disabled');
 
     var data = {
-      content: $input.val(),
-      ajax: true
+      content: $input.val()
     };
 
     if (document.location.pathname === '/newthread') {
-      data.subject = $form.find('#subject').val();
-      data['category[]'] = $form.find('input:radio[name=category[]]:checked').val();
+      data.name = $form.find('#name').val();
+      data['category[]'] = $form.find('#category-selector input:checked').val();
     }
 
     $.ajax({
       type: 'POST',
       url: $form.attr('action'),
-      data: data,
-      dataType: 'json'
-    }).then(function(data) {
-      if (hasStorage) {
+      data: data
+    }).then(function(data, statusStr, response){
+      if(hasStorage){
         localStorage.removeItem(key);
       }
-      if (document.location.pathname + document.location.hash === data.url) {
-        document.location.reload(true);
-      } else {
-        document.location.href = data.url;
+      if(response.status === 200){
+        document.location.href = '/thread/' + data.urlname;
+      }else{
+        document.location.reload();
       }
-    }).fail(function(data) {
-      data = JSON.parse(data.responseText);
+    }).fail(function(response){
       $form.find('[type=submit]').removeAttr('disabled');
       $('#ajax_errs').remove();
-      $form.prepend('<div id="ajax_errs">' + data.reason + '</div>');
+      $form.prepend('<div id="ajax_errs">Please correct the errors and try again</div>');
     });
   });
 

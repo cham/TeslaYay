@@ -110,7 +110,11 @@ module.exports = function routing(){
             if(err){
                 return next(err);
             }
-            res.redirect('/thread/' + thread.urlname);
+            if(req.body.redirect){
+                res.redirect('/thread/' + thread.urlname);
+            }else{
+                res.send(thread);
+            }
         });
     });
 

@@ -22,6 +22,7 @@
     <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
 
   <form method="post" action="/newthread">
+    <input type="hidden" name="redirect" value="1">
     <div class="inp">
             <label>Step 1: Pick a category</label>      <div id="category-selector">
         <input type="radio" name="categories[]" value="Discussions" id="cat-discussions" tabindex="1"  />        <label for="cat-discussions">Discussions</label>        <input type="radio" name="categories[]" value="Projects" id="cat-projects" tabindex="2"  />        <label for="cat-projects">Projects</label>        <input type="radio" name="categories[]" value="Advice" id="cat-advice" tabindex="3"  />        <label for="cat-advice">Advice</label>        <input type="radio" name="categories[]" value="4" id="cat-meaningless" tabindex="Meaningless"  />        <label for="cat-meaningless">Meaningless</label>      </div>
