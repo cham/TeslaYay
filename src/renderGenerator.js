@@ -10,8 +10,8 @@ module.exports = {
     
     threadsListingHandler: function(req, res, next){
         var activepage = parseInt(req.route.params.page, 10) || 1,
-            numcomments = (req.session.user && req.session.user.preferences.numcomments) || 50,
             user = req.session.user || {},
+            numcomments = (user.preferences && user.preferences.numcomments) || 50,
             that = this;
 
         return function(err, json){
@@ -42,6 +42,8 @@ module.exports = {
 
             var _userFavourites = _(user.favourites || []),
                 _userHidden = _(user.hidden || []),
+                _userBuddies = _(user.buddies || []),
+                _userIgnores = _(user.ignores || []),
                 paginationroot = (req.url.replace(/\/page(\/[0-9]*)/, '')).replace(/\/\//g, '/').replace(/\/$/,''),
                 flag = 0;
 
@@ -54,7 +56,7 @@ module.exports = {
                 totaldocs: totaldocs,
                 pages: pages,
                 numpages: pages.length,
-                user: req.session.user,
+                user: user.username ? user : false,
                 paginationtext: paginationtext,
                 paginationroot: paginationroot,
                 threads: _(json.threads).map(function(thread){
@@ -79,7 +81,9 @@ module.exports = {
 
                     flag = 1 - flag;
                     thread.alt = flag;
-                    
+                    thread.buddy = _userBuddies.indexOf(thread.postedby) > -1;
+                    thread.ignored = _userIgnores.indexOf(thread.postedby) > -1;
+
                     return thread;
                 })
             });
@@ -87,7 +91,8 @@ module.exports = {
     },
 
     threadDetailHandler: function(req, res, next){
-        var activepage = parseInt(req.route.params.page, 10) || 1,
+        var user = req.session.user || {},
+            activepage = parseInt(req.route.params.page, 10) || 1,
             that = this;
 
         return function(err, json){
@@ -100,6 +105,8 @@ module.exports = {
                     pagesize: pagesize,
                     activepage: activepage
                 }),
+                _userBuddies = _(user.buddies || []),
+                _userIgnores = _(user.ignores || []),
                 thread;
 
             if(!json.threads || !json.threads.length){
@@ -121,10 +128,29 @@ module.exports = {
                     activepage: activepage
                 }),
                 comments: _(thread.comments).map(function(comment){
+                    comment.id = comment._id;
                     comment.createdago = moment(comment.created).fromNow();
+                    comment.buddy = _userBuddies.indexOf(comment.postedby) > -1;
+                    comment.ignored = _userIgnores.indexOf(comment.postedby) > -1;
                     return comment;
                 }),
-                user: req.session.user
+                user: user.username ? user : false
+            });
+        };
+    },
+
+    userListingHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, json){
+            if(err) return next(err);
+            json = json || {};
+
+            res.render('buddies', {
+                user: user.username ? user : false,
+                buddies: json.buddies,
+                ignores: json.ignores,
+                prefill: json.prefill
             });
         };
     }

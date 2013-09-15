@@ -8,194 +8,183 @@
 
 {{>leftcolumn}}
 
-     <div id="right-column">
+      <div id="right-column">
 
-<div id="thread">
-  <div id="main-title">
-    <h3>{{title}}</h3>
+        <div id="thread">
+          <div id="main-title">
+            <h3>{{title}}</h3>
+            <a class="favourite" rel="26209"></a>
+            <a class="hide-thread" rel="26209"></a>
+          </div>
 
-          <a class="favourite" rel="26209"></a>
-      <a class="hide-thread" rel="26209"></a>
-      </div>
-
-  
-  <div class="pagination top">
-    <div class="main-pagination">
-      {{#pages}}
-      {{#separator}}
-      <span class="ellipsis">...</span>
-      {{/separator}}
-      {{^separator}}
-        {{#active}}
-      <div class="selected-page">{{num}}</div>
-        {{/active}}
-        {{^active}}
-      <a href="/thread/{{threadurlname}}{{url}}">{{num}}</a>
-        {{/active}}
-      {{/separator}}
-      {{/pages}}
-    </div>
-    <span class="paging-text">
-      {{paginationtext}}
-      in <a href="/">Threads</a> &gt;
-      <a href="/search/{{firstcategory}}">{{firstcategory}}</a> &gt;
-      <a href="/thread/{{threadurlname}}">{{title}}</a>
-    </span>
-      </div>
+          
+          <div class="pagination top">
+            <div class="main-pagination">
+              {{#pages}}
+              {{#separator}}
+              <span class="ellipsis">...</span>
+              {{/separator}}
+              {{^separator}}
+                {{#active}}
+              <div class="selected-page">{{num}}</div>
+                {{/active}}
+                {{^active}}
+              <a href="/thread/{{threadurlname}}{{url}}">{{num}}</a>
+                {{/active}}
+              {{/separator}}
+              {{/pages}}
+            </div>
+            <span class="paging-text">
+              {{paginationtext}}
+              in <a href="/">Threads</a> &gt;
+              <a href="/search/{{firstcategory}}">{{firstcategory}}</a> &gt;
+              <a href="/thread/{{threadurlname}}">{{title}}</a>
+            </span>
+          </div>
 
 {{#comments}}
-  <div id="comment-1068926" class="comment userid-632 buddy  ">
-    <div id="comment-container-1068926" class="comment-container">
-      <div class="cmd-bar">
-        <span>
-          <a class="view-source" onclick="thread.view_source(1068926); return false;">
-            View Source          </a>
-        </span>
-              <a class="quote" onclick="thread.quote(1068926);">
-          Quote
-        </a>
+          <div id="comment-1068926" class="comment {{#buddy}}buddy{{/buddy}}">
+            <div id="comment-container-1068926" class="comment-container">
+              <div class="cmd-bar">
+                <span>
+                  <a class="view-source" onclick="thread.view_source(1068926); return false;">View Source</a>
+                </span>
+                <a class="quote" onclick="thread.quote(1068926);">Quote</a>
+              </div>
+              <div class="user-block">
+                <div class="username {{#buddy}}buddy{{/buddy}}">
+                  <a href="/user/{{postedby}}">{{postedby}}</a>
+                </div>
+                <div class="time">{{createdago}}</div>
+                <div class="user-information" style="background: url(/img/emoticons/0.gif);">
+                  <ul>
+  {{#buddy}}
+                    <li><a href="/buddies/{{postedby}}">Your buddy!</a></li>
+  {{/buddy}}
+  {{^buddy}}
+                    <li><a href="/buddies/{{postedby}}">Buddy? Ignore?</a></li>
+  {{/buddy}}
+                    <li><a href="/message/send/{{postedby}}">SEND A MESSAGE</a></li>
+                  </ul>
+                </div>
+                <div class="comment-points">
+                  <span class="current-points">{{points}} points</span>
+                  <a class="give-point" data-commentid="{{id}}" data-type="plus">+1</a>
+                  <a class="take-point" data-commentid="{{id}}" data-type="minus">-1</a>
+                </div>
+              </div>
+
+              <div class="content-block">
+                <div class="content">{{{content}}}</div>
+              </div>
+              <div style="clear: both;"></div>
             </div>
-      <div class="user-block">
-        <div class="username buddy">
-          <a href="/user/{{postedby}}">
-            {{postedby}}          </a>
-        </div>
-        <div class="time">{{createdago}}</div>
-        <div class="user-information" style="background: url(/img/emoticons/0.gif);">
-          <ul>
-                      <li><a href="/buddies/{{postedby}}">Your buddy!</a></li>
-            <li><a href="/message/send/{{postedby}}">SEND A MESSAGE</a></li>
-                    </ul>
-        </div>
-        <div class="comment-points">
-          <span class="current-points">{{points}} points</span>
-                    <a class="give-point" data-commentid="1068926" data-type="plus">+1</a>
-          <a class="take-point" data-commentid="1068926" data-type="minus">-1</a>
-                  </div>
-
-        
-      </div>
-
-      <div class="content-block">
-        <div class="content">{{{content}}}</div>
-      </div>
-      <div style="clear: both;"></div>
-    </div>
-  </div>
+          </div>
 {{/comments}}
 
-  <div class="pagination bottom">
-    
-    <span class="paging-text">
-      1 - 9 of 9      in <a href="/">Threads</a>
-      &gt; <a href="/f/discussions">Discussions</a>      &gt; <a href="/thread/26209/learn-how-to-animate-with-terry-gilliam">Learn how to animate with Terry Gilliam:</a>    </span>
+          <div class="pagination bottom">
+            
+            <span class="paging-text">
+              {{paginationtext}}
+              in <a href="/">Threads</a> &gt;
+              <a href="/search/{{firstcategory}}">{{firstcategory}}</a> &gt;
+              <a href="/thread/{{threadurlname}}">{{title}}</a>
+            </span>
 
-  </div>
+          </div>
 
-<div class="dotted-bar replypad"></div>
+        <div class="dotted-bar replypad"></div>
 
-</div>
-
-<script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
-<script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
+      </div>
 
 {{#user}}
-<div id="reply-lc">
-  <h4>Post A Reply</h4>
-  <div id="post-shortcuts">
-    <p>SHORTCUTS!</p>
-    <ul>
-      <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<a href=%22%22></a>')">URL</a></li>
-      <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<img src=%22%22 />')">Image</a></li>
-      <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<spoiler></spoiler>')">Spoiler</a></li>
-      <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<code></code>')">Code</a></li>
-      <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<small>snigger</small>')">Snigger</a></li>
-    </ul>
-  </div>
-</div>
-<div id="reply-rc">
-<div id="pinkies">
-  <a href="javascript:insertAtCaret('thread-content-input', '[:)]');">
-    <img src="/img/pinkies/11.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:(]');">
-    <img src="/img/pinkies/01.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:D]');">
-    <img src="/img/pinkies/05.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[;)]');">
-    <img src="/img/pinkies/07.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:P]');">
-    <img src="/img/pinkies/08.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[>|]');">
-    <img src="/img/pinkies/14.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:[]');">
-    <img src="/img/pinkies/10.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[\'(]');">
-    <img src="/img/pinkies/03.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:*]');">
-    <img src="/img/pinkies/17.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[B-]');">
-    <img src="/img/pinkies/16.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:=]');">
-    <img src="/img/pinkies/27.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:.]');">
-    <img src="/img/pinkies/22.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[O]');">
-    <img src="/img/pinkies/24.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[8)]');">
-    <img src="/img/pinkies/09.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:{]');">
-    <img src="/img/pinkies/06.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[:@]');">
-    <img src="/img/pinkies/20.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[%(]');">
-    <img src="/img/pinkies/18.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[><]');">
-    <img src="/img/pinkies/25.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[RR]');">
-    <img src="/img/pinkies/23.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[NH]');">
-    <img src="/img/pinkies/26.gif" /></a>
-  <a href="javascript:insertAtCaret('thread-content-input', '[fbm]');">
-    <img src="/img/pinkies/21.gif" /></a>
- </div>
+      <div id="reply-lc">
+        <h4>Post A Reply</h4>
+        <div id="post-shortcuts">
+          <p>SHORTCUTS!</p>
+          <ul>
+            <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<a href=%22%22></a>')">URL</a></li>
+            <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<img src=%22%22 />')">Image</a></li>
+            <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<spoiler></spoiler>')">Spoiler</a></li>
+            <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<code></code>')">Code</a></li>
+            <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<small>snigger</small>')">Snigger</a></li>
+          </ul>
+        </div>
+      </div>
 
-<form method="post" action="/thread/{{threadurlname}}" id="comment-form">
-  <input type="hidden" name="redirect" value="1">
-  <div class="input textarea">
-    <input type="hidden" name="threadid" value="{{id}}">
-    <textarea name="content" cols="90" rows="12" tabindex="1" id="thread-content-input" ></textarea>  </div>
-  <p>I, cham, do solemnly swear that in posting this comment I promise to be nice.</p>
-  <button type="submit" id="submit-button" tabindex="2">Agree &amp; Post</button>
-  <button type="button" id="preview-button" tabindex="3">Preview</button>
-</form>
+      <div id="reply-rc">
+        <div id="pinkies">
+          <a href="javascript:insertAtCaret('thread-content-input', '[:)]');"><img src="/img/pinkies/11.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:(]');"><img src="/img/pinkies/01.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:D]');"><img src="/img/pinkies/05.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[;)]');"><img src="/img/pinkies/07.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:P]');"><img src="/img/pinkies/08.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[>|]');"><img src="/img/pinkies/14.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:[]');"><img src="/img/pinkies/10.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[\'(]');"><img src="/img/pinkies/03.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:*]');"><img src="/img/pinkies/17.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[B-]');"><img src="/img/pinkies/16.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:=]');"><img src="/img/pinkies/27.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:.]');"><img src="/img/pinkies/22.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[O]');"><img src="/img/pinkies/24.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[8)]');"><img src="/img/pinkies/09.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:{]');"><img src="/img/pinkies/06.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[:@]');"><img src="/img/pinkies/20.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[%(]');"><img src="/img/pinkies/18.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[><]');"><img src="/img/pinkies/25.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[RR]');"><img src="/img/pinkies/23.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[NH]');"><img src="/img/pinkies/26.gif" /></a>
+          <a href="javascript:insertAtCaret('thread-content-input', '[fbm]');"><img src="/img/pinkies/21.gif" /></a>
+        </div>
 
-</div>
+        <form method="post" action="/thread/{{threadurlname}}" id="comment-form">
+          <input type="hidden" name="redirect" value="1">
+          <div class="input textarea">
+            <input type="hidden" name="threadid" value="{{id}}">
+            <textarea name="content" cols="90" rows="12" tabindex="1" id="thread-content-input" ></textarea>
+          </div>
+          <p>I, cham, do solemnly swear that in posting this comment I promise to be nice.</p>
+          <button type="submit" id="submit-button" tabindex="2">Agree &amp; Post</button>
+          <button type="button" id="preview-button" tabindex="3">Preview</button>
+        </form>
+      </div>
 
-<div id="comment-preview" class="test-comment" style="display: none;">
-  <div class="comment-container">
-    <div class="user-block">
-      <div class="username">You!</div>
-      <div class="time">Seconds from now</div>
+      <div id="comment-preview" class="test-comment" style="display: none;">
+        <div class="comment-container">
+          <div class="user-block">
+            <div class="username">You!</div>
+            <div class="time">Seconds from now</div>
 
-      <div class="user-information" style="background: url(/img/noavatar.gif);">
-      <ul>
-        <li>&nbsp;</li>
-        <li>&nbsp;</li>
-      </ul>
+            <div class="user-information" style="background: url(/img/noavatar.gif);">
+            <ul>
+              <li>&nbsp;</li>
+              <li>&nbsp;</li>
+            </ul>
+          </div>
+        </div>
+        <div class="content-block">
+          <div class="content"></div>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
     </div>
-  </div>
-  <div class="content-block">
-    <div class="content"></div>
-  </div>
-  <div style="clear: both;"></div>
-</div>
-</div>
 {{/user}}
 
-  <div id="notifications">
-    <a id="closenotify"></a>
+    <div id="notifications">
+      <a id="closenotify"></a>
+    </div>
   </div>
+</div>
 
+</div>
+
+</div>
+
+  <a name="bottom"></a>
+  <div id="bottom"></div>
+
+  <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+  <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
   <script type="text/javascript">
     var originalTitle = document.title,
       currentNotification;
@@ -220,7 +209,7 @@
       });
     }
 
-    $("#closenotify").live("click", function() {
+    $("#closenotify").on("click", function() {
       $('#notifications').remove();
       clearTimeout(notification);
       document.title = originalTitle;
@@ -228,21 +217,8 @@
 
     var notification = setInterval(thread_notifier, 10000);
   </script>
-
   <script type="text/javascript" src="/js/thread.js?v=28"></script>
-</div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <a name="bottom"></a>
-
-    <div id="bottom">
-    </div>
-
-    <script src="/js/global.js?v=28"></script>
+  <script src="/js/global.js?v=28"></script>
 
 </body>
 </html>

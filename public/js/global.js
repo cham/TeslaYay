@@ -172,7 +172,7 @@ function isThread() {
 
 
 (function() {
-
+/*
   var $input = $('#thread-content-input');
   var $form = $input.parents('form');
   var key = document.title;
@@ -240,7 +240,7 @@ function isThread() {
       $form.prepend('<div id="ajax_errs">Please correct the errors and try again</div>');
     });
   });
-
+*/
   var defaultLoginBox = $('#login-box').html();
   $('#login-form').on('submit', function(e) {
     e.preventDefault();
@@ -391,6 +391,11 @@ function isThread() {
   var $quotes = $('.content > .tquote > .tquote');
   $quotes.each(function(i){
     new NestedQuote($(this));
+  });
+
+  $('.buddyform').each(function(){
+    var $form = $(this);
+
   });
 
 })();

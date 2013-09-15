@@ -129,7 +129,7 @@ function format_special(element)
 
 format_special('.comment .content, .recent-post-content');
 
-$('#preview-button').live('click', function(e){
+$('#preview-button').on('click', function(e){
   e.preventDefault();
   var post = $("#thread-content-input").val();
   $.post('/ajax/preview', {content: post}).then(function(data) {
@@ -140,7 +140,7 @@ $('#preview-button').live('click', function(e){
   });
 });
 
-$("#comment-form").live("submit", function() {
+$("#comment-form").on("submit", function() {
   if ($("#thread-content-input").val().length === 0) {
     return false;
   }

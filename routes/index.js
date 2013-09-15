@@ -5,6 +5,7 @@
 
 var _ = require('underscore'),
     express = require('express'),
+    async = require('async'),
     moment = require('moment'),
     fs = require('fs'),
     api = require('../src/api'),
@@ -53,19 +54,15 @@ module.exports = function routing(){
     app.get('/', function(req, res, next){
         api.getThreads(res, req.query || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
     app.get('/page', function(req, res, next){
         res.redirect('/');
     });
-
     app.get('/page/:page', function(req, res, next){
         if(req.route.params.page === '1'){
             return res.redirect('/');
         }
         api.getThreads(res, _(req.query || {}).extend(req.route.params || {}), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
-
     // category search
     app.get('/category/:categories', function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
@@ -80,47 +77,65 @@ module.exports = function routing(){
             categories: req.route.params.categories
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
+    // participated
     app.get('/participated', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
             participated: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
     app.get('/participated/page/:page', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend(req.route.params, {
             participated: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
+    //favourites
     app.get('/favourites', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
             favourites: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
     app.get('/favourites/page/:page', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend(req.route.params, {
             favourites: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
+    // hidden
     app.get('/hidden', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
             hidden: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
+    // started
     app.get('/started', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
             postedby: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
-
     app.get('/started/page/:page', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend(req.route.params, {
             postedby: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+    // buddy / ignore listing
+    app.get('/buddies(/:username)?', checkAuth, function(req, res, next){
+        async.parallel([
+            function(done){
+                api.getUsers(res, { buddies: req.session.user.username }, req.session.user, function(err, json){
+                    done(err, {buddies: json.users});
+                });
+            },
+            function(done){
+                api.getUsers(res, { ignores: req.session.user.username }, req.session.user, function(err, json){
+                    done(err, {ignores: json.users});
+                });
+            },
+        ], function(err, results){
+            renderGenerator.userListingHandler(req, res, next)(null, _(results).chain().reduce(function(memo, item){
+                return _(memo).extend(item);
+            },{}).extend({
+                prefill: (req.route.params.username || '').replace(/^\//,'')
+            }).value());
+        });
     });
 
     // view thread
@@ -218,6 +233,24 @@ module.exports = function routing(){
         api.addToUserList(res, {
             listval: req.body.threadid,
             route: 'hide'
+        }, req.session.user, function(err, user){
+            if(err) return next(err);
+
+            if(user._id){
+                setUser(req, user);
+            }
+
+            res.send(user);
+        });
+    });
+    // add buddy / ignore
+    app.post('/buddies', checkAuth, function(req, res, next){
+        var body = req.body || {},
+            route = body.command === 'ignore' ? 'ignore' : 'buddy';
+
+        api.addToUserList(res, {
+            listval: body.username,
+            route: route
         }, req.session.user, function(err, user){
             if(err) return next(err);
 

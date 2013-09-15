@@ -22,7 +22,8 @@
     "mongoose": "3.6.19",
     "crypto": "0.0.3",
     "http-proxy": "0.10.3",
-    "ent": "0.1.0"
+    "ent": "0.1.0",
+    "async": "0.2.9"
   },
   "devDependencies": {
     "nodeload": "0.4.0"

@@ -43,7 +43,8 @@
 </div>
 
 {{#threads}}
-<div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} buddy">
+{{^ignored}}
+<div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} {{#buddy}}buddy{{/buddy}}">
    <div class="one">
     <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}/page/{{numpages}}#bottom" class='end-link'>#</a></div>
     <div class="category">
@@ -80,6 +81,7 @@
   </div>
 </div>
 <div class="blueline">&nbsp;</div>
+{{/ignored}}
 {{/threads}}
  
 <div class="pagination bottom">

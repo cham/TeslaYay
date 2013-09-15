@@ -8,124 +8,109 @@
 
 {{>leftcolumn}}
 
-     <div id="right-column">
+      <div id="right-column">
 
-<div id="main-title"><h3>Whatchu got to say?</h3></div>
+        <div id="main-title"><h3>Whatchu got to say?</h3></div>
 
-<div id="new-thread">
+        <div id="new-thread">
 
-  <p><strong>Think you have something good enough to say to post a thread about it? Well have it!</strong> Remember that posting a thread is no small thing. Millions of people will read it so make it good!</p>
+          <p><strong>Think you have something good enough to say to post a thread about it? Well have it!</strong> Remember that posting a thread is no small thing. Millions of people will read it so make it good!</p>
 
-  <div class="dotted-bar"></div>
+          <div class="dotted-bar"></div>
 
-    <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
-    <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
+          <form method="post" action="/newthread">
+            <input type="hidden" name="redirect" value="1">
+            <div class="inp">
+              <label>Step 1: Pick a category</label>
+              <div id="category-selector">
+                <input type="radio" name="categories[]" value="Discussions" id="cat-discussions" tabindex="1"  />
+                <label for="cat-discussions">Discussions</label>
+                <input type="radio" name="categories[]" value="Projects" id="cat-projects" tabindex="2"  />
+                <label for="cat-projects">Projects</label>
+                <input type="radio" name="categories[]" value="Advice" id="cat-advice" tabindex="3"  />
+                <label for="cat-advice">Advice</label>
+                <input type="radio" name="categories[]" value="Meaningless" id="cat-meaningless" tabindex="Meaningless"  />
+                <label for="cat-meaningless">Meaningless</label>
+              </div>
+            </div>
+            <div class="inp">
+              <label for="name">Step 2: Write a thread title</label>
+              <input type="text" name="name" value="" id="name" maxlength="96" size="30" tabindex="5"  />
+            </div>
+            <div class="inp">
+              <label for="thread-content-input">Step 3: Type the content of your thread </label>
+              <div id="pinkies">
+                <a href="javascript:insertAtCaret('thread-content-input', '[:)]');"><img src="/img/pinkies/11.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:(]');"><img src="/img/pinkies/01.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:D]');"><img src="/img/pinkies/05.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[;)]');"><img src="/img/pinkies/07.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:P]');"><img src="/img/pinkies/08.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[>|]');"><img src="/img/pinkies/14.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:[]');"><img src="/img/pinkies/10.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[\'(]');"><img src="/img/pinkies/03.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:*]');"><img src="/img/pinkies/17.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[B-]');"><img src="/img/pinkies/16.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:=]');"><img src="/img/pinkies/27.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:.]');"><img src="/img/pinkies/22.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[O]');"><img src="/img/pinkies/24.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[8)]');"><img src="/img/pinkies/09.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:{]');"><img src="/img/pinkies/06.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[:@]');"><img src="/img/pinkies/20.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[%(]');"><img src="/img/pinkies/18.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[><]');"><img src="/img/pinkies/25.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[RR]');"><img src="/img/pinkies/23.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[NH]');"><img src="/img/pinkies/26.gif" /></a>
+                <a href="javascript:insertAtCaret('thread-content-input', '[fbm]');"><img src="/img/pinkies/21.gif" /></a>
+               </div>
+              <div style="overflow:auto;">
+              <textarea name="content" cols="90" rows="12" tabindex="6" id="thread-content-input" ></textarea>      <div id="post-shortcuts">
+                <p>SHORTCUTS!</p>
+                <ul>
+                  <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<a href=%22%22></a>')">URL</a></li>
+                  <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<img src=%22%22 />')">Image</a></li>
+                  <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<spoiler></spoiler>')">Spoiler</a></li>
+                  <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<code></code>')">Code</a></li>
+                  <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<small>snigger</small>')">Snigger</a></li>
+                </ul>
+              </div>
+              </div>
+            </div>
+          <button type="submit" name="" tabindex="7">Post Thread</button>
+          <button type="button" id="preview-button"  tabindex="8">Preview</button>
 
-  <form method="post" action="/newthread">
-    <input type="hidden" name="redirect" value="1">
-    <div class="inp">
-            <label>Step 1: Pick a category</label>      <div id="category-selector">
-        <input type="radio" name="categories[]" value="Discussions" id="cat-discussions" tabindex="1"  />        <label for="cat-discussions">Discussions</label>        <input type="radio" name="categories[]" value="Projects" id="cat-projects" tabindex="2"  />        <label for="cat-projects">Projects</label>        <input type="radio" name="categories[]" value="Advice" id="cat-advice" tabindex="3"  />        <label for="cat-advice">Advice</label>        <input type="radio" name="categories[]" value="4" id="cat-meaningless" tabindex="Meaningless"  />        <label for="cat-meaningless">Meaningless</label>      </div>
-    </div>
-    <div class="inp">
-            <label for="name">Step 2: Write a thread title</label>      <input type="text" name="name" value="" id="name" maxlength="96" size="30" tabindex="5"  />    </div>
-    <div class="inp">
-            <label for="thread-content-input">Step 3: Type the content of your thread </label>      <div id="pinkies">
-        <a href="javascript:insertAtCaret('thread-content-input', '[:)]');">
-          <img src="/img/pinkies/11.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:(]');">
-          <img src="/img/pinkies/01.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:D]');">
-          <img src="/img/pinkies/05.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[;)]');">
-          <img src="/img/pinkies/07.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:P]');">
-          <img src="/img/pinkies/08.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[>|]');">
-          <img src="/img/pinkies/14.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:[]');">
-          <img src="/img/pinkies/10.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[\'(]');">
-          <img src="/img/pinkies/03.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:*]');">
-          <img src="/img/pinkies/17.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[B-]');">
-          <img src="/img/pinkies/16.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:=]');">
-          <img src="/img/pinkies/27.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:.]');">
-          <img src="/img/pinkies/22.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[O]');">
-          <img src="/img/pinkies/24.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[8)]');">
-          <img src="/img/pinkies/09.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:{]');">
-          <img src="/img/pinkies/06.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[:@]');">
-          <img src="/img/pinkies/20.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[%(]');">
-          <img src="/img/pinkies/18.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[><]');">
-          <img src="/img/pinkies/25.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[RR]');">
-          <img src="/img/pinkies/23.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[NH]');">
-          <img src="/img/pinkies/26.gif" /></a>
-        <a href="javascript:insertAtCaret('thread-content-input', '[fbm]');">
-          <img src="/img/pinkies/21.gif" /></a>
-       </div>
-      <div style="overflow:auto;">
-      <textarea name="content" cols="90" rows="12" tabindex="6" id="thread-content-input" ></textarea>      <div id="post-shortcuts">
-        <p>SHORTCUTS!</p>
-        <ul>
-          <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<a href=%22%22></a>')">URL</a></li>
-          <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<img src=%22%22 />')">Image</a></li>
-          <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<spoiler></spoiler>')">Spoiler</a></li>
-          <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<code></code>')">Code</a></li>
-          <li>&middot; <a href="javascript:insertAtCaret('thread-content-input', '<small>snigger</small>')">Snigger</a></li>
-        </ul>
-      </div>
-      </div>
-    </div>
-  <button type="submit" name="" tabindex="7">Post Thread</button>
-  <button type="button" id="preview-button"  tabindex="8">Preview</button>
+          </form>
 
-  </form>
-
-<div id="comment-preview" class="test-comment" style="display: none;">
-  <div class="comment-container">
-    <div class="user-block">
-      <div class="username">You!</div>
-      <div class="time">Seconds from now</div>
-
-      <div class="user-information" style="background: url(/img/noavatar.gif);">
-      <ul>
-        <li>&nbsp;</li>
-        <li>&nbsp;</li>
-      </ul>
-    </div>
-  </div>
-  <div class="content-block">
-    <div class="content"></div>
-  </div>
-  <div style="clear: both;"></div>
-</div>
-
-
-</div>
-<script src="/js/thread.js"></script>
-           </div>
-
+          <div id="comment-preview" class="test-comment" style="display: none;">
+            <div class="comment-container">
+              <div class="user-block">
+                <div class="username">You!</div>
+                <div class="time">Seconds from now</div>
+                <div class="user-information" style="background: url(/img/noavatar.gif);">
+                <ul>
+                  <li>&nbsp;</li>
+                  <li>&nbsp;</li>
+                </ul>
+              </div>
+            </div>
+            <div class="content-block">
+              <div class="content"></div>
+            </div>
+            <div style="clear: both;"></div>
+          </div>
+        
         </div>
 
+      </div>
     </div>
+  </div>
 
-    <a name="bottom"></a>
+  <a name="bottom"></a>
+  <div id="bottom"></div>
 
-    <div id="bottom">
-    </div>
-
-    <script src="/js/global.js?v=28"></script>
+  <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+  <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
+  <script src="/js/thread.js"></script>
+  <script src="/js/global.js?v=28"></script>
 
 </body>
 </html>

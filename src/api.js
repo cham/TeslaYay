@@ -104,6 +104,28 @@ module.exports = {
         });
     },
 
+    getUsers: function(res, params, user, cb){
+        user = user || {};
+
+        if(params.buddies){
+            route = '/user/' + params.buddies + '/buddies/summary';
+        }
+        if(params.ignores){
+            route = '/user/' + params.ignores + '/ignores/summary';
+        }
+
+        request({
+            method: 'get',
+            uri: apiUrl + route
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(json){
+                cb(null, json);
+            });
+        });
+    },
+
     postThread: function(res, body, user, cb){
         user = user || {};
         body = _(body || {}).extend({
