@@ -54,11 +54,11 @@ module.exports = function routing(){
         api.getThreads(res, req.query || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
-    app.get('/threads', function(req, res, next){
+    app.get('/page', function(req, res, next){
         res.redirect('/');
     });
 
-    app.get('/threads/:page', function(req, res, next){
+    app.get('/page/:page', function(req, res, next){
         if(req.route.params.page === '1'){
             return res.redirect('/');
         }
@@ -72,6 +72,14 @@ module.exports = function routing(){
             categories: req.route.params.categories
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
+    app.get('/category/:categories/page', function(req, res, next){
+        res.redirect('/category/' + req.route.param.categories);
+    });
+    app.get('/category/:categories/page/:page', function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend(req.route.params || {}, {
+            categories: req.route.params.categories
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
 
     app.get('/participated', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
@@ -79,8 +87,20 @@ module.exports = function routing(){
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
+    app.get('/participated/page/:page', checkAuth, function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend(req.route.params, {
+            participated: req.session.user.username
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+
     app.get('/favourites', checkAuth, function(req, res, next){
         api.getThreads(res, _(req.query || {}).extend({
+            favourites: req.session.user.username
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+
+    app.get('/favourites/page/:page', checkAuth, function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend(req.route.params, {
             favourites: req.session.user.username
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
@@ -97,11 +117,17 @@ module.exports = function routing(){
         }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     });
 
+    app.get('/started/page/:page', checkAuth, function(req, res, next){
+        api.getThreads(res, _(req.query || {}).extend(req.route.params, {
+            postedby: req.session.user.username
+        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+    });
+
     // view thread
     app.get('/thread/:threadUrlName', function(req, res, next){
         api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
     });
-    app.get('/thread/:threadUrlName/:page', function(req, res, next){
+    app.get('/thread/:threadUrlName/page/:page', function(req, res, next){
         if(req.route.params.page === '1'){
             return res.redirect('/thread/' + req.route.params.threadUrlName);
         }

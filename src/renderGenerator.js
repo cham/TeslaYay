@@ -41,7 +41,13 @@ module.exports = {
             }
 
             var _userFavourites = _(user.favourites || []),
-                _userHidden = _(user.hidden || []);
+                _userHidden = _(user.hidden || []),
+                paginationroot = (req.url.replace(/\/page(\/[0-9]*)/, '')).replace(/\/\//g, '/').replace(/\/$/,''),
+                flag = 0;
+
+            if(paginationroot === '/'){
+                paginationroot = '';
+            }
 
             res.render('index', {
                 numthreads: json.threads.length,
@@ -50,6 +56,7 @@ module.exports = {
                 numpages: pages.length,
                 user: req.session.user,
                 paginationtext: paginationtext,
+                paginationroot: paginationroot,
                 threads: _(json.threads).map(function(thread){
                     thread.id = thread._id;
 
@@ -69,6 +76,9 @@ module.exports = {
 
                     thread.favourite = _userFavourites.indexOf(thread._id) > -1;
                     thread.hidden = _userHidden.indexOf(thread._id) > -1;
+
+                    flag = 1 - flag;
+                    thread.alt = flag;
                     
                     return thread;
                 })

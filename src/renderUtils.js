@@ -8,7 +8,7 @@ function pagingObject(num, active){
     return {
         num: num,
         active: active,
-        url: num === 1 ? '' : '/' + num.toString()
+        url: num === 1 ? '/' : '/page/' + num.toString()
     };
 }
 function hasPagingObject(arr, pagingObject){

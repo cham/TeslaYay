@@ -26,7 +26,7 @@
           <div class="selected-page">{{num}}</div>
             {{/active}}
             {{^active}}
-          <a href="/threads{{url}}">{{num}}</a>
+          <a href="{{paginationroot}}{{url}}">{{num}}</a>
             {{/active}}
           {{/separator}}
           {{/pages}}
@@ -43,9 +43,9 @@
 </div>
 
 {{#threads}}
-<div id="thread-{{_id}}" class="thread alt buddy">
+<div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} buddy">
    <div class="one">
-    <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}/{{numpages}}#bottom" class='end-link'>#</a></div>
+    <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}/page/{{numpages}}#bottom" class='end-link'>#</a></div>
     <div class="category">
       {{categories}}
       {{#haspagination}}
@@ -96,7 +96,7 @@
     <div class="selected-page">{{num}}</div>
       {{/active}}
       {{^active}}
-    <a href="/threads{{url}}">{{num}}</a>
+    <a href="{{paginationroot}}{{url}}">{{num}}</a>
       {{/active}}
     {{/separator}}
     {{/pages}}
