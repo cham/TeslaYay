@@ -127,10 +127,8 @@ $('.hide-thread').bind('click', function(e){
       threadid: threadid
     },
     success: function(data) {
-      if (data == 1) {
-        button.toggleClass('added', !toHide);
-        button.parent('.five').parent('.thread').slideUp().next().slideUp();
-      }
+      button.toggleClass('added', !toHide);
+      button.parent('.five').parent('.thread').slideUp().next().slideUp();
     }
   });
 });
@@ -143,25 +141,19 @@ $('.favourite').bind('click', function(e){
       threadurl = button.attr('href'),
       threadid = button.data('id');
 
-  if (!$(this).hasClass('added')) {
+  if(!$(this).hasClass('added')) {
     $.ajax({
       method: 'put',
       url: threadurl,
       data: {
         threadid: threadid
       },
-      success: function(data) {
-        if (data == 1) {
-          button.addClass('added');
-        }
+      success: function(data){
+        button.addClass('added');
       }
     });
   } else {
-    $.get('/ajax/unfavorite_thread/'+ id +'/'+ session_id, function(data) {
-      if (data == 1) {
-        button.removeClass('added');
-      }
-    });
+    console.log('unfavourite');
   }
 });
 
