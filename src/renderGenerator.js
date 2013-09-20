@@ -153,5 +153,24 @@ module.exports = {
                 prefill: json.prefill
             });
         };
+    },
+
+    userDetailHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, selecteduser){
+            if(err) return next(err);
+            selecteduser = selecteduser || {};
+
+            var _userBuddies = _(user.buddies || []),
+                _userIgnores = _(user.ignores || []);
+
+            res.render('user', {
+                user: user.username ? user: false, //probably confusing, rename to 'sessionuser'?
+                profilename: selecteduser.username,
+                buddy: _userBuddies.indexOf(selecteduser.username) > -1,
+                ignored: _userIgnores.indexOf(selecteduser.username) > -1
+            });
+        };
     }
-}
+};

@@ -8,122 +8,122 @@
 
 {{>leftcolumn}}
 
-    <div id="right-column">
-      <div id="main-title"  class="changeling" title="Vaskerville">
-        <h3>.</h3>
-      </div>
-      <div id="thread-navigation" class="pagination top">
-        {{#user}}
-        <a href="/newthread" id="post-thread">Post Thread</a>
-        {{/user}}
-        <div class="main-pagination">
-          {{#pages}}
-          {{#separator}}
-          <span class="ellipsis">...</span>
-          {{/separator}}
-          {{^separator}}
-            {{#active}}
-          <div class="selected-page">{{num}}</div>
-            {{/active}}
-            {{^active}}
-          <a href="{{paginationroot}}{{url}}">{{num}}</a>
-            {{/active}}
-          {{/separator}}
-          {{/pages}}
-          <span class="paging-text">{{paginationtext}} threads</span>
+      <div id="right-column">
+        <div id="main-title"  class="changeling" title="Vaskerville">
+          <h3>.</h3>
         </div>
-      </div>
+        <div id="thread-navigation" class="pagination top">
+          {{#user}}
+          <a href="/newthread" id="post-thread">Post Thread</a>
+          {{/user}}
+          <div class="main-pagination">
+            {{#pages}}
+            {{#separator}}
+            <span class="ellipsis">...</span>
+            {{/separator}}
+            {{^separator}}
+              {{#active}}
+            <div class="selected-page">{{num}}</div>
+              {{/active}}
+              {{^active}}
+            <a href="{{paginationroot}}{{url}}">{{num}}</a>
+              {{/active}}
+            {{/separator}}
+            {{/pages}}
+            <span class="paging-text">{{paginationtext}} threads</span>
+          </div>
+        </div>
 
 
-<div class="thread" id="thread-headers">
-  <div class="one">Thread Title &amp; Category</div>
-  <div class="two"><a href="/o/started/desc">Started By</a></div>
-  <div class="three"><a href="/o/latest/desc">Last Post</a></div>
-  <div class="four"><a href="/o/posts/desc">Posts</a></div>
-</div>
+        <div class="thread" id="thread-headers">
+          <div class="one">Thread Title &amp; Category</div>
+          <div class="two"><a href="/o/started/desc">Started By</a></div>
+          <div class="three"><a href="/o/latest/desc">Last Post</a></div>
+          <div class="four"><a href="/o/posts/desc">Posts</a></div>
+        </div>
 
 {{#threads}}
 {{^ignored}}
-<div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} {{#buddy}}buddy{{/buddy}}">
-   <div class="one">
-    <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}/page/{{numpages}}#bottom" class='end-link'>#</a></div>
-    <div class="category">
-      {{categories}}
-      {{#haspagination}}
-        | Page:
-        {{#threadpages}}
-          {{#separator}}
-      <a href="/thread/{{urlname}}">...</a>
-          {{/separator}}
-          {{^separator}}
-      <a href="/thread/{{urlname}}{{url}}">{{num}}</a>
-          {{/separator}}
-        {{/threadpages}}
-      {{/haspagination}}
-    </div>
-  </div>
-  <div class="two">
-    <div class="username"><a href="/user/{{postedby}}">{{postedby}}</a></div>
-    <div class="time">{{createdago}}</div>
-  </div>
-  <div class="three">
-    <div class="username"><a href="/user/{{last_comment_by}}">{{last_comment_by}}</a></div>
-    <div class="time">{{lastpostedago}}</div>
-  </div>
-  <div class="four">
-    <span>{{numcomments}}</span>
-  </div>
-  <div class="five">
-{{^favourite}}
-    <a class="favourite" href="/thread/{{urlname}}/favourite" data-id="{{id}}"></a>
-{{/favourite}}
-    <a class="hide-thread" href="/thread/{{urlname}}/hide" data-id="{{id}}"></a>
-  </div>
-</div>
-<div class="blueline">&nbsp;</div>
+        <div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} {{#buddy}}buddy{{/buddy}}">
+           <div class="one">
+            <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}/page/{{numpages}}#bottom" class='end-link'>#</a></div>
+            <div class="category">
+              {{categories}}
+              {{#haspagination}}
+                | Page:
+                {{#threadpages}}
+                  {{#separator}}
+              <a href="/thread/{{urlname}}">...</a>
+                  {{/separator}}
+                  {{^separator}}
+              <a href="/thread/{{urlname}}{{url}}">{{num}}</a>
+                  {{/separator}}
+                {{/threadpages}}
+              {{/haspagination}}
+            </div>
+          </div>
+          <div class="two">
+            <div class="username"><a href="/user/{{postedby}}">{{postedby}}</a></div>
+            <div class="time">{{createdago}}</div>
+          </div>
+          <div class="three">
+            <div class="username"><a href="/user/{{last_comment_by}}">{{last_comment_by}}</a></div>
+            <div class="time">{{lastpostedago}}</div>
+          </div>
+          <div class="four">
+            <span>{{numcomments}}</span>
+          </div>
+          <div class="five">
+        {{^favourite}}
+            <a class="favourite" href="/thread/{{urlname}}/favourite" data-id="{{id}}"></a>
+        {{/favourite}}
+            <a class="hide-thread" href="/thread/{{urlname}}/hide" data-id="{{id}}"></a>
+          </div>
+        </div>
+        <div class="blueline">&nbsp;</div>
 {{/ignored}}
 {{/threads}}
  
-<div class="pagination bottom">
+        <div class="pagination bottom">
 {{#user}}
-  <a href="/newthread" id="post-thread">Post Thread</a>
+          <a href="/newthread" id="post-thread">Post Thread</a>
 {{/user}}
-  <div class="main-pagination">
-    {{#pages}}
-    {{#separator}}
-    <span class="ellipsis">...</span>
-    {{/separator}}
-    {{^separator}}
-      {{#active}}
-    <div class="selected-page">{{num}}</div>
-      {{/active}}
-      {{^active}}
-    <a href="{{paginationroot}}{{url}}">{{num}}</a>
-      {{/active}}
-    {{/separator}}
-    {{/pages}}
-    <span class="paging-text">{{paginationtext}} threads</span>
-  </div>
+          <div class="main-pagination">
+            {{#pages}}
+            {{#separator}}
+            <span class="ellipsis">...</span>
+            {{/separator}}
+            {{^separator}}
+              {{#active}}
+            <div class="selected-page">{{num}}</div>
+              {{/active}}
+              {{^active}}
+            <a href="{{paginationroot}}{{url}}">{{num}}</a>
+              {{/active}}
+            {{/separator}}
+            {{/pages}}
+            <span class="paging-text">{{paginationtext}} threads</span>
+          </div>
 
-  <script type="text/html" id="title-input">
-    <input type="text" id="title-input" maxlength="36" />
-    <input type="submit" value="Save" id="save-title" />
-    <input type="button" value="Cancel" id="cancel-title" />
-    (36 chars max)
-  </script>
-            </div>
-
+          <script type="text/html" id="title-input">
+            <input type="text" id="title-input" maxlength="36" />
+            <input type="submit" value="Save" id="save-title" />
+            <input type="button" value="Cancel" id="cancel-title" />
+            (36 chars max)
+          </script>
         </div>
 
+      </div>
+
     </div>
 
-    <a name="bottom"></a>
+  </div>
 
-    <div id="bottom">
-    </div>
+  <a name="bottom"></a>
+  <div id="bottom"></div>
 
   <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
   <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
-    <script src="/js/global.js?v=28"></script>
-  </body>
+  <script src="/js/global.js?v=28"></script>
+</body>
 </html>

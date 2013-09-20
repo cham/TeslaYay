@@ -163,6 +163,11 @@ module.exports = function routing(){
         });
     });
 
+    // user page
+    app.get('/user/:username', function(req, res, next){
+        api.getUser(res, req.route.params || {}, req.session.user, renderGenerator.userDetailHandler(req, res, next));
+    });
+
     // POSTs
     // post thread
     app.post('/newthread', checkAuth, function(req, res, next){
@@ -258,7 +263,11 @@ module.exports = function routing(){
                 setUser(req, user);
             }
 
-            res.send(user);
+            if(req.body.redirect){
+                res.redirect(req.headers['referer']);
+            }else{
+                res.send(user);
+            }
         });
     });
 

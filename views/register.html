@@ -1,5 +1,5 @@
 {{>head}}
-<body class="yh_auth yh_register" >
+<body class="yh_auth yh_register">
 
   <a name="top"></a>
 
@@ -7,31 +7,37 @@
     <div id="middle">
 
 {{>leftcolumn}}
+      <div id="right-column">
 
-     <div id="right-column">
-<div id="main-title"><h3>OMG, you can Register?</h3></div>
-
-<div id="new-thread">
-  <form method="post" action="/register" id="register-form">
-    <div class="inp">
-            <label for="username">Username:</label>      <input type="text" name="username" value="" id="username" maxlength="32" size="30"  />    </div>
-    <div class="inp">
-            <label for="email">Email Address:</label>      <input type="text" name="email" value="" id="email" maxlength="255" size="30"  />    </div>
-    <div class="inp">
-            <label for="password">Password:</label>      <input type="password" name="password" value="" id="password" size="30"  />    </div>
-
-        <input type="submit" value="Register" />
-  </form>
-</div>          </div>
-
+        <div id="main-title">
+          <h3>OMG, you can Register?</h3>
         </div>
 
-    </div>
+        <div id="new-thread">
+          <form method="post" action="/register" id="register-form" name="register-form">
+            <div class="inp">
+              <label for="username">Username:</label> <input type="text" name="username"
+              value="" id="username" maxlength="32" size="30" />
+            </div>
 
-    <a name="bottom"></a>
+            <div class="inp">
+              <label for="email">Email Address:</label> <input type="text" name="email"
+              value="" id="email" maxlength="255" size="30" />
+            </div>
 
-    <div id="bottom">
+            <div class="inp">
+              <label for="password">Password:</label> <input type="password" name="password"
+              value="" id="password" size="30" />
+            </div><input type="submit" value="Register" />
+          </form>
+        </div>
+
+      </div>
     </div>
+  </div>
+
+  <a name="bottom"></a>
+  <div id="bottom"></div>
 
   <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
   <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>

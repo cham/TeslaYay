@@ -126,6 +126,22 @@ module.exports = {
         });
     },
 
+    getUser: function(res, params, user, cb){
+        user = user || {};
+        var route = '/user/' + params.username;
+
+        request({
+            method: 'get',
+            uri: apiUrl + route
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(json){
+                cb(null, json);
+            });
+        });
+    },
+
     postThread: function(res, body, user, cb){
         user = user || {};
         body = _(body || {}).extend({
