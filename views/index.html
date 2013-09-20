@@ -9,8 +9,8 @@
 {{>leftcolumn}}
 
       <div id="right-column">
-        <div id="main-title"  class="changeling" title="Vaskerville">
-          <h3>.</h3>
+        <div id="main-title" {{#user}}class="changeling" {{/user}}title="{{titleauthor}}">
+          <h3>{{title}}</h3>
         </div>
         <div id="thread-navigation" class="pagination top">
           {{#user}}

@@ -8,10 +8,14 @@ var _ = require('underscore'),
 
 module.exports = {
     
-    threadsListingHandler: function(req, res, next){
+    threadsListingHandler: function(req, res, globaldata, next){
+        globaldata = globaldata || {};
+
         var activepage = parseInt(req.route.params.page, 10) || 1,
             user = req.session.user || {},
             numcomments = (user.preferences && user.preferences.numcomments) || 50,
+            title = (globaldata.titledata || {}).title,
+            titleauthor = (globaldata.titledata || {}).username,
             that = this;
 
         return function(err, json){
@@ -59,6 +63,8 @@ module.exports = {
                 user: user.username ? user : false,
                 paginationtext: paginationtext,
                 paginationroot: paginationroot,
+                title: title,
+                titleauthor: titleauthor,
                 threads: _(json.threads).map(function(thread){
                     thread.id = thread._id;
 

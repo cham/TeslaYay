@@ -52,7 +52,11 @@ module.exports = function routing(){
 
     // thread listing
     app.get('/', function(req, res, next){
-        api.getThreads(res, req.query || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, req.query || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     app.get('/page', function(req, res, next){
         res.redirect('/');
@@ -61,60 +65,100 @@ module.exports = function routing(){
         if(req.route.params.page === '1'){
             return res.redirect('/');
         }
-        api.getThreads(res, _(req.query || {}).extend(req.route.params || {}), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend(req.route.params || {}), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     // category search
     app.get('/category/:categories', function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend({
-            categories: req.route.params.categories
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend({
+                categories: req.route.params.categories
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     app.get('/category/:categories/page', function(req, res, next){
         res.redirect('/category/' + req.route.param.categories);
     });
     app.get('/category/:categories/page/:page', function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend(req.route.params || {}, {
-            categories: req.route.params.categories
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend(req.route.params || {}, {
+                categories: req.route.params.categories
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     // participated
     app.get('/participated', checkAuth, function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend({
-            participated: req.session.user.username
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend({
+                participated: req.session.user.username
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     app.get('/participated/page/:page', checkAuth, function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend(req.route.params, {
-            participated: req.session.user.username
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend(req.route.params, {
+                participated: req.session.user.username
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     //favourites
     app.get('/favourites', checkAuth, function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend({
-            favourites: req.session.user.username
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend({
+                favourites: req.session.user.username
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     app.get('/favourites/page/:page', checkAuth, function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend(req.route.params, {
-            favourites: req.session.user.username
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend(req.route.params, {
+                favourites: req.session.user.username
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     // hidden
     app.get('/hidden', checkAuth, function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend({
-            hidden: req.session.user.username
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend({
+                hidden: req.session.user.username
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     // started
     app.get('/started', checkAuth, function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend({
-            postedby: req.session.user.username
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend({
+                postedby: req.session.user.username
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     app.get('/started/page/:page', checkAuth, function(req, res, next){
-        api.getThreads(res, _(req.query || {}).extend(req.route.params, {
-            postedby: req.session.user.username
-        }), req.session.user, renderGenerator.threadsListingHandler(req, res, next));
+        api.getTitle(function(err, titlejson){
+            if(err) return next(err);
+
+            api.getThreads(res, _(req.query || {}).extend(req.route.params, {
+                postedby: req.session.user.username
+            }), req.session.user, renderGenerator.threadsListingHandler(req, res, {titledata: titlejson}, next));
+        });
     });
     // buddy / ignore listing
     app.get('/buddies(/:username)?', checkAuth, function(req, res, next){
@@ -210,6 +254,18 @@ module.exports = function routing(){
             }else{
                 delete req.session.user;
             }
+            res.redirect(req.headers['referer']);
+        });
+    });
+
+    // edit title
+    app.post('/title/edit', function(req, res, next){
+        api.changeTitle(res, req.body, req.session.user, function(err){
+            if(err){
+                res.status(400);
+                return res.send(err);
+            }
+
             res.redirect(req.headers['referer']);
         });
     });

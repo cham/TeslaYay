@@ -2,13 +2,17 @@
  *
  */
 var _ = require('underscore'),
+    fs = require('fs'),
+    async = require('async'),
+    moment = require('moment'),
+    check = require('validator').check,
+    sanitize = require('validator').sanitize,
+    apiUrl = 'http://localhost:3000',
     request = require('request').defaults({
         encoding: 'utf8',
         jar: false,
         timeout: 30 * 1000
     }),
-    moment = require('moment'),
-    apiUrl = 'http://localhost:3000',
     defaultprefs = {
         numthreads: 50,
         numcomments: 50
@@ -17,7 +21,7 @@ var _ = require('underscore'),
 function checkResponse(err, apiRes, next){
     if(err) return next(err);
 
-    if(apiRes.statusCode === 500){
+    if(apiRes && apiRes.statusCode === 500){
         next(new Error(apiRes.body));
         return false;
     }
@@ -234,6 +238,49 @@ module.exports = {
 
             parseJson(json, cb, function(data){
                 cb(null, data);
+            });
+        });
+    },
+
+    changeTitle: function(res, body, user, cb){
+        if(!user || !user.username) return cb(new Error('changeTitle requires a user'));
+
+        var title = body.title || '';
+
+        try {
+            check(title).len(1, 36);
+            title = sanitize(title).entityEncode().trim();
+        }catch(e){
+            return cb(e);
+        }
+
+        async.parallel([
+            function(done){
+                fs.writeFile('public/titles/current.json', JSON.stringify({title: title, username: user.username}), function(err) {
+                    if(err) return cb(err);
+
+                    done(null);
+                });
+            },
+            function(done){
+                fs.appendFile('public/titles/history.txt', user.username + ': ' + title + '\n', function(err) {
+                    if(err) return cb(err);
+
+                    done(null);
+                });
+            }
+        ], function(){
+            cb(null);
+        });
+    },
+
+    getTitle: function(cb){
+        fs.readFile('public/titles/current.json', function(err, json){
+            if(!checkResponse(err, null, cb)) return;
+
+            parseJson(json, cb, function(json){
+                json.title = json.title.replace(/\&quot;/g, '"').replace(/\&#39;/g, "'");
+                cb(null, json);
             });
         });
     }

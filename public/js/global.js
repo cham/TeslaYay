@@ -60,7 +60,7 @@ NestedQuote.prototype.applyNesting = function($childQuote){
 (function () {
   var title, tpl = $("#title-input").html();
 
-  $("#main-title.changeling").bind("click", function () {
+  $("#main-title.changeling").bind("click", function(){
     if ($(this).is(":not(.editing)")) {
       title = $.trim($('h3', this).text());
       $(this).addClass("editing");
@@ -83,16 +83,15 @@ NestedQuote.prototype.applyNesting = function($childQuote){
     }
   });
 
-  $("#cancel-title").on("click", function () {
+  $("body").on("click", "#cancel-title", function(){
     $('h3', "#main-title").empty().text(title);
     $("#main-title").removeClass("editing");
   });
 
-  $("#save-title").on("click", function () {
+  $("body").on("click", "#save-title", function(){
     var newTitle = $("#title-input").val();
     var data = "title=" + encodeURIComponent(newTitle);
     data += isThread() ? "&thread_id=" + thread.id() : '';
-
     $.ajax({
       type: "POST",
       url: "/title/edit",
