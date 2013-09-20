@@ -2,5 +2,5 @@
 .DS_Store
 node_modules
 results-*
-public/titles/current.json
-public/titles/history.txt
+current.json
+history.txt
