@@ -16,6 +16,7 @@ module.exports = {
             numcomments = (user.preferences && user.preferences.numcomments) || 50,
             title = (renderdata.titledata || {}).title,
             titleauthor = (renderdata.titledata || {}).username,
+            sortBy = renderdata.sortBy,
             that = this;
 
         return function(err, json){
@@ -49,7 +50,7 @@ module.exports = {
                 _userBuddies = _(user.buddies || []),
                 _userIgnores = _(user.ignores || []),
                 paginationroot = (req.url.replace(/\/page(\/[0-9]*)/, '')).replace(/\/\//g, '/').replace(/\/$/,''),
-                pageroot = paginationroot.replace(/\/sort(\/[0-9a-z]*)/i, ''),
+                pageroot = paginationroot.replace(/\/sort(\/[0-9a-z-]*)/i, ''),
                 flag = 0;
 
             if(paginationroot === '/'){
@@ -67,6 +68,9 @@ module.exports = {
                 pageroot: pageroot,
                 title: title,
                 titleauthor: titleauthor,
+                sortingStarted: sortBy === '-created',
+                sortingLatest: sortBy === '-last_comment_time',
+                sortingPosts: sortBy === '-numcomments',
                 threads: _(json.threads).map(function(thread){
                     thread.id = thread._id;
 

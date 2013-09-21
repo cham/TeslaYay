@@ -43,7 +43,8 @@ module.exports = function routing(app, api, renderGenerator){
         params = params || {};
         
         var user = req.session.user,
-            page = parseInt((req.route.params.page || '').replace('/', ''), 10);
+            page = parseInt((req.route.params.page || '').replace('/', ''), 10),
+            sortBy = params.sortBy;
 
         if(!page || isNaN(page)){
             page = 1;
@@ -55,7 +56,7 @@ module.exports = function routing(app, api, renderGenerator){
                 res,
                 _(params || {}).extend({ page: page }),
                 user,
-                renderGenerator.threadsListingHandler(req, res, {titledata: titlejson, page: page}, next)
+                renderGenerator.threadsListingHandler(req, res, {titledata: titlejson, page: page, sortBy: sortBy}, next)
             );
         });
     }
@@ -76,6 +77,9 @@ module.exports = function routing(app, api, renderGenerator){
         if(type === 'started'){ type = 'created'; }
         if(type === 'latest'){ type = 'last_comment_time'; }
         if(type === 'posts'){ type = 'numcomments'; }
+        if(type === '-started'){ type = '-created'; }
+        if(type === '-latest'){ type = '-last_comment_time'; }
+        if(type === '-posts'){ type = '-numcomments'; }
 
         return {
             sortBy: type
@@ -88,13 +92,13 @@ module.exports = function routing(app, api, renderGenerator){
     });
 
     // sorting
-    app.get('/sort/:sorttype(started|latest|posts)', function(req, res, next){
+    app.get('/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeSortFilter(req.route.params.sorttype)
         ));
     });
 
-    app.get('/sort/:sorttype(started|latest|posts)/page/:page', function(req, res, next){
+    app.get('/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeSortFilter(req.route.params.sorttype)
         ));
@@ -113,14 +117,14 @@ module.exports = function routing(app, api, renderGenerator){
         ));
     });
 
-    app.get('/category/:categories/sort/:sorttype(started|latest|posts)', function(req, res, next){
+    app.get('/category/:categories/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             { categories: req.route.params.categories },
             makeSortFilter(req.route.params.sorttype)
         ));
     });
 
-    app.get('/category/:categories/sort/:sorttype(started|latest|posts)/page/:page', function(req, res, next){
+    app.get('/category/:categories/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             { categories: req.route.params.categories },
             makeSortFilter(req.route.params.sorttype)
@@ -140,14 +144,14 @@ module.exports = function routing(app, api, renderGenerator){
         ));
     });
 
-    app.get('/:type(participated|favourites|hidden|started)/sort/:sorttype(started|latest|posts)', checkAuth, function(req, res, next){
+    app.get('/:type(participated|favourites|hidden|started)/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', checkAuth, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeTypeFilter(req.route.params.type, req.session.user.username),
             makeSortFilter(req.route.params.sorttype)
         ));
     });
 
-    app.get('/:type(participated|favourites|hidden|started)/sort/:sorttype(started|latest|posts)/page/:page', checkAuth, function(req, res, next){
+    app.get('/:type(participated|favourites|hidden|started)/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', checkAuth, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeTypeFilter(req.route.params.type, req.session.user.username),
             makeSortFilter(req.route.params.sorttype)
