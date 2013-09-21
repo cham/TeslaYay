@@ -75,7 +75,7 @@ module.exports = function routing(app, api, renderGenerator){
 
         if(type === 'started'){ type = 'created'; }
         if(type === 'latest'){ type = 'last_comment_time'; }
-        if(type === 'posts'){ type = 'comments'; }
+        if(type === 'posts'){ type = 'numcomments'; }
 
         return {
             sortBy: type
