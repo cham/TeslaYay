@@ -8,14 +8,14 @@ var _ = require('underscore'),
 
 module.exports = {
     
-    threadsListingHandler: function(req, res, globaldata, next){
-        globaldata = globaldata || {};
+    threadsListingHandler: function(req, res, renderdata, next){
+        renderdata = renderdata || {};
 
-        var activepage = parseInt(req.route.params.page, 10) || 1,
+        var activepage = renderdata.page,//parseInt(req.route.params.page, 10) || 1,
             user = req.session.user || {},
             numcomments = (user.preferences && user.preferences.numcomments) || 50,
-            title = (globaldata.titledata || {}).title,
-            titleauthor = (globaldata.titledata || {}).username,
+            title = (renderdata.titledata || {}).title,
+            titleauthor = (renderdata.titledata || {}).username,
             that = this;
 
         return function(err, json){
@@ -49,6 +49,7 @@ module.exports = {
                 _userBuddies = _(user.buddies || []),
                 _userIgnores = _(user.ignores || []),
                 paginationroot = (req.url.replace(/\/page(\/[0-9]*)/, '')).replace(/\/\//g, '/').replace(/\/$/,''),
+                pageroot = paginationroot.replace(/\/sort(\/[0-9a-z]*)/i, ''),
                 flag = 0;
 
             if(paginationroot === '/'){
@@ -63,12 +64,12 @@ module.exports = {
                 user: user.username ? user : false,
                 paginationtext: paginationtext,
                 paginationroot: paginationroot,
+                pageroot: pageroot,
                 title: title,
                 titleauthor: titleauthor,
                 threads: _(json.threads).map(function(thread){
                     thread.id = thread._id;
 
-                    thread.numcomments = thread.comments.length;
                     threadpages = renderUtils.generatePaging({
                         setsize: thread.numcomments,
                         pagesize: numcomments,
