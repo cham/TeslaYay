@@ -169,11 +169,19 @@ module.exports = {
             selecteduser = selecteduser || {};
 
             var _userBuddies = _(user.buddies || []),
-                _userIgnores = _(user.ignores || []);
+                _userIgnores = _(user.ignores || []),
+                created = moment(selecteduser.created),
+                daysSince = Math.max(1, created.diff(new Date(), 'days')),
+                numcomments = selecteduser.comments_count,
+                postsPerDay = numcomments / daysSince;
 
             res.render('user', {
                 user: user.username ? user: false, //probably confusing, rename to 'sessionuser'?
                 profilename: selecteduser.username,
+                membersince: created.format('MMMM D YYYY'),
+                numthreads: selecteduser.threads_count,
+                numcomments: numcomments,
+                postsperday: postsPerDay,
                 buddy: _userBuddies.indexOf(selecteduser.username) > -1,
                 ignored: _userIgnores.indexOf(selecteduser.username) > -1
             });
