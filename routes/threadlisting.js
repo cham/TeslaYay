@@ -25,9 +25,8 @@
  */
 var _ = require('underscore');
 
-
 function checkAuth(req, res, next){
-    if(!req.session || !req.session.user){
+    if(!req.session || !req.session.user || req.session.user.banned){
         if(req.route.method === 'get'){
             return res.redirect('/');
         }

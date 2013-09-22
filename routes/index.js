@@ -32,7 +32,7 @@ module.exports = function routing(){
         req.session.user.preferences = userprefs;
     }
     function checkAuth(req, res, next){
-        if(!req.session || !req.session.user){
+        if(!req.session || !req.session.user || req.session.user.banned){
             if(req.route.method === 'get'){
                 return res.redirect('/');
             }
