@@ -9,6 +9,7 @@ Tesla Yayhooray app, runs on top of TeslaAPI https://github.com/cham/TeslaAPI
 * [Node.JS](http://nodejs.org/)
 * [MongoDB](http://www.mongodb.org/)
 * [TeslaAPI](https://github.com/cham/TeslaAPI)
+* [Xcode Command Line Tools - Mac only](https://developer.apple.com/xcode/)
 
 ## Getting started
 1. clone the repo
