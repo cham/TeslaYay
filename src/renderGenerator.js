@@ -88,7 +88,7 @@ module.exports = {
                     thread.haspagination = threadpages.length > 1;
 
                     thread.favourite = _userFavourites.indexOf(thread._id) > -1;
-                    thread.hidden = _userHidden.indexOf(thread._id) > -1;
+                    thread.ishidden = _userHidden.indexOf(thread._id) > -1;
 
                     flag = 1 - flag;
                     thread.alt = flag;

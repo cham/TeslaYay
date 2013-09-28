@@ -76,7 +76,7 @@
 {{#user}}
           <div class="five">
             <a class="favourite{{#favourite}} added{{/favourite}}" href="{{^favourite}}/thread/{{urlname}}/favourite{{/favourite}}{{#favourite}}/thread/{{urlname}}/unfavourite{{/favourite}}" data-id="{{id}}"></a>
-            <a class="hide-thread" href="/thread/{{urlname}}/hide" data-id="{{id}}"></a>
+            <a class="hide-thread" href="/thread/{{urlname}}/{{#ishidden}}unhide{{/ishidden}}{{^ishidden}}hide{{/ishidden}}" data-id="{{id}}"></a>
           </div>
 {{/user}}
         </div>

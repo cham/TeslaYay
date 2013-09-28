@@ -72,6 +72,20 @@ module.exports = function routing(app, api){
             res.send(user);
         });
     });
+    app.put('/thread/:threadUrlName/unhide', checkAuth, function(req, res, next){
+        api.modifyUserList(res, {
+            listval: req.body.threadid,
+            route: 'unhide'
+        }, req.session.user, function(err, user){
+            if(err) return next(err);
+
+            if(user._id){
+                setUser(req, user);
+            }
+
+            res.send(user);
+        });
+    });
 
     // add buddy / ignore
     app.post('/buddies', checkAuth, function(req, res, next){
