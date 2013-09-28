@@ -224,7 +224,7 @@ module.exports = {
         });
     },
 
-    addToUserList: function(res, body, user, cb){
+    modifyUserList: function(res, body, user, cb){
         user = user || {};
 
         request({

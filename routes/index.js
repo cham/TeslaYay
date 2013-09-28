@@ -8,6 +8,7 @@ var _ = require('underscore'),
     async = require('async'),
     moment = require('moment'),
     listingRoutes = require('./threadlisting'),
+    userListRoutes = require('./userlists'),
     fs = require('fs'),
     api = require('../src/api'),
     renderGenerator = require('../src/renderGenerator'),
@@ -52,6 +53,7 @@ module.exports = function routing(){
     }
 
     listingRoutes(app, api, renderGenerator);
+    userListRoutes(app, api);
 
     // buddy / ignore listing
     app.get('/buddies(/:username)?', checkAuth, function(req, res, next){
@@ -160,63 +162,6 @@ module.exports = function routing(){
             }
 
             res.redirect(req.headers['referer']);
-        });
-    });
-
-
-    /*
-     * puts
-     */
-    // add favourite
-    app.put('/thread/:threadUrlName/favourite', checkAuth, function(req, res, next){
-        api.addToUserList(res, {
-            listval: req.body.threadid,
-            route: 'favourite'
-        }, req.session.user, function(err, user){
-            if(err) return next(err);
-
-            if(user._id){
-                setUser(req, user);
-            }
-
-            res.send(user);
-        });
-    });
-    // hide thread
-    app.put('/thread/:threadUrlName/hide', checkAuth, function(req, res, next){
-        api.addToUserList(res, {
-            listval: req.body.threadid,
-            route: 'hide'
-        }, req.session.user, function(err, user){
-            if(err) return next(err);
-
-            if(user._id){
-                setUser(req, user);
-            }
-
-            res.send(user);
-        });
-    });
-    // add buddy / ignore
-    app.post('/buddies', checkAuth, function(req, res, next){
-        var body = req.body || {},
-            route = body.command === 'ignore' ? 'ignore' : 'buddy';
-
-        api.addToUserList(res, {
-            listval: body.username,
-            route: route
-        }, req.session.user, function(err, user){
-            if(err) return next(err);
-
-            if(user._id){
-                setUser(req, user);
-            }
-
-            if(req.body.redirect){
-                res.redirect(req.headers['referer']);
-            }else{
-                res.send(user);
-            }
         });
     });
 

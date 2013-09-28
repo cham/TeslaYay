@@ -140,20 +140,16 @@ $('.favourite').bind('click', function(e){
       threadurl = button.attr('href'),
       threadid = button.data('id');
 
-  if(!$(this).hasClass('added')) {
-    $.ajax({
-      method: 'put',
-      url: threadurl,
-      data: {
-        threadid: threadid
-      },
-      success: function(data){
-        button.addClass('added');
-      }
-    });
-  } else {
-    console.log('unfavourite');
-  }
+  $.ajax({
+    method: 'put',
+    url: threadurl,
+    data: {
+      threadid: threadid
+    },
+    success: function(data){
+      button.toggleClass('added');
+    }
+  });
 });
 
 
