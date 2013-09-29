@@ -302,6 +302,58 @@ function isThread() {
     });
   });
 
+  // buddy/ignore switching links
+  $('.remove-acq, .toggle-acq').click(function(e){
+    e.preventDefault();
+
+    var $this = $(this),
+        $parent = $(this).parent(),
+        username = $(this).attr('rel'),
+        reltypes = ['ignore','buddy'],
+        relindex = $parent.filter('.buddy-listing').length,
+        switchBuddyStatus = $this.hasClass('toggle-acq'),
+        command = reltypes[relindex];
+
+    // always remove
+    $.ajax({
+      method: 'post',
+      url: '/buddies',
+      data: {
+        command: command,
+        username: username,
+        remove: true
+      },
+      success: function(data){
+        var $userblock = $parent.detach();
+
+        // add new association
+        if(!switchBuddyStatus){ return; }
+
+        command = reltypes[1-relindex];
+        $.ajax({
+          method: 'post',
+          url: '/buddies',
+          data: {
+            command: command,
+            username: username
+          },
+          success: function(data){
+            if(command === 'ignore'){
+              $userblock.removeClass('buddy-listing').addClass('enemy-listing');
+              $userblock.find('.toggle-acq').text('buddilize');
+              return $('#enemy-listings').append($userblock);
+            }
+
+            $userblock.removeClass('enemy-listing').addClass('buddy-listing');
+            $userblock.find('.toggle-acq').text('ignore');
+            $('#buddy-listings').append($userblock);
+          }
+        });
+      }
+    });
+
+  });
+
   // points
   var $pointsButtons = $('.give-point, .take-point');
   $pointsButtons.click(function(e){

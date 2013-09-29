@@ -90,7 +90,9 @@ module.exports = function routing(app, api){
     // add buddy / ignore
     app.post('/buddies', checkAuth, function(req, res, next){
         var body = req.body || {},
-            route = body.command === 'ignore' ? 'ignore' : 'buddy';
+            route = body.remove ? 'un' : '';
+
+        route += body.command === 'ignore' ? 'ignore' : 'buddy';
 
         api.modifyUserList(res, {
             listval: body.username,
