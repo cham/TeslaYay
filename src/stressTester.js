@@ -39,7 +39,7 @@ var testthread = {
 
 module.exports = {
     routing: function(app){
-        app.get('/stresstarget', this.newthread);
+        app.get('/stresstarget', this.getindex);
         app.get('/stresstest', this.runner);
     },
     runner: function(req, res, next){
@@ -47,7 +47,7 @@ module.exports = {
             host: 'localhost',
             port: 3100,
             timeLimit: 30*60,
-            targetRps: 500,
+            targetRps: 10,
             requestGenerator: function(client){
                 var request = client.request('GET', "/stresstarget?_=" + Math.floor(Math.random()*100000000));
                 request.end();
@@ -98,7 +98,7 @@ module.exports = {
         });
     },
     getindex: function(req, res, next){
-        api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadslistingHandler(req, res, next));
+        api.getThreads(res, req.route.params || {}, req.session.user, renderGenerator.threadsListingHandler(req, res, next));
     },
     getthread: function(req, res, next){
         api.getThread(res, {threadUrlName: testthread._id}, req.session.user, function(err, thread){
