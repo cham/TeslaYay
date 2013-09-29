@@ -179,46 +179,4 @@
 </div>
 
 </div>
-
-  <a name="bottom"></a>
-  <div id="bottom"></div>
-
-  <script>window.$ || document.write('<script src="/src/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
-  <script>window._ || document.write('<script src="/src/lib/underscore-min.js">\x3C/script>')</script>
-  <script type="text/javascript">
-    var originalTitle = document.title,
-      currentNotification;
-
-    function thread_notifier() {
-      $.ajax({
-        url: '/ajax/thread_notifier/26209/9',
-        success: function(data)
-        {
-          if (data)
-          {
-            var text = $(data).text();
-            document.title = text.replace(" added", "") + " | " + originalTitle;
-            if (text !== currentNotification)
-            {
-              $("#notifier").remove();
-              currentNotification = text;
-              $('#notifications').append(data).show();
-            }
-          }
-        }
-      });
-    }
-
-    $("#closenotify").on("click", function() {
-      $('#notifications').remove();
-      clearTimeout(notification);
-      document.title = originalTitle;
-    });
-
-    var notification = setInterval(thread_notifier, 10000);
-  </script>
-  <script type="text/javascript" src="/js/thread.js?v=28"></script>
-  <script src="/js/global.js?v=28"></script>
-
-</body>
-</html>
+{{>footer}}
