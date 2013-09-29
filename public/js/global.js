@@ -49,7 +49,7 @@ NestedQuote.prototype.applyNesting = function($childQuote){
     return;
   }
   if(this.skipToggle($childQuote)){
-    return this.applyNesting($childQuote.find('.tquote:first'));;
+    return this.applyNesting($childQuote.find('.tquote:first'));
   }
 
   $childQuote.before(this.makeToggle($childQuote));
@@ -373,7 +373,7 @@ function isThread() {
           $pointsButtons.remove();
         }
       }
-    })
+    });
   });
 
   // keyboard nav
