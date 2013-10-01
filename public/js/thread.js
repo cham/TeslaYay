@@ -28,8 +28,8 @@ $.fn.selectRange = function(start, end) {
 function format_special(element)
 {
   $('spoiler').each(function() {
-    var warning_msg = 'Warning! May contain spoilers. Click to reveal.'
-    var $spoiler = $('<div class="spoiler"></div>'),
+    var warning_msg = 'Warning! May contain spoilers. Click to reveal.',
+        $spoiler = $('<div class="spoiler"></div>'),
         $disclaimer = $('<div class="spoiler-disclaimer"></div>').text(warning_msg),
         $content = $('<div class="spoiler-content"></div>').html( $(this).html() );
     $spoiler.append($disclaimer).append($content).click(function(){
@@ -172,12 +172,12 @@ $('.content').click(function() {
 	dash = p.id.lastIndexOf('-');
 
 	if(dash != -1) {
-	  selected.comment_id = p.id.substring(dash+1);
+    selected.comment_id = p.id.substring(dash+1);
 
-	  fragment = selRange.cloneContents();
-	  e = document.createElement('b');
-	  e.appendChild(fragment);
-	  selected.html = e.innerHTML;
+    fragment = selRange.cloneContents();
+    e = document.createElement('b');
+    e.appendChild(fragment);
+    selected.html = e.innerHTML;
 	}
       }
       //selObj.removeAllRanges();
@@ -201,33 +201,33 @@ thread = {
 
   get_comment_details: function(comment_id, callback)
   {
-    $.ajax({
-      url: '/ajax/view_source/'+comment_id,
-      success: function(data) {
-	if (data) {
-	  container = $('#comment-'+comment_id+' .content');
+    return alert('get_comment_details replace ajax');
+    // $.ajax({
+    //   url: '/ajax/view_source/'+comment_id,
+    //   success: function(data) {
+    //     if(!data) return;
+    //     container = $('#comment-'+comment_id+' .content');
 
-	  // set the originals
-	  thread.comments[comment_id] = {
-	    container: container,
-	    rendered: container.html(),
-	    data: eval(data),
-	    author: $('#comment-'+comment_id+' .username a').html()
-	  };
+    //     // set the originals
+    //     thread.comments[comment_id] = {
+    //       container: container,
+    //       rendered: container.html(),
+    //       data: eval(data),
+    //       author: $('#comment-'+comment_id+' .username a').html()
+    //     };
 
-	  callback();
-	}
-      }
-    });
+    //     callback();
+    //   }
+    // });
   },
 
   quote: function(comment_id)
   {
     if (thread.comments[comment_id] !== undefined) {
       if(selected.comment_id && selected.comment_id != comment_id || !selected.html) {
-	content = thread.comments[comment_id].data.content;
+        content = thread.comments[comment_id].data.content;
       } else {
-	content = selected.html;
+        content = selected.html;
       }
 
       selected.html = null;
@@ -274,18 +274,18 @@ thread = {
     $.get(
       '/ajax/set_thread_status/'+ thread_id +'/'+ keyword +'/'+ status +'/'+ key,
       function(data) {
-	if (data == 1) {
-	  if(keyword == 'deleted') {
-	    location = '/';
-	  } else {
-	    status = status == 1 ? 0 : 1;
+        if(data !== 1) return;
 
-	    $('#control-'+ keyword +' span').unbind('click').bind('click', function(){
-	      thread.set_status(thread_id, keyword, status, key);
-	      return false;
-	    }).html(thread.status_text[keyword][status]);
-	  }
-	}
+        if(keyword == 'deleted') {
+          window.location = '/';
+          return;
+        }
+          status = status == 1 ? 0 : 1;
+
+        $('#control-'+ keyword +' span').unbind('click').bind('click', function(){
+        thread.set_status(thread_id, keyword, status, key);
+        return false;
+        }).html(thread.status_text[keyword][status]);
       }
     );
   },
@@ -345,8 +345,7 @@ function insertAtCaret(areaId,text) {
   var selection;
   var removeOffset;
   var range;
-  var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
-	    "ff" : (document.selection ? "ie" : false ) );
+  var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? "ff" : (document.selection ? "ie" : false ) );
 
   if (br == "ie") {
     txtarea.focus();
