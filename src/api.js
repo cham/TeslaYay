@@ -167,9 +167,9 @@ module.exports = {
         user = user || {};
         try {
             check(body.categories, 'Categories failed validation').notNull();
-            check(body.name, 'Name failed validation').notNull().notEmpty().len(1, 96);
-            check(body.content, 'Content failed validation').notNull().notEmpty();
-            check(user.username, 'User not found').notNull().notEmpty();
+            check(body.name, 'Name failed validation').notEmpty().len(1, 96);
+            check(body.content, 'Content failed validation').notEmpty();
+            check(user.username, 'User not found').notEmpty();
         }catch(err){
             return cb(err);
         }
@@ -196,7 +196,7 @@ module.exports = {
         user = user || {};
 
         try {
-            check(body.content, 'Content failed validation').notNull().notEmpty();
+            check(body.content, 'Content failed validation').notEmpty();
             check(body.threadid, 'Threadid failed validation').isHexadecimal().len(24);
         }catch(err){
             return cb(err);
@@ -222,6 +222,14 @@ module.exports = {
     registerUser: function(res, body, user, cb){
         user = user || {};
 
+        try {
+            check(body.username, 'Username failed validation').len(1,32);
+            check(body.password, 'Password failed validation').len(4,30);
+            check(body.email, 'Email failed validation').isEmail();
+        }catch(err){
+            return cb(err);
+        }
+
         request({
             method: 'post',
             uri: apiUrl + '/user',
@@ -242,6 +250,13 @@ module.exports = {
     handleLogin: function(res, body, user, cb){
         user = user || {};
 
+        try {
+            check(body.username, 'Username failed validation').len(1,32);
+            check(body.password, 'Password failed validation').len(4,30);
+        }catch(err){
+            return cb(err);
+        }
+
         request({
             method: 'post',
             uri: apiUrl + '/login',
@@ -261,6 +276,14 @@ module.exports = {
     modifyUserList: function(res, body, user, cb){
         user = user || {};
 
+        try {
+            check(body.route, 'Route failed validation').notEmpty();
+            check(body.listval, 'List failed validation').notNull();
+            check(user.username, 'User not found').notNull();
+        }catch(err){
+            return cb(err);
+        }
+
         request({
             method: 'put',
             url: apiUrl + '/user/' + user.username + '/' + body.route,
@@ -277,16 +300,18 @@ module.exports = {
     },
 
     changeTitle: function(res, body, user, cb){
-        if(!user || !user.username) return cb(new Error('changeTitle requires a user'));
+        user = user || {};
 
         var title = body.title || '';
 
         try {
-            check(title).len(1, 36);
-            title = sanitize(title).entityEncode().trim();
+            check(title, 'Title failed validation').len(1, 36);
+            check(user.username, 'User not found').notNull();
         }catch(e){
             return cb(e);
         }
+
+        title = sanitize(title).entityEncode().trim();
 
         async.parallel([
             function(done){
