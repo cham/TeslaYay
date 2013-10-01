@@ -7,6 +7,7 @@ var _ = require('underscore'),
     moment = require('moment'),
     check = require('validator').check,
     sanitize = require('validator').sanitize,
+    XSSWrapper = require('./xsswrapper'),
     apiUrl = 'http://localhost:3000',
     request = require('request').defaults({
         encoding: 'utf8',
@@ -173,7 +174,7 @@ module.exports = {
             uri: apiUrl + '/comment',
             form: {
                 postedby: user.username,
-                content: body.content.replace(/\n/g, '<br>'),
+                content: XSSWrapper(body.content.replace(/\n/g, '<br>')).clean(),
                 threadid: body.threadid
             }
         }, function(err, response, json){
