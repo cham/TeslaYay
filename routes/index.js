@@ -153,7 +153,7 @@ module.exports = function routing(){
     // login
     app.post('/login', function(req, res, next){
         api.handleLogin(res, req.body, req.session.user, function(err, user){
-            if(user.username){
+            if(user && user.username){
                 setUser(req, user);
             }else{
                 delete req.session.user;
