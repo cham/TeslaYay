@@ -43,13 +43,13 @@
           </div>
 
 {{#comments}}
-          <div id="comment-1068926" class="comment {{#buddy}}buddy{{/buddy}}">
-            <div id="comment-container-1068926" class="comment-container">
+          <div id="comment-{{id}}" class="comment {{#buddy}}buddy{{/buddy}}">
+            <div id="comment-container-{{id}}" class="comment-container">
               <div class="cmd-bar">
                 <span>
-                  <a class="view-source" onclick="thread.view_source(1068926); return false;">View Source</a>
+                  <a class="view-source" onclick="thread.view_source('{{id}}'); return false;">View Source</a>
                 </span>
-                <a class="quote" onclick="thread.quote(1068926);">Quote</a>
+                <a class="quote" onclick="thread.quote('{{id}}');">Quote</a>
               </div>
               <div class="user-block">
                 <div class="username {{#buddy}}buddy{{/buddy}}">

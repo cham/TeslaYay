@@ -201,24 +201,19 @@ thread = {
 
   get_comment_details: function(comment_id, callback)
   {
-    return alert('get_comment_details replace ajax');
-    // $.ajax({
-    //   url: '/ajax/view_source/'+comment_id,
-    //   success: function(data) {
-    //     if(!data) return;
-    //     container = $('#comment-'+comment_id+' .content');
+    // this is duplicating content on quotes
+    var $container = $('#comment-'+comment_id+' .content');
 
-    //     // set the originals
-    //     thread.comments[comment_id] = {
-    //       container: container,
-    //       rendered: container.html(),
-    //       data: eval(data),
-    //       author: $('#comment-'+comment_id+' .username a').html()
-    //     };
-
-    //     callback();
-    //   }
-    // });
+    thread.comments[comment_id] = {
+      container: $container,
+      rendered: $container.html(),
+      data: {
+        content: $container.html().replace(/<br>/g, "\n"),
+        owner: false
+      },
+      author: $('#comment-'+comment_id+' .username a').html()
+    };
+    return callback();
   },
 
   quote: function(comment_id)

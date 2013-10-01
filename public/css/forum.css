@@ -2089,7 +2089,11 @@ line-height: 20px;
 }
 
 .tquote img {
-    max-width: 250px !important;
+    /*max-width: 250px !important;*/
+}
+.tquote .youtube_placeholder {
+    position: absolute;
+    top: 0;
 }
 
 #post-shortcuts p {
