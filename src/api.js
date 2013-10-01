@@ -165,14 +165,24 @@ module.exports = {
 
     postThread: function(res, body, user, cb){
         user = user || {};
-        body = _(body || {}).extend({
-            postedby: user.username
-        });
+        try {
+            check(body.categories, 'Categories failed validation').notNull();
+            check(body.name, 'Name failed validation').notNull().notEmpty().len(1, 96);
+            check(body.content, 'Content failed validation').notNull().notEmpty();
+            check(user.username, 'User not found').notNull().notEmpty();
+        }catch(err){
+            return cb(err);
+        }
 
         request({
             method: 'post',
             uri: apiUrl + '/thread',
-            form: body
+            form: {
+                categories: body.categories,
+                name: body.name,
+                content: body.content,
+                postedby: user.username
+            }
         }, function(err, response, json){
             if(!checkResponse(err, response, cb)) return;
 
@@ -184,6 +194,13 @@ module.exports = {
 
     postComment: function(res, body, user, cb){
         user = user || {};
+
+        try {
+            check(body.content, 'Content failed validation').notNull().notEmpty();
+            check(body.threadid, 'Threadid failed validation').isHexadecimal().len(24);
+        }catch(err){
+            return cb(err);
+        }
 
         request({
             method: 'post',
