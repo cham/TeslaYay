@@ -4,8 +4,8 @@
 function NestedQuote($node){
   this.$node = $node;
   this.labels = {
-    'up'  : 'Click to show older',
-    'down': 'Click to hide'
+    'up'  : 'Show older',
+    'down': 'Hide'
   };
   this.doNesting();
 }

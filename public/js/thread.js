@@ -202,18 +202,27 @@ thread = {
   get_comment_details: function(comment_id, callback)
   {
     // this is duplicating content on quotes
-    var $container = $('#comment-'+comment_id+' .content');
+    var $container = $('#comment-'+comment_id+' .content'),
+        author = $('#comment-'+comment_id+' .username a').text();
 
-    thread.comments[comment_id] = {
-      container: $container,
-      rendered: $container.html(),
-      data: {
-        content: $container.html().replace(/<br>/g, "\n"),
-        owner: false
-      },
-      author: $('#comment-'+comment_id+' .username a').html()
-    };
-    return callback();
+    $.ajax({
+      method: 'get',
+      url: '/comment/' + comment_id,
+      success: function(data){
+        if(!data || !data.content) return;
+
+        thread.comments[comment_id] = {
+          container: $container,
+          rendered: $container.html(),
+          data: {
+            content: data.content.replace(/<br>/g, "\n"),
+            owner: data.postedby === author
+          },
+          author: author
+        };
+        callback();
+      }
+    });
   },
 
   quote: function(comment_id)

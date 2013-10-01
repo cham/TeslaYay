@@ -147,6 +147,22 @@ module.exports = {
         });
     },
 
+    getComment: function(res, params, user, cb){
+        user = user || {};
+        var commentId = params.commentId;
+
+        request({
+            method: 'get',
+            uri: apiUrl + '/comment/' + commentId + '/summary'
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(json){
+                cb(null, json);
+            });
+        });
+    },
+
     postThread: function(res, body, user, cb){
         user = user || {};
         body = _(body || {}).extend({

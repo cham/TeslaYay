@@ -107,6 +107,15 @@ module.exports = function routing(){
         api.getUser(res, req.route.params || {}, req.session.user, renderGenerator.userDetailHandler(req, res, next));
     });
 
+    // comment
+    app.get('/comment/:commentId', function(req, res, next){
+        api.getComment(res, req.route.params || {}, req.session.user, function(err, comment){
+            if(err) return next(err);
+
+            res.send(comment);
+        });
+    });
+
     // POSTs
     // post thread
     app.post('/newthread', checkAuth, function(req, res, next){
