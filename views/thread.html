@@ -37,7 +37,7 @@
             <span class="paging-text">
               {{paginationtext}}
               in <a href="/">Threads</a> &gt;
-              <a href="/search/{{firstcategory}}">{{firstcategory}}</a> &gt;
+              <a href="/category/{{firstcategory}}">{{firstcategory}}</a> &gt;
               <a href="/thread/{{threadurlname}}">{{title}}</a>
             </span>
           </div>
@@ -83,11 +83,25 @@
 {{/comments}}
 
           <div class="pagination bottom">
-            
+            <div class="main-pagination">
+              {{#pages}}
+              {{#separator}}
+              <span class="ellipsis">...</span>
+              {{/separator}}
+              {{^separator}}
+                {{#active}}
+              <div class="selected-page">{{num}}</div>
+                {{/active}}
+                {{^active}}
+              <a href="/thread/{{threadurlname}}{{url}}">{{num}}</a>
+                {{/active}}
+              {{/separator}}
+              {{/pages}}
+            </div>
             <span class="paging-text">
               {{paginationtext}}
               in <a href="/">Threads</a> &gt;
-              <a href="/search/{{firstcategory}}">{{firstcategory}}</a> &gt;
+              <a href="/category/{{firstcategory}}">{{firstcategory}}</a> &gt;
               <a href="/thread/{{threadurlname}}">{{title}}</a>
             </span>
 
