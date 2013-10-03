@@ -27,9 +27,9 @@ function randomString(memo, length){
 }
 
 var testthread = {
-        _id: '52343e0881f2730000000004',
-        urlname: 'new-thred-ok',
-        username: 'dan'
+        _id: '524d7aedd0edb00000000567',
+        urlname: 'long-thread',
+        username: 'newcham'
     };
 
 // current yay stats
@@ -39,7 +39,7 @@ var testthread = {
 
 module.exports = {
     routing: function(app){
-        app.get('/stresstarget', this.getindex);
+        app.get('/stresstarget', this.randomcomment);
         app.get('/stresstest', this.runner);
     },
     runner: function(req, res, next){
@@ -47,7 +47,7 @@ module.exports = {
             host: 'localhost',
             port: 3100,
             timeLimit: 30*60,
-            targetRps: 10,
+            targetRps: 300,
             requestGenerator: function(client){
                 var request = client.request('GET', "/stresstarget?_=" + Math.floor(Math.random()*100000000));
                 request.end();
