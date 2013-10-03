@@ -179,8 +179,8 @@ module.exports = {
             uri: apiUrl + '/thread',
             form: {
                 categories: body.categories,
-                name: body.name,
-                content: body.content,
+                name: XSSWrapper(body.name).clean().value(),
+                content: XSSWrapper(body.content).clean().convertNewlines().convertPinkies().value(),
                 postedby: user.username
             }
         }, function(err, response, json){
@@ -207,7 +207,7 @@ module.exports = {
             uri: apiUrl + '/comment',
             form: {
                 postedby: user.username,
-                content: XSSWrapper(body.content.replace(/\n/g, '<br>')).clean(),
+                content: XSSWrapper(body.content).clean().convertNewlines().convertPinkies().value(),
                 threadid: body.threadid
             }
         }, function(err, response, json){
