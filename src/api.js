@@ -180,7 +180,7 @@ module.exports = {
             form: {
                 categories: body.categories,
                 name: XSSWrapper(body.name).clean().value(),
-                content: XSSWrapper(body.content).clean().convertNewlines().convertPinkies().value(),
+                content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value(),
                 postedby: user.username
             }
         }, function(err, response, json){
@@ -207,7 +207,7 @@ module.exports = {
             uri: apiUrl + '/comment',
             form: {
                 postedby: user.username,
-                content: XSSWrapper(body.content).clean().convertNewlines().convertPinkies().value(),
+                content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value(),
                 threadid: body.threadid
             }
         }, function(err, response, json){

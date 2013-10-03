@@ -85,6 +85,16 @@ XSSWrapper.prototype.convertPinkies = function(){
     return this;
 };
 
+XSSWrapper.prototype.convertMe = function(user){
+    this.str = this.str.replace(/(^|\s|\n|<br>)\/me($|\s|\n|<br>)/g , '$1<a href="/user/' + user.urlname + '">' + user.username + '</a>$2');
+    return this;
+};
+
+XSSWrapper.prototype.convertYou = function(){
+    this.str = this.str.replace(/(^|\s|\n|<br>)\/you($|\s|\n|<br>)/g , '$1<span class="you">you</span>$2');
+    return this;
+};
+
 /* getter */
 XSSWrapper.prototype.value = function(){
     return this.str;

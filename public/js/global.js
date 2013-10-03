@@ -56,6 +56,9 @@ NestedQuote.prototype.applyNesting = function($childQuote){
   $childQuote.hide();
 };
 
+if($('.welcome a:first').length){
+  $('.you').html($('<div>').append($('.welcome a:first').clone()).html());
+}
 
 (function () {
   var title, tpl = $("#title-input").html();
