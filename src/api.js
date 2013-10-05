@@ -377,6 +377,24 @@ module.exports = {
         });
     },
 
+    ping: function(res, body, user, cb){
+        user = user || {};
+        if(!user.username){
+            return cb();
+        }
+
+        request({
+            method: 'get',
+            url: apiUrl + '/user/' + user.username + '/ping'
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
     getTitle: function(cb){
         fs.readFile('public/titles/current.json', function(err, json){
             if(!checkResponse(err, null, cb)) return;

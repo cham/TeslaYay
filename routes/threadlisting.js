@@ -25,18 +25,24 @@
  */
 var _ = require('underscore');
 
-function checkAuth(req, res, next){
-    if(!req.session || !req.session.user || req.session.user.banned){
-        if(req.route.method === 'get'){
-            return res.redirect('/');
-        }
-        res.status(401);
-        return res.end();
-    }
-    next();
-}
-
 module.exports = function routing(app, api, renderGenerator){
+    
+    function checkAuth(req, res, next){
+        if(!req.session || !req.session.user || req.session.user.banned){
+            if(req.route.method === 'get'){
+                return res.redirect('/');
+            }
+            res.status(401);
+            return res.end();
+        }
+        next();
+    }
+
+    function ping(req, res, next){
+        if(!req.session.user){ return next(); }
+        api.ping(res, {}, req.session.user, function(){});
+        next();
+    }
 
     function buildListing(req, res, next, params){
         params = params || {};
@@ -86,52 +92,52 @@ module.exports = function routing(app, api, renderGenerator){
     }
 
     // thread listing
-    app.get('/(page(/:page)?)?', function(req, res, next){
+    app.get('/(page(/:page)?)?', ping, function(req, res, next){
         if(req.query.name) return res.redirect('/find/' + req.query.name);
         buildListing(req, res, next);
     });
 
     // search
-    app.get('/find/:term', function(req, res, next){
+    app.get('/find/:term', ping, function(req, res, next){
         buildListing(req, res, next, {
             name: req.route.params.term
         });
     });
 
     // sorting
-    app.get('/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', function(req, res, next){
+    app.get('/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeSortFilter(req.route.params.sorttype)
         ));
     });
 
-    app.get('/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', function(req, res, next){
+    app.get('/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeSortFilter(req.route.params.sorttype)
         ));
     });
 
     // category search
-    app.get('/category/:categories', function(req, res, next){
+    app.get('/category/:categories', ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             { categories: req.route.params.categories }
         ));
     });
 
-    app.get('/category/:categories/page/:page', function(req, res, next){
+    app.get('/category/:categories/page/:page', ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             { categories: req.route.params.categories }
         ));
     });
 
-    app.get('/category/:categories/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', function(req, res, next){
+    app.get('/category/:categories/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             { categories: req.route.params.categories },
             makeSortFilter(req.route.params.sorttype)
         ));
     });
 
-    app.get('/category/:categories/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', function(req, res, next){
+    app.get('/category/:categories/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             { categories: req.route.params.categories },
             makeSortFilter(req.route.params.sorttype)
@@ -139,26 +145,26 @@ module.exports = function routing(app, api, renderGenerator){
     });
 
     // participated, favourites,  hidden, postedby
-    app.get('/:type(participated|favourites|hidden|started)', checkAuth, function(req, res, next){
+    app.get('/:type(participated|favourites|hidden|started)', checkAuth, ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeTypeFilter(req.route.params.type, req.session.user.username)
         ));
     });
 
-    app.get('/:type(participated|favourites|hidden|started)/page/:page', checkAuth, function(req, res, next){
+    app.get('/:type(participated|favourites|hidden|started)/page/:page', checkAuth, ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeTypeFilter(req.route.params.type, req.session.user.username)
         ));
     });
 
-    app.get('/:type(participated|favourites|hidden|started)/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', checkAuth, function(req, res, next){
+    app.get('/:type(participated|favourites|hidden|started)/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', checkAuth, ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeTypeFilter(req.route.params.type, req.session.user.username),
             makeSortFilter(req.route.params.sorttype)
         ));
     });
 
-    app.get('/:type(participated|favourites|hidden|started)/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', checkAuth, function(req, res, next){
+    app.get('/:type(participated|favourites|hidden|started)/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', checkAuth, ping, function(req, res, next){
         buildListing(req, res, next, _(req.query || {}).extend(
             makeTypeFilter(req.route.params.type, req.session.user.username),
             makeSortFilter(req.route.params.sorttype)

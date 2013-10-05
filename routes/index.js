@@ -48,6 +48,11 @@ module.exports = function routing(){
         }
         next();
     }
+    function ping(req, res, next){
+        if(!req.session.user){ return next(); }
+        api.ping(res, {}, req.session.user, function(){});
+        next();
+    }
     if(stresstest){
         stressTester.routing(app);
     }
@@ -56,7 +61,7 @@ module.exports = function routing(){
     userListRoutes(app, api);
 
     // buddy / ignore listing
-    app.get('/buddies(/:username)?', checkAuth, function(req, res, next){
+    app.get('/buddies(/:username)?', checkAuth, ping, function(req, res, next){
         async.parallel([
             function(done){
                 api.getUsers(res, { buddies: req.session.user.username }, req.session.user, function(err, json){
@@ -78,10 +83,10 @@ module.exports = function routing(){
     });
 
     // view thread
-    app.get('/thread/:threadUrlName', function(req, res, next){
+    app.get('/thread/:threadUrlName', ping, function(req, res, next){
         api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
     });
-    app.get('/thread/:threadUrlName/page/:page', function(req, res, next){
+    app.get('/thread/:threadUrlName/page/:page', ping, function(req, res, next){
         if(req.route.params.page === '1'){
             return res.redirect('/thread/' + req.route.params.threadUrlName);
         }
@@ -89,26 +94,26 @@ module.exports = function routing(){
     });
 
     // post thread form
-    app.get('/newthread', checkAuth, function(req, res, next){
+    app.get('/newthread', checkAuth, ping, function(req, res, next){
         res.render('post', {
             user: req.session.user
         });
     });
 
     // register form
-    app.get('/register', checkUnauth, function(req, res, next){
+    app.get('/register', checkUnauth, ping, function(req, res, next){
         res.render('register', {
             user: req.session.user
         });
     });
 
     // user page
-    app.get('/user/:username', function(req, res, next){
+    app.get('/user/:username', ping, function(req, res, next){
         api.getUser(res, req.route.params || {}, req.session.user, renderGenerator.userDetailHandler(req, res, next));
     });
 
     // comment
-    app.get('/comment/:commentId', function(req, res, next){
+    app.get('/comment/:commentId', ping, function(req, res, next){
         api.getComment(res, req.route.params || {}, req.session.user, function(err, comment){
             if(err) return next(err);
 
@@ -116,9 +121,20 @@ module.exports = function routing(){
         });
     });
 
+    // ping
+    app.get('/ping', function(req, res, next){
+        if(!req.session.user){
+            res.end();
+        }
+        api.ping(res, {}, req.session.user, function(err, user){
+            if(err) return next(err);
+            res.end();
+        });
+    });
+
     // POSTs
     // post thread
-    app.post('/newthread', checkAuth, function(req, res, next){
+    app.post('/newthread', checkAuth, ping, function(req, res, next){
         api.postThread(res, req.body, req.session.user, function(err, thread){
             if(err){
                 return next(err);
@@ -132,7 +148,7 @@ module.exports = function routing(){
     });
 
     // post comment
-    app.post('/thread/:threadUrlName', checkAuth, function(req, res, next){
+    app.post('/thread/:threadUrlName', checkAuth, ping, function(req, res, next){
         api.postComment(res, req.body, req.session.user, function(err, comment){
             if(req.body.redirect){
                 res.redirect(req.headers['referer']+'#bottom');
@@ -143,7 +159,7 @@ module.exports = function routing(){
     });
 
     // register
-    app.post('/register', function(req, res, next){
+    app.post('/register', ping, function(req, res, next){
         api.registerUser(res, req.body, req.session.user, function(err, user){
             setUser(req, user);
             res.redirect('/');
@@ -151,7 +167,7 @@ module.exports = function routing(){
     });
 
     // login
-    app.post('/login', function(req, res, next){
+    app.post('/login', ping, function(req, res, next){
         api.handleLogin(res, req.body, req.session.user, function(err, user){
             if(user && user.username){
                 setUser(req, user);
@@ -163,7 +179,7 @@ module.exports = function routing(){
     });
 
     // edit title
-    app.post('/title/edit', function(req, res, next){
+    app.post('/title/edit', ping, function(req, res, next){
         api.changeTitle(res, req.body, req.session.user, function(err){
             if(err){
                 res.status(400);
@@ -175,14 +191,14 @@ module.exports = function routing(){
     });
 
     // logout
-    app.post('/logout', function(req, res, next){
+    app.post('/logout', ping, function(req, res, next){
         delete req.session.user;
         res.redirect('/');
     });
 
     // PUT
     // edit comment
-    app.put('/comment/:commentid', function(req, res, next){
+    app.put('/comment/:commentid', ping, function(req, res, next){
         api.editComment(res, req.body, req.session.user, function(err, comment){
             if(err) return next(err);
 

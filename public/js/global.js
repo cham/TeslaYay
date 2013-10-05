@@ -440,4 +440,13 @@ function isThread() {
 
   });
 
+  // ping
+  function ping(){
+    if($('.welcome').length){
+      $.ajax('/ping');
+    }
+    setTimeout(ping, 30000);
+  }
+  setTimeout(ping, 30000);
+
 })();
