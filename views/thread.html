@@ -47,7 +47,7 @@
             <div id="comment-container-{{id}}" class="comment-container">
               <div class="cmd-bar">
                 <span>
-                  <a class="view-source" onclick="thread.view_source('{{id}}'); return false;">View Source</a>
+                  <a class="view-source" onclick="thread.view_source('{{id}}'); return false;">{{toggleSourceLabel}}</a>
                 </span>
                 <a class="quote" onclick="thread.quote('{{id}}');">Quote</a>
               </div>
@@ -75,7 +75,12 @@
               </div>
 
               <div class="content-block">
-                <div class="content">{{{content}}}</div>
+                <div class="content">
+                  {{{content}}}
+{{#editPercent}}
+                  <div class="edited-percent">Edited {{editPercent}}%</div>
+{{/editPercent}}
+                </div>
               </div>
               <div style="clear: both;"></div>
             </div>

@@ -219,6 +219,50 @@ module.exports = {
         });
     },
 
+    editComment: function(res, body, user, cb){
+        user = user || {};
+
+        try {
+            check(body.content, 'Content failed validation').notEmpty();
+            check(body.comment_id, 'Commentid failed validation').isHexadecimal().len(24);
+        }catch(err){
+            return cb(err);
+        }
+
+        this.getComment(res, {
+            commentId: body.comment_id
+        }, user, function(err, comment){
+            if(err) return cb(err);
+            
+            if(!comment){
+                res.status(401);
+                return cb('Comment not found');
+            }
+            if(user.username !== comment.postedby){
+                res.status(401);
+                return cb('User does not own this comment');
+            }
+            if(moment(comment.created).diff(new Date())<-600000){
+                res.status(401);
+                return cb('Cannot edit posts over 10 minutes old');
+            }
+
+            request({
+                method: 'put',
+                uri: apiUrl + '/comment/' + body.comment_id,
+                form: {
+                    content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value()
+                }
+            }, function(err, response, json){
+                if(!checkResponse(err, response, cb)) return;
+
+                parseJson(json, cb, function(comment){
+                    cb(null, comment);
+                });
+            });
+        });
+    },
+
     registerUser: function(res, body, user, cb){
         user = user || {};
 

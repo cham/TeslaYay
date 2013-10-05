@@ -203,7 +203,8 @@ thread = {
   {
     // this is duplicating content on quotes
     var $container = $('#comment-'+comment_id+' .content'),
-        author = $('#comment-'+comment_id+' .username a').text();
+        author = $('#comment-'+comment_id+' .username a').text(),
+        currentUser = $('.welcome a:first').text();
 
     $.ajax({
       method: 'get',
@@ -216,7 +217,7 @@ thread = {
           rendered: $container.html(),
           data: {
             content: data.content.replace(/<br>/g, "\n"),
-            owner: data.postedby === author
+            owner: (data.postedby === currentUser && moment(data.created).diff(new Date())>-600000)
           },
           author: author
         };
@@ -262,12 +263,16 @@ thread = {
     };
 
     $.ajax({
-      type: 'POST',
-      url: '/ajax/comment_save/'+comment_id,
+      method: 'put',
+      url: '/comment/' + comment_id,
       data: post_data,
       success: function(data){
-	format_special($('#comment-'+comment_id+' .content').html(data));
-        delete thread.comments[comment_id];
+        var html = data.content
+        if(Math.floor(data.edit_percent)>0){
+          html += '<div class="edited-percent">Edited ' + Math.floor(data.edit_percent) + '%</div>';
+        }
+        format_special($('#comment-'+comment_id+' .content').html(html));
+        delete thread.comments[data._id];
         prettyPrint();
       }
     });

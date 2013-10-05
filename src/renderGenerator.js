@@ -139,11 +139,14 @@ module.exports = {
                     activepage: activepage
                 }),
                 comments: _(thread.comments).map(function(comment){
-                    comment.id = comment._id;
-                    comment.createdago = moment(comment.created).fromNow();
-                    comment.buddy = _userBuddies.indexOf(comment.postedby) > -1;
-                    comment.ignored = _userIgnores.indexOf(comment.postedby) > -1;
-                    return comment;
+                    return _(comment).extend({
+                        id: comment._id,
+                        createdago: moment(comment.created).fromNow(),
+                        buddy: _userBuddies.indexOf(comment.postedby) > -1,
+                        ignored: _userIgnores.indexOf(comment.postedby) > -1,
+                        toggleSourceLabel: (comment.postedby === user.username && moment(comment.created).diff(new Date())>-600000) ? 'Edit Post' : 'View Source',
+                        editPercent: Math.floor(comment.edit_percent)
+                    });
                 }),
                 user: user.username ? user : false
             });

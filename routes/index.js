@@ -180,6 +180,20 @@ module.exports = function routing(){
         res.redirect('/');
     });
 
+    // PUT
+    // edit comment
+    app.put('/comment/:commentid', function(req, res, next){
+        api.editComment(res, req.body, req.session.user, function(err, comment){
+            if(err) return next(err);
+
+            if(req.body.redirect){
+                res.redirect(req.headers['referer']+'#bottom');
+            }else{
+                res.send(comment);
+            }
+        });
+    });
+
     return app.middleware;
 
 };
