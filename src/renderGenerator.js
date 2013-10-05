@@ -190,15 +190,17 @@ module.exports = {
             var _userBuddies = _(user.buddies || []),
                 _userIgnores = _(user.ignores || []),
                 created = moment(selecteduser.created),
-                daysSince = Math.max(1, created.diff(new Date(), 'days')),
+                lastlogin = moment(selecteduser.last_login),
+                daysSince = Math.max(1, Math.abs(created.diff(new Date(), 'days'))),
                 numcomments = selecteduser.comments_count,
                 onlinebuddies = WhosOnline.activeBuddies(user.buddies),
-                postsPerDay = numcomments / daysSince;
+                postsPerDay = Math.floor(numcomments / daysSince);
 
             res.render('user', {
                 user: user.username ? user: false, //probably confusing, rename to 'sessionuser'?
                 profilename: selecteduser.username,
                 membersince: created.format('MMMM D YYYY'),
+                lastlogin: lastlogin.format('MMMM D YYYY') + ' at ' + lastlogin.format('h:mm a'), //September 16th 2013 at 4:47 pm
                 numthreads: selecteduser.threads_count,
                 numcomments: numcomments,
                 postsperday: postsPerDay,
