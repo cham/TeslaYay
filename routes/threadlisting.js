@@ -87,7 +87,15 @@ module.exports = function routing(app, api, renderGenerator){
 
     // thread listing
     app.get('/(page(/:page)?)?', function(req, res, next){
+        if(req.query.name) return res.redirect('/find/' + req.query.name);
         buildListing(req, res, next);
+    });
+
+    // search
+    app.get('/find/:term', function(req, res, next){
+        buildListing(req, res, next, {
+            name: req.route.params.term
+        });
     });
 
     // sorting
