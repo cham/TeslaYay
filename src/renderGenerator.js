@@ -4,6 +4,7 @@
  */
 var _ = require('underscore'),
     moment = require('moment'),
+    WhosOnline = require('./WhosOnline'),
     renderUtils = require('./renderUtils');
 
 module.exports = {
@@ -51,6 +52,7 @@ module.exports = {
                 _userIgnores = _(user.ignores || []),
                 paginationroot = (req.url.replace(/\/page(\/[0-9]*)/, '')).replace(/\/\//g, '/').replace(/\/$/,''),
                 pageroot = paginationroot.replace(/\/sort(\/[0-9a-z-]*)/i, ''),
+                onlinebuddies = WhosOnline.activeBuddies(user.buddies),
                 flag = 0;
 
             if(paginationroot === '/'){
@@ -96,7 +98,10 @@ module.exports = {
                     thread.ignored = _userIgnores.indexOf(thread.postedby) > -1;
 
                     return thread;
-                })
+                }),
+                onlinebuddies: onlinebuddies,
+                numonlinebuddies: (onlinebuddies || []).length,
+                numtotalbuddies: (user.buddies || []).length
             });
         };
     },
@@ -118,6 +123,7 @@ module.exports = {
                 }),
                 _userBuddies = _(user.buddies || []),
                 _userIgnores = _(user.ignores || []),
+                onlinebuddies = WhosOnline.activeBuddies(user.buddies),
                 thread;
 
             if(!json.threads || !json.threads.length){
@@ -148,7 +154,10 @@ module.exports = {
                         editPercent: Math.floor(comment.edit_percent)
                     });
                 }),
-                user: user.username ? user : false
+                user: user.username ? user : false,
+                onlinebuddies: onlinebuddies,
+                numonlinebuddies: (onlinebuddies || []).length,
+                numtotalbuddies: (user.buddies || []).length
             });
         };
     },
@@ -159,6 +168,8 @@ module.exports = {
         return function(err, json){
             if(err) return next(err);
             json = json || {};
+
+            var onlinebuddies = WhosOnline.activeBuddies(user.buddies);
 
             res.render('buddies', {
                 user: user.username ? user : false,
@@ -181,6 +192,7 @@ module.exports = {
                 created = moment(selecteduser.created),
                 daysSince = Math.max(1, created.diff(new Date(), 'days')),
                 numcomments = selecteduser.comments_count,
+                onlinebuddies = WhosOnline.activeBuddies(user.buddies),
                 postsPerDay = numcomments / daysSince;
 
             res.render('user', {
@@ -191,7 +203,10 @@ module.exports = {
                 numcomments: numcomments,
                 postsperday: postsPerDay,
                 buddy: _userBuddies.indexOf(selecteduser.username) > -1,
-                ignored: _userIgnores.indexOf(selecteduser.username) > -1
+                ignored: _userIgnores.indexOf(selecteduser.username) > -1,
+                onlinebuddies: onlinebuddies,
+                numonlinebuddies: (onlinebuddies || []).length,
+                numtotalbuddies: (user.buddies || []).length
             });
         };
     }

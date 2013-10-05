@@ -81,29 +81,12 @@
           <a href="/users" class="users-link">(All users)</a></h3>
 
 
-          <!--p>ONLINE BUDDIES (20/194)</p>
+          <p>ONLINE BUDDIES ({{numonlinebuddies}}/{{numtotalbuddies}})</p>
           <div>
-            <span><a href="http://yayhooray.net/user/laocoon">Laocoon</a>,</span>
-            <span><a href="http://yayhooray.net/user/pifman">Pifman</a>,</span>
-            <span><a href="http://yayhooray.net/user/vord">Vord</a>,</span>
-            <span><a href="http://yayhooray.net/user/aurezio">aurezio</a>,</span>
-            <span><a href="http://yayhooray.net/user/beat">beat</a>,</span>
-            <span><a href="http://yayhooray.net/user/bosk">bosk</a>,</span>
-            <span><a href="http://yayhooray.net/user/cincinnati">cincinnati</a>,</span>
-            <span><a href="http://yayhooray.net/user/epohs">epohs</a>,</span>
-            <span><a href="http://yayhooray.net/user/lament">lament</a>,</span>
-            <span><a href="http://yayhooray.net/user/nicko">nicko</a>,</span>
-            <span><a href="http://yayhooray.net/user/purl">purl</a>,</span>
-            <span><a href="http://yayhooray.net/user/raw">raw</a>,</span>
-            <span><a href="http://yayhooray.net/user/reiver">reiver</a>,</span>
-            <span><a href="http://yayhooray.net/user/roofcano">roofcano</a>,</span>
-            <span><a href="http://yayhooray.net/user/sissypuff">sissypuff</a>,</span>
-            <span><a href="http://yayhooray.net/user/slobirdrop">slobirdrop</a>,</span>
-            <span><a href="http://yayhooray.net/user/sock">sock</a>,</span>
-            <span><a href="http://yayhooray.net/user/tdc">tdc</a>,</span>
-            <span><a href="http://yayhooray.net/user/tenkai">tenkai</a>,</span>
-            <span><a href="http://yayhooray.net/user/warped">warped</a></span>
-          </div-->
+{{#onlinebuddies}}
+            <span><a href="/user/{{urlname}}">{{username}}</a>,</span>
+{{/onlinebuddies}}
+          </div>
         </div>
 {{/user}}
         <div id="ad-space">

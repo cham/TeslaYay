@@ -9,6 +9,7 @@ var express = require('express'),
     path = require('path'),
     sessionGenerator = require('./src/sessionGenerator'),
     sessionStore = new express.session.MemoryStore({reapInterval: 60*60*1000}),
+    WhosOnline = require('./src/WhosOnline'),
     app = express();
 
 app.engine('html', require('hogan-express'));
@@ -26,6 +27,7 @@ app.configure(function(){
   app.use(sessionGenerator(sessionStore));
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(routes());
+  WhosOnline.setStore(sessionStore);
 });
 
 app.configure('development', function(){
