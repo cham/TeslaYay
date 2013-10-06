@@ -50,7 +50,10 @@ module.exports = function routing(){
     }
     function ping(req, res, next){
         if(!req.session.user){ return next(); }
-        api.ping(res, {}, req.session.user, function(){});
+        api.ping(res, {}, req.session.user, function(err, user){
+            if(err) return next(err);
+            req.session.user = user;
+        });
         next();
     }
     if(stresstest){
