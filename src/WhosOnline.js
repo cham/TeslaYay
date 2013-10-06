@@ -6,13 +6,15 @@ var WhosOnline = {
         this.store = store;
     },
     activeUsers: function(){
+        var pushedusers = [];
         return _(this.store.sessions || {}).reduce(function(memo, session){
             try{
                 session = JSON.parse(session);
             }catch(e){}
             
-            if(session.user && session.user.username){
+            if(session.user && session.user.username && pushedusers.indexOf(session.user.username) === -1){
                 memo.push(session.user);
+                pushedusers.push(session.user.username);
             }
 
             return memo;
