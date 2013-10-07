@@ -91,7 +91,7 @@ module.exports = function routing(){
     });
     app.get('/thread/:threadUrlName/page/:page', ping, function(req, res, next){
         if(req.route.params.page === '1'){
-            return res.redirect('/thread/' + req.route.params.threadUrlName);
+            return res.redirect('/thread/' + req.route.params.threadUrlName, 301);
         }
         api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
     });
@@ -122,6 +122,14 @@ module.exports = function routing(){
 
             res.send(comment);
         });
+    });
+
+    // inbox
+    app.get('/messages', checkAuth, function(req, res, next){
+        res.redirect('/messages/inbox', 301);
+    });
+    app.get('/messages/inbox', checkAuth, function(req, res, next){
+        api.getInbox(req, req.route.query || {}, req.session.user, renderGenerator.inboxHandler(req, res, next));
     });
 
     // ping

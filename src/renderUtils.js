@@ -2,7 +2,8 @@
  * renderUtils
  * set of stateless reusable methods to assist with rendering
  */
-var _ = require('underscore');
+var _ = require('underscore'),
+    WhosOnline = require('./WhosOnline');
 
 function pagingObject(num, active){
     return {
@@ -76,5 +77,16 @@ module.exports = {
         }
 
         return threadindex + ' - ' + lastthreadindex + ' of ' + options.setsize;
+    },
+
+    getUserTemplateData: function(user){
+        var onlinebuddies = WhosOnline.activeBuddies(user.buddies);
+
+        return {
+            user: user.username ? user : false,
+            onlinebuddies: onlinebuddies,
+            numonlinebuddies: (onlinebuddies || []).length,
+            numtotalbuddies: (user.buddies || []).length
+        };
     }
 };
