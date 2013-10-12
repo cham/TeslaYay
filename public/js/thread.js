@@ -127,7 +127,9 @@ function format_special(element)
   });
 }
 
-format_special('.comment .content, .recent-post-content');
+$(document).ready(function(){
+  format_special('.comment .content, .recent-post-content');
+});
 
 $('#preview-button').on('click', function(e){
   e.preventDefault();
