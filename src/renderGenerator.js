@@ -203,7 +203,11 @@ module.exports = {
             var messages = json.messages || [];
 
             res.render('inbox', _(renderUtils.getUserTemplateData(user)).extend({
-                messages: messages
+                messages: _(messages).map(function(message, i){
+                    message.createdago = moment(message.created).fromNow();
+                    message.odd = !!i%2;
+                    return message;
+                })
             }));
         };
     }

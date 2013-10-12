@@ -393,6 +393,52 @@ module.exports = {
         });
     },
 
+    getOutbox: function(res, body, user, cb){
+        user = user || {};
+        if(!user.username) return cb();
+
+        request({
+            method: 'get',
+            url: apiUrl + '/user/' + user.username + '/outbox'
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
+    postMessage: function(req, body, user, cb){
+        user = user || {};
+
+        try {
+            check(body.subject, 'Subject failed validation').len(1, 36);
+            check(body.content, 'Content failed validation').notEmpty();
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        var recipients = body.recipients.split(',');
+
+        request({
+            method: 'post',
+            url: apiUrl + '/user/' + user.username + '/sendmessage',
+            form: {
+                recipients: recipients,
+                subject: body.subject,
+                content: body.content
+            }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
     ping: function(res, body, user, cb){
         user = user || {};
         if(!user.username){

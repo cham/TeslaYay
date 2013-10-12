@@ -9,6 +9,7 @@ var _ = require('underscore'),
     moment = require('moment'),
     listingRoutes = require('./threadlisting'),
     userListRoutes = require('./userlists'),
+    messageRoutes = require('./messages'),
     fs = require('fs'),
     api = require('../src/api'),
     renderGenerator = require('../src/renderGenerator'),
@@ -61,6 +62,7 @@ module.exports = function routing(){
     }
 
     listingRoutes(app, api, renderGenerator);
+    messageRoutes(app, api, renderGenerator);
     userListRoutes(app, api);
 
     // buddy / ignore listing
@@ -122,14 +124,6 @@ module.exports = function routing(){
 
             res.send(comment);
         });
-    });
-
-    // inbox
-    app.get('/messages', checkAuth, function(req, res, next){
-        res.redirect('/messages/inbox', 301);
-    });
-    app.get('/messages/inbox', checkAuth, function(req, res, next){
-        api.getInbox(req, req.route.query || {}, req.session.user, renderGenerator.inboxHandler(req, res, next));
     });
 
     // ping
