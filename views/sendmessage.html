@@ -1,0 +1,52 @@
+{{>head}}
+<body class="yh_message yh_send" >
+
+  <a name="top"></a>
+
+  <div id="wrapper">
+    <div id="middle">
+
+{{>leftcolumn}}
+
+      <div id="right-column">
+        <div id="main-title"><h3>Send a message</h3></div>
+        <div id="pm-send">
+          <p>Send a message to another member. Remember, if you don't recieve a reply it may not be that you're being ignored, most people don't check their message very often.</p>
+          
+          <div class="dotted-bar"></div>
+          
+          <form action="/message/send" method="post">
+            <input type="hidden" name="redirect" value="1">
+            <div class="inp">
+              <label for="pm-recipients">To: (comma delimited usernames)</label>
+              <input type="text" name="recipients" value="" id="pm-recipients" size="30" />
+              <div id="recipient-buddies"></div>
+            </div>
+            <!-- don't see the point in the next bit so I deleted it, lol? -->
+            <!--div class="inp">
+              <div class="cbx">
+                <label for="save-sent">Save copy in sent folder?</label>
+                <input type="checkbox" name="save_sent" value="save" checked="checked" id="save-sent" />
+              </div>
+              <div class="cbx">
+                <label for="read-receipt">Read receipt?</label>
+                <input type="checkbox" name="read_receipt" value="receipt" id="read-receipt" />
+              </div>
+            </div-->
+            <div class="inp">
+              <label for="pm-subject">Subject:</label>
+              <input type="text" name="subject" value="" id="pm-subject" maxlength="96" size="30"  />
+            </div>
+            <div class="inp">
+              <label for="pm-content-input">Your message:</label>
+              <textarea name="content" cols="90" rows="12" id="pm-content-input" ></textarea>
+            </div>
+            <input type="submit" name="submit" value="Send message" />
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+{{>footer}}
