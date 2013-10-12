@@ -19,10 +19,11 @@ var _ = require('underscore'),
         numcomments: 50
     };
 
+var _errorCodes = _([500, 401]);
 function checkResponse(err, apiRes, next){
     if(err) return next(err);
 
-    if(apiRes && apiRes.statusCode === 500){
+    if(apiRes && _errorCodes.indexOf(apiRes.statusCode) > -1){
         next(new Error(apiRes.body));
         return false;
     }
@@ -32,7 +33,8 @@ function parseJson(json, next, success){
     try{
         json = JSON.parse(json);
     }catch(e){
-        return next(e);
+        console.log(e, json);
+        return success({});
     }
     success(json);
 }
@@ -197,7 +199,7 @@ module.exports = {
 
         try {
             check(body.content, 'Content failed validation').notEmpty();
-            check(body.threadid, 'Threadid failed validation').isHexadecimal().len(24);
+            check(body.threadid, 'Threadid failed validation').isHexadecimal().len(24, 24);
         }catch(err){
             return cb(err);
         }
@@ -224,7 +226,7 @@ module.exports = {
 
         try {
             check(body.content, 'Content failed validation').notEmpty();
-            check(body.comment_id, 'Commentid failed validation').isHexadecimal().len(24);
+            check(body.comment_id, 'Commentid failed validation').isHexadecimal().len(24, 24);
         }catch(err){
             return cb(err);
         }
@@ -355,7 +357,7 @@ module.exports = {
             return cb(e);
         }
 
-        title = sanitize(title).entityEncode().trim();
+        title = sanitize(title).trim();
 
         async.parallel([
             function(done){
@@ -427,8 +429,66 @@ module.exports = {
             url: apiUrl + '/user/' + user.username + '/sendmessage',
             form: {
                 recipients: recipients,
-                subject: body.subject,
-                content: body.content
+                subject: XSSWrapper(body.subject).clean().value(),
+                content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value()
+            }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
+    getMessage: function(req, body, user, cb){
+        user = user || {};
+
+        try {
+            check(body.messageid, 'Threadid failed validation').isHexadecimal().len(24, 24);
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        request({
+            method: 'get',
+            url: apiUrl + '/user/' + user.username + '/message/' + body.messageid
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                if(user.username === data.recipient){
+                    request({
+                        method: 'put',
+                        url: apiUrl + '/user/' + user.username + '/message/' + body.messageid + '/read'
+                    });
+                }
+
+                cb(null, data);
+            });
+        });
+    },
+
+    batchUpdateMessages: function(req, body, user, cb){
+        user = user || {};
+
+        try {
+            check(user.username, 'User not found').notNull();
+            check(body.batchType, 'BatchType failed validation').isIn(['read','unread','recipient/delete','sender/delete']);
+            check(body.ids, 'Ids failed validation').len(1);
+            _(body.ids).each(function(id){
+                check(id, 'Id failed validation').isHexadecimal().len(24, 24);
+            });
+        }catch(e){
+            return cb(e);
+        }
+
+        request({
+            method: 'put',
+            url: apiUrl + '/user/' + user.username + '/messages/' + body.batchType,
+            form: {
+                ids: body.ids
             }
         }, function(err, response, json){
             if(!checkResponse(err, response, cb)) return;
@@ -441,9 +501,7 @@ module.exports = {
 
     ping: function(res, body, user, cb){
         user = user || {};
-        if(!user.username){
-            return cb();
-        }
+        if(!user.username) return cb();
 
         request({
             method: 'get',

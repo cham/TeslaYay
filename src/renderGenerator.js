@@ -205,10 +205,55 @@ module.exports = {
             res.render('inbox', _(renderUtils.getUserTemplateData(user)).extend({
                 messages: _(messages).map(function(message, i){
                     message.createdago = moment(message.created).fromNow();
-                    message.odd = !!i%2;
+                    message.odd = !!(i%2);
                     return message;
                 })
             }));
+        };
+    },
+
+    outboxHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, json){
+            if(err) return next(err);
+
+            var messages = json.messages || [];
+
+            res.render('outbox', _(renderUtils.getUserTemplateData(user)).extend({
+                messages: _(messages).map(function(message, i){
+                    message.createdago = moment(message.created).fromNow();
+                    message.odd = !!(i%2);
+                    return message;
+                })
+            }));
+        };
+    },
+
+    messageHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, message){
+            if(err) return next(err);
+
+            res.render('message', _(renderUtils.getUserTemplateData(user)).extend(message));
+        };
+    },
+
+    messageSendHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, message){
+            if(err) return next(err);
+
+            if(message.subject){
+                message.replysubject = 'RE: ' + message.subject;
+            }
+            if(message.content){
+                message.replycontent = "\n\n\n-----------------------------\n\n" + message.content;
+            }
+
+            res.render('sendmessage', _(renderUtils.getUserTemplateData(user)).extend(message));
         };
     }
 };

@@ -80,13 +80,21 @@ module.exports = {
     },
 
     getUserTemplateData: function(user){
-        var onlinebuddies = WhosOnline.activeBuddies(user.buddies);
+        var onlinebuddies = WhosOnline.activeBuddies(user.buddies),
+            inboxsize = user.inbox,
+            inboxtext = 'No New Messages';
+
+        if(inboxsize > 0){
+            inboxtext = inboxsize + ' New Message' + (inboxsize > 1 ? 's' : '');
+        }
 
         return {
             user: user.username ? user : false,
             onlinebuddies: onlinebuddies,
             numonlinebuddies: (onlinebuddies || []).length,
-            numtotalbuddies: (user.buddies || []).length
+            numtotalbuddies: (user.buddies || []).length,
+            inboxsize: inboxsize || 0,
+            inboxtext: inboxtext
         };
     }
 };

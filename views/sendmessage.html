@@ -19,7 +19,7 @@
             <input type="hidden" name="redirect" value="1">
             <div class="inp">
               <label for="pm-recipients">To: (comma delimited usernames)</label>
-              <input type="text" name="recipients" value="" id="pm-recipients" size="30" />
+              <input type="text" name="recipients" value="{{sender}}" id="pm-recipients" size="30" />
               <div id="recipient-buddies"></div>
             </div>
             <!-- don't see the point in the next bit so I deleted it, lol? -->
@@ -35,18 +35,16 @@
             </div-->
             <div class="inp">
               <label for="pm-subject">Subject:</label>
-              <input type="text" name="subject" value="" id="pm-subject" maxlength="96" size="30"  />
+              <input type="text" name="subject" value="{{replysubject}}" id="pm-subject" maxlength="96" size="30"  />
             </div>
             <div class="inp">
               <label for="pm-content-input">Your message:</label>
-              <textarea name="content" cols="90" rows="12" id="pm-content-input" ></textarea>
+              <textarea name="content" cols="90" rows="12" id="pm-content-input" >{{replycontent}}</textarea>
             </div>
             <input type="submit" name="submit" value="Send message" />
           </form>
-
         </div>
       </div>
-
     </div>
   </div>
 {{>footer}}
