@@ -10,7 +10,9 @@ var express = require('express'),
     sessionGenerator = require('./src/sessionGenerator'),
     sessionStore = new express.session.MemoryStore({reapInterval: 60*60*1000}),
     WhosOnline = require('./src/WhosOnline'),
-    app = express();
+    app = express(),
+    server = http.createServer(app),
+    io = require('socket.io').listen(server);
 
 app.engine('html', require('hogan-express'));
 app.enable('view cache');
@@ -26,7 +28,7 @@ app.configure(function(){
   app.use(express.cookieParser('0rly?YA,rly!'));
   app.use(sessionGenerator(sessionStore));
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use(routes());
+  app.use(routes(io));
   WhosOnline.setStore(sessionStore);
 });
 
@@ -34,6 +36,6 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-http.createServer(app).listen(app.get('port'), function(){
+server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

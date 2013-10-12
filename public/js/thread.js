@@ -407,3 +407,26 @@ function insertAtCaret(areaId,text) {
 
   txtarea.scrollTop = scrollPos;
 }
+
+(function(){
+  var threadid = $('input[name=threadid]').val(),
+      $notifications = $('#notifications'),
+      postcount = 0;
+
+  if(!threadid || !window.socket || !$notifications.length) return;
+
+  $notifications.on('click', '#closenotify', function(e){
+    e.preventDefault();
+    $notifications.hide();
+  }).on('click', '#notify', function(e){
+    e.preventDefault();
+    window.location.hash = '#bottom';
+    window.location.reload(true);
+  });
+
+  window.socket.on('newpost:' + threadid, function(data){
+    postcount++;
+
+    $notifications.html('<a id="closenotify"></a><div id="notifier"><a id="notify" href="">'+postcount+' new post'+(postcount === 1 ? '':'s')+' added</a></div>').show();
+  });
+})();

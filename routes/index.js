@@ -1,3 +1,4 @@
+/* jshint node:true */
 /*
  * Tesla API routes
  */
@@ -25,7 +26,7 @@ var _ = require('underscore'),
     stresstest = false,
     stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}};
 
-module.exports = function routing(){
+module.exports = function routing(io){
 
     var app = new express.Router();
 
@@ -154,7 +155,13 @@ module.exports = function routing(){
 
     // post comment
     app.post('/thread/:threadUrlName', checkAuth, ping, function(req, res, next){
+        var threadid = req.body.threadid;
+
         api.postComment(res, req.body, req.session.user, function(err, comment){
+            if(err) return next(err);
+
+            io.sockets.emit('newpost:' + req.body.threadid);
+
             if(req.body.redirect){
                 res.redirect(req.headers['referer']+'#bottom');
             }else{
