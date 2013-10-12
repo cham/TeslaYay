@@ -1,0 +1,68 @@
+{{>head}}
+<body class="yh_messages yh_inbox" >
+
+  <a name="top"></a>
+
+  <div id="wrapper">
+    <div id="middle">
+
+{{>leftcolumn}}
+
+      <div id="right-column">
+        <div id="main-title"><h3>Well aren't you Mr. Popular?</h3></div>
+
+        <div id="pm-inbox">
+
+            <div class="ctrl-bar">
+                <div class="pagination"></div>
+                <div class="new-message"><a href="/message/send">NEW MESSAGE</a></div>
+            </div>
+
+            <div id="pm-box-controls">
+                <div class="left">
+                    <a href="/messages/inbox">Inbox ({{inboxsize}})</a> |
+                    <a href="/messages/outbox">Sent Items</a>
+                </div>
+                <div class="right">
+                    Mark <a href="#" id="inbox-mark-read">Read</a>
+                    <a href="#" id="inbox-mark-unread">Unread</a>
+                    |
+                    <a href="#" id="inbox-delete">Delete</a>
+                </div>
+            </div>
+
+            <div class="message header">
+                <div class="marker"><input type="checkbox" /></div>
+                <div class="subject">Subject</div>
+                <div class="sender">From</div>
+                <div class="time">Received</div>
+            </div>
+
+            <form name="messages" id="message-form" method="post" action="/messages/action/inbox">
+                <input type="hidden" name="redirect" value="1">
+{{#messages}}
+                <div class="message {{^read}}unread{{/read}} lineitem buddy {{#odd}}odd{{/odd}}">
+                    <div class="marker"><input type="checkbox" value="{{_id}}" name="message_ids[]" /></div>
+                    <div class="subject"><a href="/message/{{_id}}">{{subject}}</a></div>
+                    <div class="sender"><a href="/user/{{sender}}">{{sender}}</a></div>
+                    <div class="time" title="{{created}}">{{createdago}}</div>
+                </div>
+
+                <div class="blue-bar"></div>
+{{/messages}}
+            </form>
+
+            <div class="ctrl-bar">
+                <div class="pagination">
+
+                </div>
+                <div class="new-message">
+                    <a href="/message/send">NEW MESSAGE</a>
+                </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{{>footer}}

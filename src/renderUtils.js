@@ -2,7 +2,8 @@
  * renderUtils
  * set of stateless reusable methods to assist with rendering
  */
-var _ = require('underscore');
+var _ = require('underscore'),
+    WhosOnline = require('./WhosOnline');
 
 function pagingObject(num, active){
     return {
@@ -76,5 +77,24 @@ module.exports = {
         }
 
         return threadindex + ' - ' + lastthreadindex + ' of ' + options.setsize;
+    },
+
+    getUserTemplateData: function(user){
+        var onlinebuddies = WhosOnline.activeBuddies(user.buddies),
+            inboxsize = user.inbox,
+            inboxtext = 'No New Messages';
+
+        if(inboxsize > 0){
+            inboxtext = inboxsize + ' New Message' + (inboxsize > 1 ? 's' : '');
+        }
+
+        return {
+            user: user.username ? user : false,
+            onlinebuddies: onlinebuddies,
+            numonlinebuddies: (onlinebuddies || []).length,
+            numtotalbuddies: (user.buddies || []).length,
+            inboxsize: inboxsize || 0,
+            inboxtext: inboxtext
+        };
     }
 };

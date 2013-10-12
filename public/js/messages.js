@@ -1,28 +1,37 @@
 (function () {
 	$('.message.header .marker input').bind('click', function(e){
-		$('.message.lineitem .marker input').attr('checked', $(this).attr('checked') == "checked" ? true : false );
+		$('.message.lineitem .marker input').prop('checked', $(this).prop('checked'));
 	});
 	
 	$('#inbox-mark-unread').bind('click', function(e){
 		e.preventDefault();
 		
-		$('#message-form-action').val('unread');
+		$('#message-form').attr({
+			'action': '/messages/batch/unread',
+			'method': 'post'
+		});
 		$('#message-form').submit();
 	});
 	
 	$('#inbox-mark-read').bind('click', function(e){
 		e.preventDefault();
 		
-		$('#message-form-action').val('read');
+		$('#message-form').attr({
+			'action': '/messages/batch/read',
+			'method': 'post'
+		});
 		$('#message-form').submit();
 	});
 	
 	$('#inbox-delete').bind('click', function(e){
 		e.preventDefault();
 		
-		if (confirm('Are you sure you want to delete the selected messages?'))
+		if (confirm('Are you sure you want to delete the selected messages from your inbox?'))
 		{
-			$('#message-form-action').val('indelete');
+			$('#message-form').attr({
+				'action': '/messages/batch/inboxdelete',
+				'method': 'post'
+			});
 			$('#message-form').submit();
 		}
 	});
@@ -30,9 +39,12 @@
 	$('#outbox-delete').bind('click', function(e){
 		e.preventDefault();
 		
-		if (confirm('Are you sure you want to delete the selected messages?'))
+		if (confirm('Are you sure you want to delete the selected messages from your outbox?'))
 		{
-			$('#message-form-action').val('outdelete');
+			$('#message-form').attr({
+				'action': '/messages/batch/outboxdelete',
+				'method': 'post'
+			});
 			$('#message-form').submit();
 		}
 	});

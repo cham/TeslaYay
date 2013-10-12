@@ -1,0 +1,49 @@
+{{>head}}
+<body class="yh_message yh_51725" >
+
+  <a name="top"></a>
+
+  <div id="wrapper">
+    <div id="middle">
+
+{{>leftcolumn}}
+
+      <div id="right-column">
+        <div id="main-title"><h3>{{subject}}</h3></div>
+        <div id="pm-message">
+          <div class="ctrl-bar">
+            <div class="pagination">
+              <a href="/messages/inbox" class="nobox">Go back to Inbox</a>
+            </div>
+            <div class="new-message">
+              <a href="/message/{{_id}}/reply">REPLY</a>
+            </div>
+          </div>
+          <div id="pm-box-controls">
+            <div class="left">
+              <a href="/messages/inbox">Inbox (0)</a> |
+              <a href="/messages/outbox">Sent Items</a>
+            </div>
+            <div class="right"></div>
+          </div>
+          <div id="pm-message-meta">
+            <span><span>Subject:</span> {{subject}}</span> |
+            <span><span>From:</span> <a href="/user/{{sender}}">{{sender}}</a></span> |
+            <span><span>Received:</span> {{created}}</span>
+          </div>
+          <div class="content">
+            {{{content}}}
+          </div>
+          <div class="ctrl-bar">
+            <div class="pagination">
+              <a href="/messages/inbox" class="nobox">Go back to Inbox</a>
+            </div>
+            <div class="new-message">
+              <a href="/message/{{_id}}/reply">REPLY</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{>footer}}

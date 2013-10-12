@@ -4,7 +4,6 @@
  */
 var _ = require('underscore'),
     moment = require('moment'),
-    WhosOnline = require('./WhosOnline'),
     renderUtils = require('./renderUtils');
 
 module.exports = {
@@ -52,19 +51,17 @@ module.exports = {
                 _userIgnores = _(user.ignores || []),
                 paginationroot = (req.url.replace(/\/page(\/[0-9]*)/, '')).replace(/\/\//g, '/').replace(/\/$/,''),
                 pageroot = paginationroot.replace(/\/sort(\/[0-9a-z-]*)/i, ''),
-                onlinebuddies = WhosOnline.activeBuddies(user.buddies),
                 flag = 0;
 
             if(paginationroot === '/'){
                 paginationroot = '';
             }
 
-            res.render('index', {
+            res.render('index', _(renderUtils.getUserTemplateData(user)).extend({
                 numthreads: json.threads.length,
                 totaldocs: totaldocs,
                 pages: pages,
                 numpages: pages.length,
-                user: user.username ? user : false,
                 paginationtext: paginationtext,
                 paginationroot: paginationroot,
                 pageroot: pageroot,
@@ -98,11 +95,8 @@ module.exports = {
                     thread.ignored = _userIgnores.indexOf(thread.postedby) > -1;
 
                     return thread;
-                }),
-                onlinebuddies: onlinebuddies,
-                numonlinebuddies: (onlinebuddies || []).length,
-                numtotalbuddies: (user.buddies || []).length
-            });
+                })
+            }));
         };
     },
 
@@ -123,7 +117,6 @@ module.exports = {
                 }),
                 _userBuddies = _(user.buddies || []),
                 _userIgnores = _(user.ignores || []),
-                onlinebuddies = WhosOnline.activeBuddies(user.buddies),
                 thread;
 
             if(!json.threads || !json.threads.length){
@@ -131,7 +124,7 @@ module.exports = {
             }
             thread = json.threads[0];
 
-            res.render('thread', {
+            res.render('thread', _(renderUtils.getUserTemplateData(user)).extend({
                 id: thread._id,
                 title: thread.name,
                 threadurlname: thread.urlname,
@@ -153,12 +146,8 @@ module.exports = {
                         toggleSourceLabel: (comment.postedby === user.username && moment(comment.created).diff(new Date())>-600000) ? 'Edit Post' : 'View Source',
                         editPercent: Math.floor(comment.edit_percent)
                     });
-                }),
-                user: user.username ? user : false,
-                onlinebuddies: onlinebuddies,
-                numonlinebuddies: (onlinebuddies || []).length,
-                numtotalbuddies: (user.buddies || []).length
-            });
+                })
+            }));
         };
     },
 
@@ -169,14 +158,11 @@ module.exports = {
             if(err) return next(err);
             json = json || {};
 
-            var onlinebuddies = WhosOnline.activeBuddies(user.buddies);
-
-            res.render('buddies', {
-                user: user.username ? user : false,
+            res.render('buddies', _(renderUtils.getUserTemplateData(user)).extend({
                 buddies: json.buddies,
                 ignores: json.ignores,
                 prefill: json.prefill
-            });
+            }));
         };
     },
 
@@ -193,11 +179,9 @@ module.exports = {
                 lastlogin = moment(selecteduser.last_login),
                 daysSince = Math.max(1, Math.abs(created.diff(new Date(), 'days'))),
                 numcomments = selecteduser.comments_count,
-                onlinebuddies = WhosOnline.activeBuddies(user.buddies),
                 postsPerDay = Math.floor(numcomments / daysSince);
 
-            res.render('user', {
-                user: user.username ? user: false, //probably confusing, rename to 'sessionuser'?
+            res.render('user', _(renderUtils.getUserTemplateData(user)).extend({
                 profilename: selecteduser.username,
                 membersince: created.format('MMMM D YYYY'),
                 lastlogin: lastlogin.format('MMMM D YYYY') + ' at ' + lastlogin.format('h:mm a'), //September 16th 2013 at 4:47 pm
@@ -206,10 +190,70 @@ module.exports = {
                 postsperday: postsPerDay,
                 buddy: _userBuddies.indexOf(selecteduser.username) > -1,
                 ignored: _userIgnores.indexOf(selecteduser.username) > -1,
-                onlinebuddies: onlinebuddies,
-                numonlinebuddies: (onlinebuddies || []).length,
-                numtotalbuddies: (user.buddies || []).length
-            });
+            }));
+        };
+    },
+
+    inboxHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, json){
+            if(err) return next(err);
+
+            var messages = json.messages || [];
+
+            res.render('inbox', _(renderUtils.getUserTemplateData(user)).extend({
+                messages: _(messages).map(function(message, i){
+                    message.createdago = moment(message.created).fromNow();
+                    message.odd = !!(i%2);
+                    return message;
+                })
+            }));
+        };
+    },
+
+    outboxHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, json){
+            if(err) return next(err);
+
+            var messages = json.messages || [];
+
+            res.render('outbox', _(renderUtils.getUserTemplateData(user)).extend({
+                messages: _(messages).map(function(message, i){
+                    message.createdago = moment(message.created).fromNow();
+                    message.odd = !!(i%2);
+                    return message;
+                })
+            }));
+        };
+    },
+
+    messageHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, message){
+            if(err) return next(err);
+
+            res.render('message', _(renderUtils.getUserTemplateData(user)).extend(message));
+        };
+    },
+
+    messageSendHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, message){
+            if(err) return next(err);
+
+            if(message.subject){
+                message.replysubject = 'RE: ' + message.subject;
+            }
+            if(message.content){
+                message.replycontent = "\n\n\n-----------------------------\n\n" + message.content;
+            }
+
+            res.render('sendmessage', _(renderUtils.getUserTemplateData(user)).extend(message));
         };
     }
 };
