@@ -24,7 +24,8 @@
     "http-proxy": "0.10.3",
     "ent": "0.1.0",
     "async": "0.2.9",
-    "validator": "1.5.1"
+    "validator": "1.5.1",
+    "socket.io": "0.9.14"
   },
   "devDependencies": {
     "nodeload": "0.4.0"
