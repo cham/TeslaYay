@@ -9,6 +9,7 @@ var _ = require('underscore'),
     moment = require('moment'),
     listingRoutes = require('./threadlisting'),
     userListRoutes = require('./userlists'),
+    messageRoutes = require('./messages'),
     fs = require('fs'),
     api = require('../src/api'),
     renderGenerator = require('../src/renderGenerator'),
@@ -49,18 +50,19 @@ module.exports = function routing(){
         next();
     }
     function ping(req, res, next){
-        if(!req.session.user){ return next(); }
+        if(!req.session.user) return next();
         api.ping(res, {}, req.session.user, function(err, user){
             if(err) return next(err);
             req.session.user = user;
+            next();
         });
-        next();
     }
     if(stresstest){
         stressTester.routing(app);
     }
 
     listingRoutes(app, api, renderGenerator);
+    messageRoutes(app, api, renderGenerator);
     userListRoutes(app, api);
 
     // buddy / ignore listing
@@ -91,7 +93,7 @@ module.exports = function routing(){
     });
     app.get('/thread/:threadUrlName/page/:page', ping, function(req, res, next){
         if(req.route.params.page === '1'){
-            return res.redirect('/thread/' + req.route.params.threadUrlName);
+            return res.redirect('/thread/' + req.route.params.threadUrlName, 301);
         }
         api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
     });
