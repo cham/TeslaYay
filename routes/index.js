@@ -101,9 +101,7 @@ module.exports = function routing(io){
 
     // post thread form
     app.get('/newthread', checkAuth, ping, function(req, res, next){
-        res.render('post', {
-            user: req.session.user
-        });
+        renderGenerator.newThreadHandler(req, res, next)(null, {}); // execute render method immediately, passing no error and empty data
     });
 
     // register form

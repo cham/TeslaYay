@@ -255,5 +255,15 @@ module.exports = {
 
             res.render('sendmessage', _(renderUtils.getUserTemplateData(user)).extend(message));
         };
+    },
+
+    newThreadHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, message){
+            if(err) return next(err);
+
+            res.render('post', renderUtils.getUserTemplateData(user));
+        };
     }
 };
