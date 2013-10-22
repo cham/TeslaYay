@@ -499,6 +499,34 @@ module.exports = {
         });
     },
 
+    modifyPoints: function(res, body, user, cb){
+        user = user || {};
+
+        try {
+            check(user.username, 'User not found').notNull();
+            check(body.commentId, 'CommentId failed validation').isHexadecimal().len(24, 24);
+            check(body.pointvalue, 'Pointvalue failed validation').isIn([-1,1]);
+        }catch(e){
+            return cb(e);
+        }
+
+        request({
+            method: 'put',
+            url: apiUrl + '/points',
+            form: {
+                commentId: body.commentId,
+                username: user.username,
+                numpoints: body.pointvalue
+            }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
     ping: function(res, body, user, cb){
         user = user || {};
         if(!user.username) return cb();

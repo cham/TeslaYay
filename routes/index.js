@@ -11,6 +11,7 @@ var _ = require('underscore'),
     listingRoutes = require('./threadlisting'),
     userListRoutes = require('./userlists'),
     messageRoutes = require('./messages'),
+    pointRoutes = require('./points'),
     fs = require('fs'),
     api = require('../src/api'),
     renderGenerator = require('../src/renderGenerator'),
@@ -65,6 +66,7 @@ module.exports = function routing(io){
     listingRoutes(app, api, renderGenerator);
     messageRoutes(app, api, renderGenerator);
     userListRoutes(app, api);
+    pointRoutes(app, api);
 
     // buddy / ignore listing
     app.get('/buddies(/:username)?', checkAuth, ping, function(req, res, next){
