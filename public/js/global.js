@@ -360,21 +360,28 @@ function isThread() {
   // points
   var $pointsButtons = $('.give-point, .take-point');
   $pointsButtons.click(function(e){
-    var $this = $(this);
+    var $this = $(this),
+        $pointscontainer = $this.parent().find('.current-points'),
+        routeEnd = $this.data('type') === 'minus' ? 'removepoint' : 'addpoint',
+        commentId = $this.data('commentid');
 
     e.preventDefault();
 
     $.ajax({
-      url: '/ajax/give_point/' + $this.data('commentid') + '/' + $this.data('type') + '/' + session_id,
-      success: function(data){
-        var numPoints = parseInt(data, 10);
+      method: 'put',
+      url: '/comment/' + commentId + '/' + routeEnd,
+      success: function(comment){
+        var pointsNow = comment.points;
 
-        if(isNaN(numPoints)){
-          $this.parent().find('.current-points').show().text('Error!');
-        }else{
-          $this.parent().find('.current-points').show().text(numPoints + ' point' + (numPoints !== 1 ? 's' : ''));
-          $pointsButtons.remove();
+        $pointsButtons.css({visibility: 'hidden'});
+        $pointscontainer.text(pointsNow + ' point' + (pointsNow !== 1 ? 's': ''));
+      },
+      error: function(response){
+        if(response.status === 401){
+          $pointsButtons.css({visibility: 'hidden'});
+          return $pointscontainer.text('Unauth');
         }
+        $pointscontainer.text('Error');
       }
     });
   });

@@ -179,7 +179,15 @@ module.exports = {
                 lastlogin = moment(selecteduser.last_login),
                 daysSince = Math.max(1, Math.abs(created.diff(new Date(), 'days'))),
                 numcomments = selecteduser.comments_count,
-                postsPerDay = Math.floor(numcomments / daysSince);
+                postsPerDay = Math.floor(numcomments / daysSince),
+                pointtime = 1000 * 60 * 60 * 8,
+                lastpointusage = selecteduser.lastpointusage || new Date(0,0,0),
+                nextpointtime = 'right now',
+                canpoint = (new Date().getTime() - new Date(lastpointusage).getTime()) > pointtime;
+
+            if(!canpoint){
+                nextpointtime = moment(lastpointusage).add(pointtime/1000, 'seconds').fromNow();
+            }
 
             res.render('user', _(renderUtils.getUserTemplateData(user)).extend({
                 profilename: selecteduser.username,
@@ -190,6 +198,8 @@ module.exports = {
                 postsperday: postsPerDay,
                 buddy: _userBuddies.indexOf(selecteduser.username) > -1,
                 ignored: _userIgnores.indexOf(selecteduser.username) > -1,
+                nextpointtime: nextpointtime,
+                points: selecteduser.points
             }));
         };
     },

@@ -82,6 +82,7 @@ module.exports = {
     getUserTemplateData: function(user){
         var onlinebuddies = WhosOnline.activeBuddies(user.buddies),
             inboxsize = user.inbox,
+            pointtime = 1000 * 60 * 60 * 8,
             inboxtext = 'No New Messages';
 
         if(inboxsize > 0){
@@ -94,7 +95,8 @@ module.exports = {
             numonlinebuddies: (onlinebuddies || []).length,
             numtotalbuddies: (user.buddies || []).length,
             inboxsize: inboxsize || 0,
-            inboxtext: inboxtext
+            inboxtext: inboxtext,
+            canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
         };
     }
 };
