@@ -552,5 +552,17 @@ module.exports = {
                 cb(null, json);
             });
         });
+    },
+
+    getPreferences: function(res, body, user, cb){
+        user = user || {};
+
+        try {
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        cb(null, {});
     }
 };

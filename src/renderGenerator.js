@@ -275,5 +275,46 @@ module.exports = {
 
             res.render('post', renderUtils.getUserTemplateData(user));
         };
+    },
+
+    preferencesHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, preferences){
+            if(err) return next(err);
+
+console.log(renderUtils.getUserTemplateData(user));
+/*
+realname
+location
+about
+website1
+website2
+website3
+flickr
+facebook
+aim
+gchat
+lastfm
+msn
+twitter
+sfwtitle
+fixedchatsize
+hideenemyposts
+customcssurl
+customjsurl
+threadsperpage
+    value
+    selected
+commentsperpage
+    value
+    selected
+(avatarpath)?
+*/
+
+            res.render('preferences', _(renderUtils.getUserTemplateData(user)).extend({
+
+            }));
+        };
     }
 };

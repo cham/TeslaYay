@@ -1,0 +1,199 @@
+{{>head}}
+<body class="yh_preferences">
+
+  <a name="top"></a>
+
+  <div id="wrapper">
+    <div id="middle">
+
+{{>leftcolumn}}
+
+      <div id="right-column">
+
+        <div id="main-title"><h3>Pimpin' ain't easy... but editing your profile is!</h3></div>
+
+        <p class="prefpink"><strong>This is the page where you can edit your profile and change your YH settings.</strong> Your profile lets people learn a little about you. Tweak your YH settings to browse yay the way you want to.</p>
+
+        <div class="dotted-bar"></div>
+
+        <div id="preferences">
+
+          <form action="/preferences" method="post" enctype="multipart/form-data">
+            <div style="float:right"><input type="submit" name="submit" value="Save" /></div>
+
+            <h4 class="biglabel">Account Stuff</h4>
+
+            <div class="input text">
+              <label for="email">Email Address</label>
+              <input type="text" name="email" value="{{email}}" />
+            </div>
+
+            <div class="input text">
+              <label for="old_password">Original Password</label>
+              <input type="password" name="old_password" id="old_password" value="" autocomplete="off" />
+            </div>
+
+            <div class="input text">
+              <label for="password">New Password</label>
+              <input type="password" name="password" id="password" value="" autocomplete="off" />
+            </div>
+
+            <div class="input text">
+              <label for="password2">Confirm New Password</label>
+              <input type="password" name="password2" id="password2" value="" />
+            </div>
+
+            <br />
+
+            <div class="blueline"></div>
+
+            <div style="float:right;margin-top:10px;"><input type="submit" name="submit" value="Save" /></div>
+
+            <h4 class="biglabel">Personal Stuff</h4>
+
+            <div class="input text">
+              <label for="real_name">What's your name?</label>
+              <input type="text" name="real_name" value="{{realname}}" />
+            </div>
+
+            <div class="input text">
+              <label for="location">Where ya from?</label>
+              <input type="text" name="location" value="{{location}}" />
+            </div>
+
+            <div class="input text">
+              <label for="about_blurb">Tell us about yourself</label>
+              <textarea name="about_blurb" cols="90" rows="12" >{{about}}</textarea>
+            </div>
+
+            <div class="input text">
+              <label for="website_1">Website 1</label>
+              <input type="text" name="website_1" value="{{website1}}" />
+            </div>
+
+            <div class="input text">
+              <label for="website_1">Website 2</label>
+              <input type="text" name="website_2" value="{{website2}}" />
+            </div>
+
+            <div class="input text">
+              <label for="website_1">Website 3</label>
+              <input type="text" name="website_3" value="{{website3}}" />
+            </div>
+
+            <div class="input text">
+              <label for="rss_feed_1">RSS Feed 1</label>
+              <input type="text" name="rss_feed_1" value="{{feed1}}" />
+            </div>
+
+            <div class="input text">
+              <label for="rss_feed_1">RSS Feed 2</label>
+              <input type="text" name="rss_feed_2" value="{{feed2}}" />
+            </div>
+
+            <div class="input text">
+              <label for="rss_feed_1">RSS Feed 3</label>
+              <input type="text" name="rss_feed_3" value="{{feed3}}" />
+            </div>
+
+            <br />
+            <div class="blueline"></div>
+
+            <div style="float:right;margin-top:10px;"><input type="submit" name="submit" value="Save" /></div>
+            <h4 class="biglabel">Other Websites</h4>
+
+            <div class="input text">
+              <label for="flickr_username">Flickr Username</label>
+              <input type="text" name="flickr_username" value="{{flickr}}" />
+            </div>
+
+            <div class="input text">
+              <label for="facebook">Facebook</label>
+              <input type="text" name="facebook" value="{{facebook}}" />
+            </div>
+
+            <div class="input text">
+              <label for="aim">AIM username</label>
+              <input type="text" name="aim" value="{{aim}}" />
+            </div>
+
+            <div class="input text">
+              <label for="gchat">Gchat (Jabber)</label>
+              <input type="text" name="gchat" value="{{gchat}}" />
+            </div>
+
+            <div class="input text">
+              <label for="lastfm">Last.fm</label>
+              <input type="text" name="lastfm" value="{{lastfm}}" />
+            </div>
+
+            <div class="input text">
+              <label for="msn">MSN username</label>
+              <input type="text" name="msn" value="{{msn}}" />
+            </div>
+
+            <div class="input text">
+              <label for="twitter">Twitter</label>
+              <input type="text" name="twitter" value="{{twitter}}" />
+            </div>
+
+            <br />
+            <div class="blueline"></div>
+
+            <div style="float:right;margin-top:10px;"><input type="submit" name="submit" value="Save" /></div>
+            <h4 class="biglabel">YH Settings</h4>
+
+            <div class="input text">
+              <label for="random_titles">Show Random Titles</label>
+              <input type="checkbox" name="random_titles" value="1" {{^sfwtitle}}checked="checked"{{/sfwtitle}} id="random_titles" />
+            </div>
+
+            <div class="input text">
+              <label for="chat_fixed_size">Chat Window Fixed Size</label>
+              <input type="checkbox" name="chat_fixed_size" value="1" {{#fixedchatsize}}checked="checked"{{/fixedchatsize}} id="chat_fixed_size" />
+            </div>
+
+            <div class="input text">
+              <label for="hide_enemy_posts">Hide Enemy Posts</label>
+              <input type="checkbox" name="hide_enemy_posts" value="1" {{#hideenemyposts}}checked="checked"{{/hideenemyposts}} id="hide_enemy_posts" />
+            </div>
+
+            <div class="input text">
+              <label for="custom_css">Custom CSS</label>
+              <input type="text" name="custom_css" value="{{customcssurl}}" />
+            </div>
+
+            <div class="input text">
+              <label for="custom_js">Custom JavaScript</label>
+              <input type="text" name="custom_js" value="{{customjsurl}}" />
+            </div>
+
+            <div class="input text">
+              <label for="threads_shown">Threads Shown</label>
+              <select name="threads_shown">
+{{#threadsperpage}}
+                <option value="{{value}}"{{#selected}} selected="selected"{{/selected}}>{{value}}</option>
+{{/threadsperpage}}
+              </select>
+            </div>
+
+            <div class="input text">
+              <label for="comments_shown">Comments Shown</label>
+              <select name="comments_shown">
+{{#commentsperpage}}
+                <option value="{{value}}"{{#selected}} selected="selected"{{/selected}}>{{value}}</option>
+{{/commentsperpage}}
+              </select>
+            </div>
+
+            <div class="input text">
+              <label for="emot_upload">Avatar</label>
+              <input type="file" id="emot_upload" name="emot_upload" size="40" />
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+{{>footer}}

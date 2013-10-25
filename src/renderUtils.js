@@ -96,7 +96,8 @@ module.exports = {
             numtotalbuddies: (user.buddies || []).length,
             inboxsize: inboxsize || 0,
             inboxtext: inboxtext,
-            canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
+            email: user.email,
+	    canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
         };
     }
 };

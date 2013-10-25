@@ -138,6 +138,11 @@ module.exports = function routing(io){
         });
     });
 
+    // preferences
+    app.get('/preferences', checkAuth, function(req, res, next){
+        api.getPreferences(res, {}, req.session.user, renderGenerator.preferencesHandler(req, res, next));
+    });
+
     // POSTs
     // post thread
     app.post('/newthread', checkAuth, ping, function(req, res, next){
