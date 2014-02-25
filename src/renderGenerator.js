@@ -6,6 +6,17 @@ var _ = require('underscore'),
     moment = require('moment'),
     renderUtils = require('./renderUtils');
 
+function getUserWebsiteValue(websites, key){
+    var match = _.find(websites, function(website){
+        return website.name === key;
+    });
+
+    if(!match){
+        return '';
+    }
+    return match.url || '';
+}
+
 module.exports = {
     
     threadsListingHandler: function(req, res, renderdata, next){
@@ -283,37 +294,35 @@ module.exports = {
         return function(err, preferences){
             if(err) return next(err);
 
-console.log(renderUtils.getUserTemplateData(user));
-/*
-realname
-location
-about
-website1
-website2
-website3
-flickr
-facebook
-aim
-gchat
-lastfm
-msn
-twitter
-sfwtitle
-fixedchatsize
-hideenemyposts
-customcssurl
-customjsurl
-threadsperpage
-    value
-    selected
-commentsperpage
-    value
-    selected
-(avatarpath)?
-*/
-
             res.render('preferences', _(renderUtils.getUserTemplateData(user)).extend({
-
+                realname: user.realname,
+                location: user.location,
+                about: user.about,
+                website1: getUserWebsiteValue(user.websites, 'website_1'),
+                website2: getUserWebsiteValue(user.websites, 'website_2'),
+                website3: getUserWebsiteValue(user.websites, 'website_3'),
+                flickr: getUserWebsiteValue(user.websites, 'flickr_username'),
+                facebook: getUserWebsiteValue(user.websites, 'facebook'),
+                aim: getUserWebsiteValue(user.websites, 'aim'),
+                gchat: getUserWebsiteValue(user.websites, 'gchat'),
+                lastfm: getUserWebsiteValue(user.websites, 'lastfm'),
+                msn: getUserWebsiteValue(user.websites, 'msn'),
+                twitter: getUserWebsiteValue(user.websites, 'twitter'),
+                sfwtitle: !user.random_titles,
+                fixedchatsize: user.fixed_chat_size,
+                hideenemyposts: user.hide_enemy_posts,
+                customcssurl: user.custom_css,
+                customjsurl: user.custom_js,
+                threadsperpage: [
+                    {value: 25,  selected: user.thread_size === 25},
+                    {value: 50,  selected: user.thread_size === 50},
+                    {value: 100, selected: user.thread_size === 100}
+                ],
+                commentsperpage: [
+                    {value: 25,  selected: user.comment_size === 25},
+                    {value: 50,  selected: user.comment_size === 50},
+                    {value: 100, selected: user.comment_size === 100}
+                ]
             }));
         };
     }

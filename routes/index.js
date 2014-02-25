@@ -37,10 +37,10 @@ module.exports = function routing(io){
     }
     function checkAuth(req, res, next){
         if(!req.session || !req.session.user || req.session.user.banned){
+            res.status(401);
             if(req.route.method === 'get'){
                 return res.redirect('/');
             }
-            res.status(401);
             return res.end();
         }
         next();
@@ -139,11 +139,41 @@ module.exports = function routing(io){
     });
 
     // preferences
-    app.get('/preferences', checkAuth, function(req, res, next){
+    app.get('/preferences', checkAuth, ping, function(req, res, next){
         api.getPreferences(res, {}, req.session.user, renderGenerator.preferencesHandler(req, res, next));
     });
 
     // POSTs
+    // preferences
+    app.post('/preferences', checkAuth, function(req, res, next){
+        var body = req.body,
+            callsToMake = [];
+
+        callsToMake.push(
+            function(done){
+                api.updatePersonalDetails(res, body, req.session.user, done);
+            },
+            function(done){
+                api.updateWebsites(res, body, req.session.user, done);
+            },
+            function(done){
+                api.updateForumPreferences(res, body, req.session.user, done);
+            }
+        );
+
+        if(body.old_password && body.password && body.password2){
+            callsToMake.push(function(done){
+                api.changePassword(res, body, req.session.user, done);
+            });
+        }
+
+        async.parallel(callsToMake, function(err, responses){
+            if(err) return res.redirect('/preferences'); // show errors, not redirect
+
+            res.redirect('/preferences');
+        });
+    });
+
     // post thread
     app.post('/newthread', checkAuth, ping, function(req, res, next){
         api.postThread(res, req.body, req.session.user, function(err, thread){
