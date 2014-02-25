@@ -19,7 +19,7 @@ var _ = require('underscore'),
         numcomments: 50
     };
 
-var _errorCodes = _([500, 401]);
+var _errorCodes = _([500, 401, 404]);
 function checkResponse(err, apiRes, next){
     if(err) return next(err);
 
@@ -48,7 +48,7 @@ module.exports = {
         user = user || {};
 
         var query = _(params).defaults({
-                size: (user.preferences && user.preferences.numthreads) || defaultprefs.numthreads
+                size: user.thread_size || defaultprefs.numthreads
             }),
             route = user.username ? '/user/' + user.username + '/threads/summary' : '/threads/summary';
 
@@ -80,7 +80,7 @@ module.exports = {
 
         var uri = apiUrl + '/thread/' + encodeURIComponent(params.threadUrlName) + '/complete',
             query = _(params).defaults({
-                size: (user.preferences && user.preferences.numcomments) || defaultprefs.numcomments
+                size: user.comment_size || defaultprefs.numcomments
             });
         
         delete query.threadUrlName;
@@ -552,5 +552,151 @@ module.exports = {
                 cb(null, json);
             });
         });
+    },
+
+    getPreferences: function(res, body, user, cb){
+        user = user || {};
+
+        try {
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        cb(null, {});
+    },
+
+    changePassword: function(res, body, user, cb){
+        user = user || {};
+
+        try{
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        request({
+            method: 'put',
+            url: apiUrl + '/user/' + user.username + '/changepassword',
+            form: {
+                password: body.old_password,
+                new_password: body.password
+            }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
+    updatePersonalDetails: function(res, body, user, cb){
+        user = user || {};
+
+        try{
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        request({
+            method: 'put',
+            url: apiUrl + '/user/' + user.username + '/personaldetails',
+            form: {
+                realname: body.real_name,
+                location: body.location,
+                about: body.about_blurb
+            }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
+    updateWebsites: function(res, body, user, cb){
+        var websiteKeys = [
+            'website_1',
+            'website_2',
+            'website_3',
+            'flickr_username',
+            'facebook',
+            'aim',
+            'gchat',
+            'lastfm',
+            'msn',
+            'twitter'
+        ];
+
+        user = user || {};
+
+        try{
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        request({
+            method: 'put',
+            url: apiUrl + '/user/' + user.username + '/websites',
+            form: {
+                websites: _(body).reduce(function(memo, value, key){
+                    if(websiteKeys.indexOf(key) > -1){
+                        memo[key] = value;
+                    }
+                    return memo;
+                }, {})
+            }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
+    updateForumPreferences: function(res, body, user, cb){
+        var numThreads = parseInt(body.threads_shown, 10),
+            numComments = parseInt(body.comments_shown, 10);
+
+        user = user || {};
+
+        try{
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        if(isNaN(numThreads) || numThreads === 0){
+            numThreads = 50;
+        }
+        if(isNaN(numComments) || numComments === 0){
+            numComments = 100;
+        }
+
+        request({
+            method: 'put',
+            url: apiUrl + '/user/' + user.username + '/preferences',
+            form: {
+                custom_css: body.custom_css,
+                custom_js: body.custom_js,
+                random_titles: body.random_titles === '1',
+                hide_enemy_posts: body.hide_enemy_posts === '1',
+                thread_size: numThreads,
+                comment_size: numComments,
+                fixed_chat_size: body.fixed_chat_size === '1'
+            }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
     }
+
 };
