@@ -48,7 +48,7 @@ module.exports = {
         user = user || {};
 
         var query = _(params).defaults({
-                size: (user.preferences && user.preferences.numthreads) || defaultprefs.numthreads
+                size: user.thread_size || defaultprefs.numthreads
             }),
             route = user.username ? '/user/' + user.username + '/threads/summary' : '/threads/summary';
 
@@ -80,7 +80,7 @@ module.exports = {
 
         var uri = apiUrl + '/thread/' + encodeURIComponent(params.threadUrlName) + '/complete',
             query = _(params).defaults({
-                size: (user.preferences && user.preferences.numcomments) || defaultprefs.numcomments
+                size: user.comment_size || defaultprefs.numcomments
             });
         
         delete query.threadUrlName;

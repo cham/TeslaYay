@@ -33,7 +33,6 @@ module.exports = function routing(io){
 
     function setUser(req, user){
         req.session.user = user;
-        req.session.user.preferences = userprefs;
     }
     function checkAuth(req, res, next){
         if(!req.session || !req.session.user || req.session.user.banned){
