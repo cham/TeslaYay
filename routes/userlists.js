@@ -4,7 +4,7 @@
  * PUT
  *
  */
-var _ = require('underscore')
+var _ = require('underscore'),
     userprefs = {
         numthreads: 50,
         numcomments: 100

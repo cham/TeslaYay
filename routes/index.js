@@ -114,7 +114,20 @@ module.exports = function routing(io){
 
     // user page
     app.get('/user/:username', ping, function(req, res, next){
-        api.getUser(res, req.route.params || {}, req.session.user, renderGenerator.userDetailHandler(req, res, next));
+        
+        var renderer = renderGenerator.userDetailHandler(req, res, next);
+        async.parallel({
+            comments: function(done){
+                api.getUserComments(res, req.route.params || {}, req.session.user, done);
+            },
+            user: function(done){
+                api.getUser(res, req.route.params || {}, req.session.user, done);
+            }
+        }, function(errs, data){
+            if(errs) return next(errs);
+
+            renderer(null, _.extend(data.user, {comments: data.comments}));
+        });
     });
 
     // comment

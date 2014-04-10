@@ -12,13 +12,14 @@
         <div id="main-title"><h3>{{profilename}}</h3></div>
         <div id="user">
           <div id="photostream">From Flickr:
+{{#flickr}}
             <div id="flickr_badge_uber_wrapper">
               <div id="flickr_badge_wrapper">
-                <script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&display=latest&size=s&layout=x&source=user&user=64574603%40N00"></script>
+                <script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&display=latest&size=s&layout=x&source=user&user={{flickr}}"></script>
               </div>
             </div>
+{{/flickr}}
           </div>
-
           <div class="personal_info_box">
 
             <div id="information" class="standard_profile_info_box">
@@ -30,7 +31,12 @@
 {{#ignored}}
                 <span class="enemy">IGNORED</span>
 {{/ignored}}
+{{#online}}
+                <span class="online">ONLINE!</span>
+{{/online}}
+{{^online}}
                 <span class="not_online">NOT ONLINE!</span>
+{{/online}}
               </span>
               <br/>
 {{#user}}
@@ -49,61 +55,82 @@
             </div>
             <div id="information-bio" class="standard_profile_info_box">
               <h3>Info</h3>
-              <span class='small_profile_caps'>URL 1: </span><a href="http://taragee.com/">http://taragee.com/</a><br/>
-              <span class='small_profile_caps'>URL 1: </span><a href="http://fromgeetoyou.com/">http://fromgeetoyou.com/</a><br/>
+{{#website1}}
+              <span class='small_profile_caps'>URL 1: </span><a href="{{website1}}">{{website1}}</a><br/>
+{{/website1}}
+
+{{#website2}}
+              <span class='small_profile_caps'>URL 2: </span><a href="{{website2}}">{{website2}}</a><br/>
+{{/website2}}
+
+{{#website3}}
+              <span class='small_profile_caps'>URL 3: </span><a href="{{website3}}">{{website3}}</a><br/>
+{{/website3}}
+{{#aim}}
+              <span class='small_profile_caps'>AIM: </span><a href="{{aim}}">{{aim}}</a><br/>
+{{/aim}}
+{{#gchat}}
+              <span class='small_profile_caps'>GChat: </span><a href="{{gchat}}">{{gchat}}</a><br/>
+{{/gchat}}
+{{#msn}}
+              <span class='small_profile_caps'>MSN: </span><a href="{{msn}}">{{msn}}</a><br/>
+{{/msn}}
+
               <div id="social_icons">
-                <a href="http://facebook.com/http://www.facebook.com/taragee"><img src="/img/social_icons/facebook-icon.png" alt="Facebook." class="info_icon" /></a>
-                <a href="http://www.flickr.com/photos/64574603%40N00"><img src="/img/social_icons/flickr-icon.png" alt="Flickr." class="info_icon" /></a>
-                <a href="http://www.last.fm/user/tara-gee"><img src="/img/social_icons/lastfm-icon.png" alt="LastFM." class="info_icon" /></a>
-                <a href="https://twitter.com/#!/taragee"><img src="/img/social_icons/twitter-icon.png" alt="Twitter." class="info_icon" /></a>
+{{#facebook}}
+                <a href="http://www.facebook.com/{{facebook}}"><img src="/img/social_icons/facebook-icon.png" alt="Facebook." class="info_icon" /></a>
+{{/facebook}}
+{{#flickr}}
+                <a href="http://www.flickr.com/photos/{{flickr}}"><img src="/img/social_icons/flickr-icon.png" alt="Flickr." class="info_icon" /></a>
+{{/flickr}}
+{{#lastfm}}
+                <a href="http://www.last.fm/user/{{lastfm}}"><img src="/img/social_icons/lastfm-icon.png" alt="LastFM." class="info_icon" /></a>
+{{/lastfm}}
+{{#twitter}}
+                <a href="https://twitter.com/{{twitter}}"><img src="/img/social_icons/twitter-icon.png" alt="Twitter." class="info_icon" /></a>
+{{/twitter}}
               </div>
             </div>
+{{#about}}
             <div id="information-desc" class="standard_profile_info_box">
               <h3>Description</h3>
-              tweets is watchin'
+              {{about}}
             </div>
-            <div id="information-desc" class="standard_profile_info_box">
+{{/about}}
+{{#lastfm}}
+            <!--div id="information-desc" class="standard_profile_info_box">
               <h3>Listening to...</h3>
-              <div class="lastfm_listing"><span class="lastfm_artist">M83</span> - <span class="lastfm_title">Midnight City (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:35am</span></div><div class="lastfm_listing"><span class="lastfm_artist">Susanne Sundfør</span> - <span class="lastfm_title">White Foxes (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:31am</span></div><div class="lastfm_listing"><span class="lastfm_artist">Hannah Cohen</span> - <span class="lastfm_title">Sunrise (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:27am</span></div><div class="lastfm_listing"><span class="lastfm_artist">Lanterns on the Lake</span> - <span class="lastfm_title">If I've Been Unkind (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:23am</span></div><div class="lastfm_listing"><span class="lastfm_artist">Moby</span> - <span class="lastfm_title">After (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:20am</span></div><div class="lastfm_listing"><span class="lastfm_artist">Man Without Country</span> - <span class="lastfm_title">Tell All Your Friends (Man Without Country Remix)</span> <span class="lastfm_date">Aug 31, 13 3:16am</span></div><div class="lastfm_listing"><span class="lastfm_artist">Archive</span> - <span class="lastfm_title">Wiped Out (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:13am</span></div><div class="lastfm_listing"><span class="lastfm_artist">School of Seven Bells</span> - <span class="lastfm_title">Lafaye (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:08am</span></div><div class="lastfm_listing"><span class="lastfm_artist">Active Child</span> - <span class="lastfm_title">Diamond Heart (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:03am</span></div><div class="lastfm_listing"><span class="lastfm_artist">M83</span> - <span class="lastfm_title">Midnight City (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 2:59am</span></div><a href="http://last.fm/user/tara-gee" title="Last.FM profile.">See {{profilename}} on last.fm</a></div>
-              <div id="information-desc" class="standard_profile_info_box">
-                <script src="http://widgets.twimg.com/j/2/widget.js"></script>
-                <script>
-                   new TWTR.Widget({
-                         version: 2,
-                         type: 'profile',
-                         rpp: 5,
-                         interval: 30000,
-                         width: 200,
-                         height: 300,
-                         theme: {
-                           shell: { background: '#F9F9f9', color: '#333333' },
-                           tweets: { background: '#F9F9f9', color: '#333333', links: '#000000' }
-                         },
-                         features: {
-                           scrollbar: false,
-                           loop: false,
-                           live: false,
-                           behavior: 'all'
-                         }
-                        }).render().setUser('taragee').start();
-                </script>
-              </div>
-            </div>
-
-            <div id="latest-posts-withflickr">
-              <div class="post-container" id="post-946158">
-                <div class="post-block">POST</div>
-                <h3 class="recent-thread-title"><a href='/thread/18096/GoogleLG-Nexus-4'>Google/LG Nexus 4</a></h3>
-                <div class="recent-post-content">i wish 4 was on verizons</div>
-                <hr/>
-              </div>
-            </div>
-        
+              <div class="lastfm_listing"><span class="lastfm_artist">M83</span> - <span class="lastfm_title">Midnight City (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:35am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">Susanne Sundfør</span> - <span class="lastfm_title">White Foxes (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:31am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">Hannah Cohen</span> - <span class="lastfm_title">Sunrise (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:27am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">Lanterns on the Lake</span> - <span class="lastfm_title">If I've Been Unkind (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:23am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">Moby</span> - <span class="lastfm_title">After (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:20am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">Man Without Country</span> - <span class="lastfm_title">Tell All Your Friends (Man Without Country Remix)</span> <span class="lastfm_date">Aug 31, 13 3:16am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">Archive</span> - <span class="lastfm_title">Wiped Out (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:13am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">School of Seven Bells</span> - <span class="lastfm_title">Lafaye (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:08am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">Active Child</span> - <span class="lastfm_title">Diamond Heart (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 3:03am</span></div>
+              <div class="lastfm_listing"><span class="lastfm_artist">M83</span> - <span class="lastfm_title">Midnight City (Man Without Country remix)</span> <span class="lastfm_date">Aug 31, 13 2:59am</span></div>
+              <a href="http://last.fm/user/{{lastfm}}" title="Last.FM profile.">See {{profilename}} on last.fm</a>
+            </div-->
+{{/lastfm}}
           </div>
-          
+
+          <div id="latest-posts-withflickr">
+{{#comments}}
+            <div class="post-container" id="post-946158">
+              <div class="post-block">POST</div>
+              <h3 class="recent-thread-title"><a href='/thread/{{threadurl}}'>{{threadtitle}}</a></h3>
+              <div class="recent-post-content">{{content}}</div>
+              <hr/>
+            </div>
+{{/comments}}
+          </div>
+      
         </div>
         
       </div>
       
     </div>
+    
+  </div>
 {{>footer}}

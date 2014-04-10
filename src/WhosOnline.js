@@ -5,7 +5,7 @@ var WhosOnline = {
     setStore: function(store){
         this.store = store;
     },
-    activeUsers: function(){
+    activeUsers: function(theseUsernamesOnly){
         var pushedusers = [];
         return _(this.store.sessions || {}).reduce(function(memo, session){
             try{
@@ -13,8 +13,15 @@ var WhosOnline = {
             }catch(e){}
             
             if(session.user && session.user.username && pushedusers.indexOf(session.user.username) === -1){
-                memo.push(session.user);
-                pushedusers.push(session.user.username);
+                if(theseUsernamesOnly){
+                    if(theseUsernamesOnly.indexOf(session.user.username) > -1){
+                        memo.push(session.user);
+                        pushedusers.push(session.user.username);
+                    }
+                }else{
+                    memo.push(session.user);
+                    pushedusers.push(session.user.username);
+                }
             }
 
             return memo;
@@ -24,16 +31,6 @@ var WhosOnline = {
         return _(this.activeUsers()).map(function(user){
             return user.username;
         });
-    },
-    activeBuddies: function(buddies){
-        var _buddies = _(buddies);
-
-        return _(this.activeUsers()).reduce(function(memo, user){
-            if(_buddies.indexOf(user.username) > -1){
-                memo.push(user);
-            }
-            return memo;
-        }, []);
     }
 };
 

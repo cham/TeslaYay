@@ -80,7 +80,7 @@ module.exports = {
     },
 
     getUserTemplateData: function(user){
-        var onlinebuddies = WhosOnline.activeBuddies(user.buddies),
+        var onlinebuddies = WhosOnline.activeUsers(user.buddies),
             inboxsize = user.inbox,
             pointtime = 1000 * 60 * 60 * 8,
             inboxtext = 'No New Messages';
@@ -97,7 +97,7 @@ module.exports = {
             inboxsize: inboxsize || 0,
             inboxtext: inboxtext,
             email: user.email,
-	    canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
+            canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
         };
     }
 };
