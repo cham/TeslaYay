@@ -4,7 +4,8 @@
  */
 var _ = require('underscore'),
     moment = require('moment'),
-    renderUtils = require('./renderUtils');
+    renderUtils = require('./renderUtils'),
+    WhosOnline = require('./WhosOnline');
 
 function getUserWebsiteValue(websites, key){
     var match = _.find(websites, function(website){
@@ -24,11 +25,12 @@ module.exports = {
 
         var activepage = renderdata.page,//parseInt(req.route.params.page, 10) || 1,
             user = req.session.user || {},
-            numcomments = (user.preferences && user.preferences.numcomments) || 50,
+            numcomments = (user.comment_size) || 50,
             title = (renderdata.titledata || {}).title,
             titleauthor = (renderdata.titledata || {}).username,
             sortBy = renderdata.sortBy,
             that = this;
+
 
         return function(err, json){
             json = json || {};
@@ -180,6 +182,14 @@ module.exports = {
     userDetailHandler: function(req, res, next){
         var user = req.session.user || {};
 
+        function getWebsiteUrl(websites, name){
+            var website = _.findWhere(websites, {name: name});
+            if(!website || !website.url){
+                return;
+            }
+            return website.url;
+        }
+
         return function(err, selecteduser){
             if(err) return next(err);
             selecteduser = selecteduser || {};
@@ -194,7 +204,8 @@ module.exports = {
                 pointtime = 1000 * 60 * 60 * 8,
                 lastpointusage = selecteduser.lastpointusage || new Date(0,0,0),
                 nextpointtime = 'right now',
-                canpoint = (new Date().getTime() - new Date(lastpointusage).getTime()) > pointtime;
+                canpoint = (new Date().getTime() - new Date(lastpointusage).getTime()) > pointtime,
+                isOnline = WhosOnline.activeUsers([selecteduser.username]).length > 0;
 
             if(!canpoint){
                 nextpointtime = moment(lastpointusage).add(pointtime/1000, 'seconds').fromNow();
@@ -210,7 +221,28 @@ module.exports = {
                 buddy: _userBuddies.indexOf(selecteduser.username) > -1,
                 ignored: _userIgnores.indexOf(selecteduser.username) > -1,
                 nextpointtime: nextpointtime,
-                points: selecteduser.points
+                points: selecteduser.points,
+                website1: getWebsiteUrl(selecteduser.websites, 'website_1'),
+                website2: getWebsiteUrl(selecteduser.websites, 'website_2'),
+                website3: getWebsiteUrl(selecteduser.websites, 'website_3'),
+                aim: getWebsiteUrl(selecteduser.websites, 'aim'),
+                gchat: getWebsiteUrl(selecteduser.websites, 'gchat'),
+                msn: getWebsiteUrl(selecteduser.websites, 'msn'),
+                facebook: getWebsiteUrl(selecteduser.websites, 'facebook'),
+                flickr: getWebsiteUrl(selecteduser.websites, 'flickr'),
+                lastfm: getWebsiteUrl(selecteduser.websites, 'lastfm'),
+                twitter: getWebsiteUrl(selecteduser.websites, 'twitter'),
+                about: selecteduser.about,
+                comments: selecteduser.comments.reduce(function(memo, comment){
+                    var thread = comment.threadid || {};
+                    memo.push({
+                        threadurl: thread.urlname,
+                        threadtitle: thread.name,
+                        content: comment.content
+                    });
+                    return memo;
+                }, []),
+                online: isOnline
             }));
         };
     },
