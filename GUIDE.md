@@ -31,4 +31,4 @@ Cleans strings with node-validator-sanitizer, but preserves any style attributes
 Hogan templates used by rendering methods in order to build pages. See renderGenerator for the template values passed, otherwise these are just HTML. Partials are defined in app.js - any templates listed here can be included in your own templates via the > operator e.g.: {{>head}}
 
 ## package.json
-if you npm install a new module, remember to add it here
+if you npm install a new module, remember to add it here, or --save it
