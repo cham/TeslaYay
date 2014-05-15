@@ -60,7 +60,7 @@ if($('.welcome a:first').length){
   $('.you').html($('<div>').append($('.welcome a:first').clone()).html());
 }
 
-(function () {
+$(function () {
   var title, tpl = $("#title-input").html();
 
   $("#main-title.changeling").bind("click", function(){
@@ -79,10 +79,9 @@ if($('.welcome a:first').length){
     var obj = $(this);
     if (!obj.data('active')) {
       obj.data('active', true);
-      $(this).html('<iframe width="' + obj.width() + '" height="' +
-                   obj.height() + '" src="http://www.youtube.com/embed/' +
+      $(this).html('<div class="embed-container"><iframe src="http://www.youtube.com/embed/' +
                    obj.attr('id') + '?autoplay=1' + obj.data('extra') +
-                   '" frameborder="0" allowfullscreen></iframe><br />');
+                   '" frameborder="0" allowfullscreen></iframe></div><br />');
     }
   });
 
@@ -105,63 +104,61 @@ if($('.welcome a:first').length){
       }
     });
   });
-})();
 
-$('#toggle-html').bind('click', function(){
-  $.get('/ajax/toggle_html/'+ session_id, function(data) {
-    window.location.reload(true);
+  $('#toggle-html').bind('click', function(){
+    $.get('/ajax/toggle_html/'+ session_id, function(data) {
+      window.location.reload(true);
+    });
   });
-});
-
-$('.hide-thread').bind('click', function(e){
-  e.preventDefault();
-  e.stopPropagation();
-
-  var button = $(this),
-      toHide = button.hasClass('added'),
-      threadurl = button.attr('href'),
-      threadid = button.data('id');
-
-  $.ajax({
-    method: 'put',
-    url: threadurl,
-    data: {
-      threadid: threadid
-    },
-    success: function(data) {
-      button.toggleClass('added', !toHide);
-      button.parent('.five').parent('.thread').slideUp().next().slideUp();
-    }
+  
+  $('.hide-thread').bind('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+  
+    var button = $(this),
+        toHide = button.hasClass('added'),
+        threadurl = button.attr('href'),
+        threadid = button.data('id');
+  
+    $.ajax({
+      method: 'put',
+      url: threadurl,
+      data: {
+        threadid: threadid
+      },
+      success: function(data) {
+        button.toggleClass('added', !toHide);
+        button.parent('.five').parent('.thread').slideUp().next().slideUp();
+      }
+    });
   });
-});
-
-$('.favourite').bind('click', function(e){
-  e.preventDefault();
-  e.stopPropagation();
-
-  var button = $(this),
-      threadurl = button.attr('href'),
-      threadid = button.data('id');
-
-  $.ajax({
-    method: 'put',
-    url: threadurl,
-    data: {
-      threadid: threadid
-    },
-    success: function(data){
-      button.toggleClass('added');
-    }
+  
+  $('.favourite').bind('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+  
+    var button = $(this),
+        threadurl = button.attr('href'),
+        threadid = button.data('id');
+  
+    $.ajax({
+      method: 'put',
+      url: threadurl,
+      data: {
+        threadid: threadid
+      },
+      success: function(data){
+        button.toggleClass('added');
+      }
+    });
   });
-});
+  
+  
+  function isThread() {
+    return (typeof(window.thread) == "undefined")?  false: true;
+  }
 
 
-function isThread() {
-  return (typeof(window.thread) == "undefined")?  false: true;
-}
-
-
-(function() {
 /*
   var $input = $('#thread-content-input');
   var $form = $input.parents('form');
@@ -456,4 +453,4 @@ function isThread() {
   }
   setTimeout(ping, 30000);
 
-})();
+}); // end ready
