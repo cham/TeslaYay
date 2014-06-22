@@ -63,6 +63,7 @@
                 <div class="time">{{createdago}}</div>
                 <div class="user-information" style="background: url(/img/emoticons/0.gif);">
                   <ul>
+{{#user}}
   {{#buddy}}
                     <li><a href="/buddies/{{postedby}}">Your buddy!</a></li>
   {{/buddy}}
@@ -70,6 +71,11 @@
                     <li><a href="/buddies/{{postedby}}">Buddy? Ignore?</a></li>
   {{/buddy}}
                     <li><a href="/message/send/{{postedby}}">SEND A MESSAGE</a></li>
+{{/user}}
+{{^user}}
+                    <li>&nbsp;</li>
+                    <li>&nbsp;</li>
+{{/user}}
                   </ul>
                 </div>
                 <div class="comment-points">
