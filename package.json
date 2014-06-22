@@ -25,7 +25,9 @@
     "ent": "0.1.0",
     "async": "0.2.9",
     "validator": "1.5.1",
-    "socket.io": "0.9.14"
+    "socket.io": "0.9.14",
+    "redis": "~0.10.1",
+    "connect-redis": "~1.4.7"
   },
   "devDependencies": {
     "nodeload": "0.4.0"

@@ -4,11 +4,16 @@
  */
 
 var express = require('express'),
+    RedisStore = require('connect-redis')(express),
     routes = require('./routes'),
     http = require('http'),
     path = require('path'),
     sessionGenerator = require('./src/sessionGenerator'),
-    sessionStore = new express.session.MemoryStore({reapInterval: 60*60*1000}),
+    sessionStore = new RedisStore({
+        host: 'localhost',
+        port: 6379,
+        db: 2
+    }),
     WhosOnline = require('./src/WhosOnline'),
     app = express(),
     server = http.createServer(app),
@@ -27,8 +32,15 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser('0rly?YA,rly!'));
-  app.use(sessionGenerator(sessionStore));
+
   app.use(express.static(path.join(__dirname, 'public')));
+
+  app.use(express.session({
+      store: sessionStore,
+      secret: '0mg!Wtf?bbQ!',
+      reapInterval: 60*60*1000
+  }));
+
   app.use(routes(io));
   app.use(errorHandler);
   WhosOnline.setStore(sessionStore);
