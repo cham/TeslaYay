@@ -2125,17 +2125,6 @@ Award Section
 
 }
 
-/*------------------------------------------------------------
-POBF specific
-------------------------------------------------------------*/
-.everythingpic {
-    background: url(../img/pobf3.jpg) top left no-repeat;
-    display: block;
-    text-indent: -100%;
-    height: 175px;
-    width: 200px;
-}
-
 /* edited % */
 .edited-percent {
     font-size: 9px;

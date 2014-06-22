@@ -157,7 +157,9 @@ module.exports = {
                         buddy: _userBuddies.indexOf(comment.postedby) > -1,
                         ignored: _userIgnores.indexOf(comment.postedby) > -1,
                         toggleSourceLabel: (comment.postedby === user.username && moment(comment.created).diff(new Date())>-600000) ? 'Edit Post' : 'View Source',
-                        editPercent: Math.floor(comment.edit_percent)
+                        editPercent: Math.floor(comment.edit_percent),
+                        haspoints: comment.points > 0,
+                        hasmultiplepoints: comment.points > 1
                     });
                 })
             }));
