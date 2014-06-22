@@ -43,6 +43,11 @@
           </div>
 
 {{#comments}}
+{{#dayslaterbanner}}
+          <div class="comment later-comment">
+            <div class="comment-container">{{dayslater}} days later</div>
+          </div>
+{{/dayslaterbanner}}
           <div id="comment-{{id}}" class="comment {{#buddy}}buddy{{/buddy}}">
             <div id="comment-container-{{id}}" class="comment-container">
               <div class="cmd-bar">

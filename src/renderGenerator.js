@@ -130,7 +130,8 @@ module.exports = {
                 }),
                 _userBuddies = _(user.buddies || []),
                 _userIgnores = _(user.ignores || []),
-                thread;
+                thread,
+                lastcomment;
 
             if(!json.threads || !json.threads.length){
                 return res.redirect('/');
@@ -151,16 +152,22 @@ module.exports = {
                     activepage: activepage
                 }),
                 comments: _(thread.comments).map(function(comment){
-                    return _(comment).extend({
-                        id: comment._id,
-                        createdago: moment(comment.created).fromNow(),
-                        buddy: _userBuddies.indexOf(comment.postedby) > -1,
-                        ignored: _userIgnores.indexOf(comment.postedby) > -1,
-                        toggleSourceLabel: (comment.postedby === user.username && moment(comment.created).diff(new Date())>-600000) ? 'Edit Post' : 'View Source',
-                        editPercent: Math.floor(comment.edit_percent),
-                        haspoints: comment.points > 0,
-                        hasmultiplepoints: comment.points > 1
-                    });
+                    var dayslater = lastcomment ? moment(comment.created).diff(moment(lastcomment.created),'days') : 0,
+                        newcomment = _.extend({
+                            id: comment._id,
+                            createdago: moment(comment.created).fromNow(),
+                            buddy: _userBuddies.indexOf(comment.postedby) > -1,
+                            ignored: _userIgnores.indexOf(comment.postedby) > -1,
+                            toggleSourceLabel: (comment.postedby === user.username && moment(comment.created).diff(new Date())>-600000) ? 'Edit Post' : 'View Source',
+                            editPercent: Math.floor(comment.edit_percent),
+                            haspoints: comment.points > 0,
+                            hasmultiplepoints: comment.points > 1,
+                            dayslater: dayslater,
+                            dayslaterbanner: dayslater > 2
+                        }, comment);
+
+                    lastcomment = comment;
+                    return newcomment;
                 })
             }));
         };
