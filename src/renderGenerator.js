@@ -130,6 +130,7 @@ module.exports = {
                 }),
                 _userBuddies = _(user.buddies || []),
                 _userIgnores = _(user.ignores || []),
+                userTemplateData = renderUtils.getUserTemplateData(user),
                 thread,
                 lastcomment;
 
@@ -138,7 +139,7 @@ module.exports = {
             }
             thread = json.threads[0];
 
-            res.render('thread', _(renderUtils.getUserTemplateData(user)).extend({
+            res.render('thread', _.extend(userTemplateData, {
                 id: thread._id,
                 title: thread.name,
                 threadurlname: thread.urlname,
@@ -163,7 +164,8 @@ module.exports = {
                             haspoints: comment.points > 0,
                             hasmultiplepoints: comment.points > 1,
                             dayslater: dayslater,
-                            dayslaterbanner: dayslater > 1
+                            dayslaterbanner: dayslater > 1,
+                            canpoint: userTemplateData.canpoint && user.username !== comment.postedby
                         }, comment);
 
                     lastcomment = comment;
