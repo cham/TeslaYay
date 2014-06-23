@@ -163,7 +163,7 @@ module.exports = {
                             haspoints: comment.points > 0,
                             hasmultiplepoints: comment.points > 1,
                             dayslater: dayslater,
-                            dayslaterbanner: dayslater > 2
+                            dayslaterbanner: dayslater > 1
                         }, comment);
 
                     lastcomment = comment;
