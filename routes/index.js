@@ -159,6 +159,8 @@ module.exports = function routing(io){
     // preferences
     app.post('/preferences', checkAuth, function(req, res, next){
         var body = req.body,
+            files = req.files,
+            avatarFile = files && files.emot_upload,
             callsToMake = [];
 
         callsToMake.push(
@@ -172,6 +174,12 @@ module.exports = function routing(io){
                 api.updateForumPreferences(res, body, req.session.user, done);
             }
         );
+
+        if(avatarFile){
+            callsToMake.push(function(done){
+                api.updateAvatar(avatarFile, req.session.user, done);
+            });
+        }
 
         if(body.old_password && body.password && body.password2){
             callsToMake.push(function(done){

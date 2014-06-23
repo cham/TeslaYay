@@ -712,6 +712,29 @@ module.exports = {
                 cb(null, data);
             });
         });
+    },
+
+    updateAvatar: function(file, user, cb){
+        var filename;
+
+        if(file.size  > 40000){
+            return cb(new Error('File too large'));
+        }
+        if(file.type.indexOf('image') !== 0){
+            return cb(new Error('Wrong file type'));
+        }
+
+        fs.readFile(file.path, function(err, data){
+            filename = __dirname.replace(/\/src$/, '/public/avatars/') + user.username;
+
+            fs.writeFile(filename, data, function(err){
+                if(err){
+                    return cb(err);
+                }
+
+                cb();
+            });
+        });
     }
 
 };
