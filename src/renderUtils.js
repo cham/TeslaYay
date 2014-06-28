@@ -79,25 +79,26 @@ module.exports = {
         return threadindex + ' - ' + lastthreadindex + ' of ' + options.setsize;
     },
 
-    getUserTemplateData: function(user){
-        var onlinebuddies = WhosOnline.activeUsers(user.buddies),
-            inboxsize = user.inbox,
-            pointtime = 1000 * 60 * 60 * 8,
-            inboxtext = 'No New Messages';
+    getUserTemplateData: function(user, cb){
+        WhosOnline.activeUsers(user.buddies, function(onlinebuddies){
+            var inboxsize = user.inbox,
+                pointtime = 1000 * 60 * 60 * 8,
+                inboxtext = 'No New Messages';
 
-        if(inboxsize > 0){
-            inboxtext = inboxsize + ' New Message' + (inboxsize > 1 ? 's' : '');
-        }
+            if(inboxsize > 0){
+                inboxtext = inboxsize + ' New Message' + (inboxsize > 1 ? 's' : '');
+            }
 
-        return {
-            user: user.username ? user : false,
-            onlinebuddies: onlinebuddies,
-            numonlinebuddies: (onlinebuddies || []).length,
-            numtotalbuddies: (user.buddies || []).length,
-            inboxsize: inboxsize || 0,
-            inboxtext: inboxtext,
-            email: user.email,
-            canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
-        };
+            cb({
+                user: user.username ? user : false,
+                onlinebuddies: onlinebuddies,
+                numonlinebuddies: (onlinebuddies || []).length,
+                numtotalbuddies: (user.buddies || []).length,
+                inboxsize: inboxsize || 0,
+                inboxtext: inboxtext,
+                email: user.email,
+                canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
+            });
+        });
     }
 };
