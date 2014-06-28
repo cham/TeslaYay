@@ -5,6 +5,7 @@
 
 var express = require('express'),
     RedisStore = require('connect-redis')(express),
+    redisClient = require('redis').createClient(),
     routes = require('./routes'),
     http = require('http'),
     path = require('path'),
@@ -41,9 +42,16 @@ app.configure(function(){
       reapInterval: 60*60*1000
   }));
 
+  app.use(function(req, res, next){
+    if(req.session.user && req.session.user.username){
+      WhosOnline.setOnline(req.session.user.username);
+    }
+    next();
+  });
+
   app.use(routes(io));
   app.use(errorHandler);
-  WhosOnline.setStore(sessionStore);
+  WhosOnline.setStore(redisClient);
 });
 
 app.configure('development', function(){
