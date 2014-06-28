@@ -77,9 +77,7 @@
                   </ul>
                 </div>
                 <div class="comment-points">
-{{#haspoints}}
-                  <span class="current-points">{{points}} point{{#hasmultiplepoints}}s{{/hasmultiplepoints}}</span>
-{{/haspoints}}
+                  <span class="current-points">{{#haspoints}}{{points}} point{{#hasmultiplepoints}}s{{/hasmultiplepoints}}{{/haspoints}}</span>
 {{#canpoint}}
                   <a class="give-point" data-commentid="{{id}}" data-type="plus">+1</a>
 {{/canpoint}}
