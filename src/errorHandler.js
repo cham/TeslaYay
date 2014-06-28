@@ -5,7 +5,7 @@ var api = require('./api'),
         [0, 1, 1, 0, 0],
         [0, 0, 1, 1, 2],
         [4, 1, 1, 1, 0],
-        [0, 3, 0, 1, 1]
+        [0, 3, 0, 1, 6]
     ],
     tileDescriptions = [
         'You have somehow found yourself in the void. You found an error in the error reporting page. Well done. I hope you\'re happy now.',
@@ -13,7 +13,8 @@ var api = require('./api'),
         'You enter a clearing. There is a small shrine to the Jakes here.',
         'You find a strange box with flashing lights. The box is in a very poor state indeed. It has \'Yayhooray.net\' written on the side.',
         'You find a small cave. This is where matty comes to cry.',
-        'You have found the exit! This will have rebooted the server and fixed the error. Just kidding, you\'re still in the forest. A bird flies past and poos on your shoulder.'
+        'You have found the exit! This will have rebooted the server and fixed the error. Just kidding, you\'re still in the forest. A bird flies past and poos on your shoulder.',
+        'You find yourself at the entrance to a dark forest.'
     ];
 
 function getTile(x, y){
@@ -30,33 +31,9 @@ function isWalkable(x,y){
     return getTile(x, y) !== 0;
 }
 
-function getExits(position){
-    var exits = [];
-
-    if(isWalkable(position.x, position.y-1)){
-        exits.push('North');
-    }
-    if(getTile(position.x, position.y+1) !== 0){
-        exits.push('South');
-    }
-    if(getTile(position.x-1, position.y) !== 0){
-        exits.push('West');
-    }
-    if(getTile(position.x+1, position.y) !== 0){
-        exits.push('East');
-    }
-
-    return exits;
-}
-
 function getGameStateForPosition(position){
-    var exits = getExits(position),
-        tileDescription = tileDescriptions[getTile(position.x, position.y)],
+    var tileDescription = tileDescriptions[getTile(position.x, position.y)],
         stuck = !isWalkable(position.x, position.y);
-
-    if(!stuck && exits.length){
-        tileDescription += ' There are exits ' + exits.join(', ') + '.';
-    }
 
     return {
         exitNorth: !stuck && isWalkable(position.x, position.y-1),
