@@ -107,6 +107,7 @@ module.exports = {
                         thread.alt = flag;
                         thread.buddy = _userBuddies.indexOf(thread.postedby) > -1;
                         thread.ignored = _userIgnores.indexOf(thread.postedby) > -1;
+                        thread.removed = user.hide_enemy_posts && _userIgnores.indexOf(thread.postedby) > -1;
 
                         return thread;
                     })
@@ -156,7 +157,7 @@ module.exports = {
                 return res.redirect('/');
             }
             thread = json.threads[0];
-            
+
             renderUtils.getUserTemplateData(user, function(templateData){
                 res.render('thread', _.extend(templateData, {
                     id: thread._id,
@@ -178,6 +179,7 @@ module.exports = {
                                 createdago: moment(comment.created).fromNow(),
                                 buddy: _userBuddies.indexOf(comment.postedby) > -1,
                                 ignored: _userIgnores.indexOf(comment.postedby) > -1,
+                                removed: user.hide_enemy_posts && _userIgnores.indexOf(comment.postedby) > -1,
                                 toggleSourceLabel: (comment.postedby === user.username && moment(comment.created).diff(new Date())>-600000) ? 'Edit Post' : 'View Source',
                                 editPercent: Math.floor(comment.edit_percent),
                                 haspoints: comment.points > 0,

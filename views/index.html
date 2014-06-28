@@ -43,8 +43,11 @@
         </div>
 
 {{#threads}}
-{{^ignored}}
-        <div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} {{#buddy}}buddy{{/buddy}}">
+{{^removed}}
+{{#ignored}}
+        <div id="ignore-for-{{_id}}" class="ignore-container" onclick="$('#thread-{{_id}}').toggle();"></div>
+{{/ignored}}
+        <div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} {{#buddy}}buddy{{/buddy}} {{#ignored}}enemy{{/ignored}}">
            <div class="one">
             <div class="subject"><span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>  <a href="/thread/{{urlname}}/page/{{numpages}}#bottom" class='end-link'>#</a></div>
             <div class="category">
@@ -81,7 +84,7 @@
 {{/user}}
         </div>
         <div class="blueline">&nbsp;</div>
-{{/ignored}}
+{{/removed}}
 {{/threads}}
  
         <div class="pagination bottom">
