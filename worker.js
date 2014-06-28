@@ -12,7 +12,8 @@ var express = require('express'),
     WhosOnline = require('./src/WhosOnline'),
     app = express(),
     server = http.createServer(app),
-    io = require('socket.io').listen(server);
+    io = require('socket.io').listen(server),
+    errorHandler = require('./src/errorHandler');
 
 app.engine('html', require('hogan-express'));
 app.enable('view cache');
@@ -29,6 +30,7 @@ app.configure(function(){
   app.use(sessionGenerator(sessionStore));
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(routes(io));
+  app.use(errorHandler);
   WhosOnline.setStore(sessionStore);
 });
 

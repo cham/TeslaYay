@@ -113,6 +113,21 @@ module.exports = {
         };
     },
 
+    errorPageHandler: function(req, res, renderdata, next){
+        var user = req.session.user || {},
+            title = (renderdata.titledata || {}).title,
+            titleauthor = (renderdata.titledata || {}).username,
+            errorMessage = (renderdata || {}).errorMessage,
+            gameData = (renderdata || {}).gameData;
+
+        res.status(500);
+        res.render('error', _.extend(renderUtils.getUserTemplateData(user), gameData, {
+            title: title,
+            titleauthor: titleauthor,
+            errorMessage: errorMessage
+        }));
+    },
+
     threadDetailHandler: function(req, res, next){
         var user = req.session.user || {},
             activepage = parseInt(req.route.params.page, 10) || 1,

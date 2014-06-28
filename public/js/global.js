@@ -453,4 +453,28 @@ $(function () {
   }
   setTimeout(ping, 30000);
 
+  // error page
+  if($('.amazing-game').length){
+    function navigateTo(loc, x,y){
+      window.location.href = loc + '?x='+x+'&y='+y;
+    }
+
+    var x = parseInt($('.position-x').val(), 10),
+        y = parseInt($('.position-y').val(), 10),
+        loc = window.location.href.split('?')[0];
+
+    $('.go-north').click(function(){
+      navigateTo(loc, x, y-1);
+    });
+    $('.go-south').click(function(){
+      navigateTo(loc, x, y+1);
+    });
+    $('.go-west').click(function(){
+      navigateTo(loc, x-1, y);
+    });
+    $('.go-east').click(function(){
+      navigateTo(loc, x+1, y);
+    });
+  }
+
 }); // end ready
