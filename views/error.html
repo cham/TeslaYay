@@ -1,0 +1,42 @@
+{{>head}}
+<body class="yh_home" >
+
+  <a name="top"></a>
+
+  <div id="wrapper">
+    <div id="middle">
+
+{{>leftcolumn}}
+
+      <div id="right-column">
+        <div id="main-title" {{#user}}class="changeling" {{/user}}title="{{titleauthor}}">
+          <h3>{{title}}</h3>
+        </div>
+
+        <script type="text/html" id="title-input">
+          <input type="text" id="title-input" maxlength="36" />
+          <input type="submit" value="Save" id="save-title" />
+          <input type="button" value="Cancel" id="cancel-title" />
+          (36 chars max)
+        </script>
+
+        <h4>Congratulations!</h4>
+        <p>You have discovered an error.</p>
+        <p>Computer says: "{{errorMessage}}"</p>
+        <p>Hopefully someone will know what to do with that.</p>
+
+        <div class="amazing-game">
+          <p class="gamestate">{{tileDescription}}</p>
+          <button class="go-west" {{^exitWest}}disabled{{/exitWest}}>Go West</button>
+          <button class="go-north" {{^exitNorth}}disabled{{/exitNorth}}>Go North</button>
+          <button class="go-south" {{^exitSouth}}disabled{{/exitSouth}}>Go South</button>
+          <button class="go-east" {{^exitEast}}disabled{{/exitEast}}>Go East</button>
+          <input class="position-x" type="hidden" value="{{x}}">
+          <input class="position-y" type="hidden" value="{{y}}">
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+{{>footer}}
