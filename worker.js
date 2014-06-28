@@ -18,7 +18,6 @@ var express = require('express'),
     WhosOnline = require('./src/WhosOnline'),
     app = express(),
     server = http.createServer(app),
-    io = require('socket.io').listen(server),
     errorHandler = require('./src/errorHandler');
 
 app.engine('html', require('hogan-express'));
@@ -49,7 +48,7 @@ app.configure(function(){
     next();
   });
 
-  app.use(routes(io));
+  app.use(routes());
   app.use(errorHandler);
   WhosOnline.setStore(redisClient);
 });

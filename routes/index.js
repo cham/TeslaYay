@@ -27,7 +27,7 @@ var _ = require('underscore'),
     stresstest = false,
     stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}};
 
-module.exports = function routing(io){
+module.exports = function routing(){
 
     var app = new express.Router();
 
@@ -215,7 +215,7 @@ module.exports = function routing(io){
         api.postComment(res, req.body, req.session.user, function(err, comment){
             if(err) return next(err);
 
-            io.sockets.emit('newpost:' + req.body.threadid);
+            // io.sockets.emit('newpost:' + req.body.threadid);
 
             if(req.body.redirect){
                 res.redirect(req.headers['referer']+'#bottom');
