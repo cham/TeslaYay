@@ -122,9 +122,9 @@ module.exports = {
             errorMessage = (renderdata || {}).errorMessage,
             gameData = (renderdata || {}).gameData;
 
-        res.status(500);
         renderUtils.getUserTemplateData(user, function(templateData){
-            res.render('index', _.extend(templateData, gameData, {
+            res.status(500);
+            res.render('error', _.extend(templateData, gameData, {
                 title: title,
                 titleauthor: titleauthor,
                 errorMessage: errorMessage
