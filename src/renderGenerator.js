@@ -263,7 +263,7 @@ module.exports = {
                         gchat: getWebsiteUrl(selecteduser.websites, 'gchat'),
                         msn: getWebsiteUrl(selecteduser.websites, 'msn'),
                         facebook: getWebsiteUrl(selecteduser.websites, 'facebook'),
-                        flickr: getWebsiteUrl(selecteduser.websites, 'flickr'),
+                        flickr: getWebsiteUrl(selecteduser.websites, 'flickr_username'),
                         lastfm: getWebsiteUrl(selecteduser.websites, 'lastfm'),
                         twitter: getWebsiteUrl(selecteduser.websites, 'twitter'),
                         about: selecteduser.about,
