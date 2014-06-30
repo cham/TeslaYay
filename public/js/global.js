@@ -240,7 +240,7 @@ $(function () {
     $.ajax({
       url: '/login', type: 'POST', data: data
     }).fail(function(data) {
-      $('.error').text(JSON.parse(data.responseText).error);
+      $('.error').text('Login incorrect');
     }).then(function() {
       window.location.reload();
     });

@@ -25,7 +25,8 @@ var _ = require('underscore'),
         numcomments: 100
     },
     stresstest = false,
-    stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}};
+    stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
+    uiErrorHandler = require('../src/uiErrorHandler');
 
 module.exports = function routing(){
 
@@ -236,6 +237,9 @@ module.exports = function routing(){
     // login
     app.post('/login', ping, function(req, res, next){
         api.handleLogin(res, req.body, req.session.user, function(err, user){
+            if(err){
+                return uiErrorHandler.handleError(res, err, req.body, 'login');
+            }
             if(user && user.username){
                 setUser(req, user);
             }else{
