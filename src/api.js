@@ -38,6 +38,20 @@ function parseJson(json, next, success){
     }
     success(json);
 }
+function makeRequest(method, url, options, cb){
+    options = _.extend(options || {}, {
+        method: method,
+        url: url
+    });
+
+    request(options, function(err, response, json){
+        if(!checkResponse(err, response, cb)) return;
+
+        parseJson(json, cb, function(data){
+            cb(null, data);
+        });
+    });
+}
 
 module.exports = {
 
@@ -744,6 +758,18 @@ module.exports = {
                 cb(null, data);
             });
         });
+    },
+
+    toggleHTML: function(res, body, user, cb){
+        user = user || {};
+
+        try{
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        makeRequest('put', apiUrl + '/user/' + user.username + '/togglehtml', null, cb);
     },
 
     updateAvatar: function(file, user, cb){

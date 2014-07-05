@@ -108,7 +108,7 @@ $(function () {
   $('#toggle-html').bind('click', function(){
     $.ajax({
       method: 'put',
-      url: '/ajax/toggle_html',
+      url: '/togglehtml',
       success: function(data) {
         window.location.reload(true);
       }
@@ -162,76 +162,6 @@ $(function () {
     return (typeof(window.thread) == "undefined")?  false: true;
   }
 
-
-/*
-  var $input = $('#thread-content-input');
-  var $form = $input.parents('form');
-  var key = document.title;
-
-  var hasStorage = (function() {
-    try {
-      return !!localStorage.getItem;
-    } catch(e) {
-      return false;
-    }
-  }());
-
-  if ($input.length !== 0 && hasStorage) {
-
-    if (localStorage.getItem(key)) {
-      $input.val(localStorage.getItem(key));
-    }
-
-    $input.bind('keyup change', function() {
-      localStorage.setItem(key, $input.val());
-    });
-  }
-
-
-  $form.bind('submit', function(e) {
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    if ($input.val().length === 0) {
-      return false;
-    }
-
-    $form.find('[type=submit]').attr('disabled', 'disabled');
-
-    var data = {
-          content: $input.val()
-        },
-        mode = document.location.pathname === '/newthread' ? 'newthread' : 'comment';
-
-    if(mode === 'newthread') {
-      data.name = $form.find('#name').val();
-      data['categories[]'] = $form.find('#category-selector input:checked').val();
-    }
-    if(mode === 'comment'){
-      data.threadid = $form.find('input[name=threadid]').val();
-    }
-
-    $.ajax({
-      type: 'POST',
-      url: $form.attr('action'),
-      data: data
-    }).then(function(data, statusStr, response){
-      if(hasStorage){
-        localStorage.removeItem(key);
-      }
-      if(response.status === 200 && mode === 'newthread'){
-        document.location.href = '/thread/' + data.urlname;
-      }else{
-        document.location.reload();
-      }
-    }).fail(function(response){
-      $form.find('[type=submit]').removeAttr('disabled');
-      $('#ajax_errs').remove();
-      $form.prepend('<div id="ajax_errs">Please correct the errors and try again</div>');
-    });
-  });
-*/
   var defaultLoginBox = $('#login-box').html();
   $('#login-form').on('submit', function(e) {
     e.preventDefault();
