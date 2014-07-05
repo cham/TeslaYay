@@ -401,6 +401,7 @@ module.exports = {
                     hideenemyposts: user.hide_enemy_posts,
                     customcssurl: user.custom_css,
                     customjsurl: user.custom_js,
+                    errorMessage: preferences.errorMessage,
                     threadsperpage: [
                         {value: 25,  selected: user.thread_size === 25},
                         {value: 50,  selected: user.thread_size === 50},

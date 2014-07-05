@@ -5,6 +5,12 @@
 var renderGenerator = require('../src/renderGenerator'),
     routes;
 
+function preferencesError(req, res, next, message){
+    var body = req.body;
+    body.errorMessage = message;
+    renderGenerator.preferencesHandler(req, res, next)(null, body);
+}
+
 routes = {
     login: {
         ValidatorError: {
@@ -46,6 +52,33 @@ routes = {
                 var body = req.body;
                 body.errorMessage = 'Please give your post some content.';
                 renderGenerator.threadDetailHandler(req, res, next)(null, body);
+            }
+        }
+    },
+    preferences: {
+        ValidatorError: {
+            'Old password failed validation': function(err, req, res, next){
+                preferencesError(req, res, next, 'Your original password must be at least 6 characters.');
+            },
+            'New password failed validation': function(err, req, res, next){
+                preferencesError(req, res, next, 'Your new password must be at least 6 characters.');
+            },
+            'Confirm password failed validation': function(err, req, res, next){
+                preferencesError(req, res, next, 'Confirm new password must be at least 6 characters.');
+            },
+            'Confirm password does not match': function(err, req, res, next){
+                preferencesError(req, res, next, 'Your new password and confirm password do not match.');
+            },
+            'Email failed validation': function(err, req, res, next){
+                preferencesError(req, res, next, 'Please enter a valid email address.');
+            },
+            'Custom CSS failed validation': function(err, req, res, next){
+                preferencesError(req, res, next, 'Custom CSS must be a valid URL.');
+            }
+        },
+        Error: {
+            'Wrong file type': function(err, req, res, next){
+                preferencesError(req, res, next, 'Invalid file.');
             }
         }
     }

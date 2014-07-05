@@ -2164,3 +2164,8 @@ Award Section
     opacity: 0.8;
     margin-top: 32px;
 }
+
+.error {
+    color: red;
+    margin-top: 14px;
+}

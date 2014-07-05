@@ -16,6 +16,12 @@
 
         <div class="dotted-bar"></div>
 
+{{#errorMessage}}
+        <p class="error">{{errorMessage}}</p>
+
+        <div class="dotted-bar"></div>
+{{/errorMessage}}
+
         <div id="preferences">
 
           <form action="/preferences" method="post" enctype="multipart/form-data">
