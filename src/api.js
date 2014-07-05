@@ -10,7 +10,6 @@ var _ = require('underscore'),
     XSSWrapper = require('./xsswrapper'),
     apiUrl = 'http://localhost:3000',
     crypto = require('crypto'),
-    md5sum = crypto.createHash('md5'),
     request = require('request').defaults({
         encoding: 'utf8',
         jar: false,
@@ -569,7 +568,8 @@ module.exports = {
     },
 
     createImage: function(res, body, user, cb){
-        var dataURL = body.dataURL || '',
+        var md5sum = crypto.createHash('md5'),
+            dataURL = body.dataURL || '',
             filename = md5sum.update(dataURL + Date.now()).digest('hex') + '.png',
             approot = __dirname.replace(/\/src$/, ''),
             filepath = approot + '/public/img/userimages/' + filename,
