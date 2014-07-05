@@ -439,6 +439,32 @@ function insertAtCaret(areaId,text) {
   txtarea.scrollTop = scrollPos;
 }
 
+$('#control-closed').click(function(){
+  var $this = $(this),
+      threadurlname = $('input[name=threadurlname]').val();
+
+  $.ajax({
+    method: 'put',
+    url: '/thread/' + threadurlname + '/close',
+    success: function(thread){
+      window.location.reload();
+    }
+  });
+});
+
+$('#control-open').click(function(){
+  var $this = $(this),
+      threadurlname = $('input[name=threadurlname]').val();
+
+  $.ajax({
+    method: 'put',
+    url: '/thread/' + threadurlname + '/open',
+    success: function(thread){
+      window.location.reload();
+    }
+  });
+});
+
 (function(){
   var threadid = $('input[name=threadid]').val(),
       $notifications = $('#notifications'),

@@ -331,6 +331,28 @@ module.exports = function routing(){
         });
     });
 
+    app.put('/thread/:threadUrlName/close', function(req, res, next){
+
+        api.closeThread(req, {
+            threadUrlName: req.route.params.threadUrlName
+        }, req.session.user, function(err, json){
+            if(err) return next(err);
+
+            res.send(json);
+        });
+    });
+
+    app.put('/thread/:threadUrlName/open', function(req, res, next){
+
+        api.openThread(req, {
+            threadUrlName: req.route.params.threadUrlName
+        }, req.session.user, function(err, json){
+            if(err) return next(err);
+
+            res.send(json);
+        });
+    });
+
     return app.middleware;
 
 };

@@ -13,8 +13,8 @@
         <div id="thread">
           <div id="main-title">
             <h3>{{title}}</h3>
-            <a class="favourite" rel="26209"></a>
-            <a class="hide-thread" rel="26209"></a>
+            <a class="favourite"></a>
+            <a class="hide-thread"></a>
           </div>
 
           
@@ -87,7 +87,12 @@
                   <p>THREAD ADMIN</p>
                   <ul>
                     <li id="control-nsfw">· <span>Mark Naughty</span></li>
+{{#closed}}
+                    <li id="control-open">· <span>Open Thread</span></li>
+{{/closed}}
+{{^closed}}
                     <li id="control-closed">· <span>Close Thread</span></li>
+{{/closed}}
                   </ul>
                 </div>
 {{/showthreadcontrols}}
@@ -142,6 +147,11 @@
       </div>
 
 {{#user}}
+{{#closed}}
+      <h3>This thread is closed</h3>
+      <input type="hidden" name="threadurlname" value="{{threadurlname}}">
+{{/closed}}
+{{^closed}}
       <div id="reply-lc">
         <h4>Post A Reply</h4>
         <div id="post-shortcuts">
@@ -185,6 +195,7 @@
           <input type="hidden" name="redirect" value="1">
           <div class="input textarea">
             <input type="hidden" name="threadid" value="{{id}}">
+            <input type="hidden" name="threadurlname" value="{{threadurlname}}">
             <textarea name="content" cols="90" rows="12" tabindex="1" id="thread-content-input" ></textarea>
           </div>
           <p>I, {{username}}, do solemnly swear that in posting this comment I promise to be nice.</p>
@@ -215,6 +226,7 @@
         <div style="clear: both;"></div>
       </div>
     </div>
+{{/closed}}
 {{/user}}
 
     <div id="notifications">
