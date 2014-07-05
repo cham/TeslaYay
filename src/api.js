@@ -181,6 +181,38 @@ module.exports = {
         }, cb);
     },
 
+    markThreadNSFW: function(res, body, user, cb){
+        user = user || {};
+
+        try {
+            check(body.threadUrlName, 'Threadurlname failed validation').notEmpty();
+        }catch(err){
+            return cb(err);
+        }
+
+        makeRequest('put', apiUrl + '/thread/' + body.threadUrlName, {
+            form: {
+                nsfw: true
+            }
+        }, cb);
+    },
+
+    markThreadSFW: function(res, body, user, cb){
+        user = user || {};
+
+        try {
+            check(body.threadUrlName, 'Threadurlname failed validation').notEmpty();
+        }catch(err){
+            return cb(err);
+        }
+
+        makeRequest('put', apiUrl + '/thread/' + body.threadUrlName, {
+            form: {
+                nsfw: false
+            }
+        }, cb);
+    },
+
     postComment: function(res, body, user, cb){
         user = user || {};
 

@@ -353,6 +353,28 @@ module.exports = function routing(){
         });
     });
 
+    app.put('/thread/:threadUrlName/nsfw', function(req, res, next){
+
+        api.markThreadNSFW(req, {
+            threadUrlName: req.route.params.threadUrlName
+        }, req.session.user, function(err, json){
+            if(err) return next(err);
+
+            res.send(json);
+        });
+    });
+
+    app.put('/thread/:threadUrlName/sfw', function(req, res, next){
+
+        api.markThreadSFW(req, {
+            threadUrlName: req.route.params.threadUrlName
+        }, req.session.user, function(err, json){
+            if(err) return next(err);
+
+            res.send(json);
+        });
+    });
+
     return app.middleware;
 
 };

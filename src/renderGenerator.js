@@ -175,6 +175,7 @@ module.exports = {
                     }),
                     errorMessage: json.errorMessage,
                     closed: thread.closed,
+                    nsfw: thread.nsfw,
                     comments: _(thread.comments).map(function(comment, index){
                         var dayslater = lastcomment ? moment(comment.created).diff(moment(lastcomment.created),'days') : 0,
                             newcomment = _.extend({

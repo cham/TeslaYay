@@ -440,8 +440,7 @@ function insertAtCaret(areaId,text) {
 }
 
 $('#control-closed').click(function(){
-  var $this = $(this),
-      threadurlname = $('input[name=threadurlname]').val();
+  var threadurlname = $('input[name=threadurlname]').val();
 
   $.ajax({
     method: 'put',
@@ -453,14 +452,37 @@ $('#control-closed').click(function(){
 });
 
 $('#control-open').click(function(){
-  var $this = $(this),
-      threadurlname = $('input[name=threadurlname]').val();
+  var threadurlname = $('input[name=threadurlname]').val();
 
   $.ajax({
     method: 'put',
     url: '/thread/' + threadurlname + '/open',
     success: function(thread){
       window.location.reload();
+    }
+  });
+});
+
+$('body').on('click', '#control-nsfw', function(e){
+  var threadurlname = $('input[name=threadurlname]').val();
+
+  $.ajax({
+    method: 'put',
+    url: '/thread/' + threadurlname + '/nsfw',
+    success: function(thread){
+      $('#control-nsfw').attr('id', 'control-sfw').find('span').text('Unmark Naughty');
+    }
+  });
+});
+
+$('body').on('click', '#control-sfw', function(e){
+  var threadurlname = $('input[name=threadurlname]').val();
+
+  $.ajax({
+    method: 'put',
+    url: '/thread/' + threadurlname + '/sfw',
+    success: function(thread){
+      $('#control-sfw').attr('id', 'control-nsfw').find('span').text('Mark Naughty');
     }
   });
 });

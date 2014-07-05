@@ -86,7 +86,12 @@
                 <div id="thread-control">
                   <p>THREAD ADMIN</p>
                   <ul>
+{{#nsfw}}
+                    <li id="control-sfw">· <span>Unmark Naughty</span></li>
+{{/nsfw}}
+{{^nsfw}}
                     <li id="control-nsfw">· <span>Mark Naughty</span></li>
+{{/nsfw}}
 {{#closed}}
                     <li id="control-open">· <span>Open Thread</span></li>
 {{/closed}}
