@@ -4,3 +4,4 @@ node_modules
 results-*
 current.json
 history.txt
+public/img/userimages/*
