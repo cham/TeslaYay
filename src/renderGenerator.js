@@ -187,7 +187,8 @@ module.exports = {
                                 hasmultiplepoints: comment.points > 1,
                                 dayslater: dayslater,
                                 dayslaterbanner: dayslater > 1,
-                                canpoint: templateData.canpoint && user.username !== comment.postedby
+                                canpoint: templateData.canpoint && user.username !== comment.postedby,
+                                viewhtml: user.view_html
                             }, comment);
 
                         lastcomment = comment;
@@ -279,7 +280,8 @@ module.exports = {
                             });
                             return memo;
                         }, []),
-                        online: onlineuser.length > 0
+                        online: onlineuser.length > 0,
+                        viewhtml: user.view_html
                     }));
                 });
             });
@@ -333,7 +335,9 @@ module.exports = {
             if(err) return next(err);
 
             renderUtils.getUserTemplateData(user, function(templateData){
-                res.render('message', _.extend(templateData, message));
+                res.render('message', _.extend(templateData, message, {
+                    viewhtml: user.view_html
+                }));
             });
         };
     },

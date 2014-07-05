@@ -121,7 +121,14 @@
             <div class="post-container" id="post-946158">
               <div class="post-block">POST</div>
               <h3 class="recent-thread-title"><a href='/thread/{{threadurl}}'>{{threadtitle}}</a></h3>
-              <div class="recent-post-content">{{content}}</div>
+              <div class="recent-post-content">
+{{#viewhtml}}
+                {{{content}}}
+{{/viewhtml}}
+{{^viewhtml}}
+                {{content}}
+{{/viewhtml}}
+              </div>
               <hr/>
             </div>
 {{/comments}}

@@ -86,7 +86,12 @@
 
               <div class="content-block">
                 <div class="content">
+{{#viewhtml}}
                   {{{content}}}
+{{/viewhtml}}
+{{^viewhtml}}
+                  {{content}}
+{{/viewhtml}}
 {{#editPercent}}
                   <div class="edited-percent">Edited {{editPercent}}%</div>
 {{/editPercent}}
