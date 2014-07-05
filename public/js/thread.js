@@ -140,6 +140,8 @@ $(document).ready(function(){
 $('#thread-content-input').pasteImageReader(function(data){
   var $this = $(this);
 
+  $this.parent().find('.error').remove();
+
   $.ajax({
     method: 'post',
     url: '/pasteimagedata',
@@ -148,6 +150,12 @@ $('#thread-content-input').pasteImageReader(function(data){
     },
     success: function(responseData){
       $this.val($this.val() + ' <img src="' + responseData.filepath + '" width="' + data.width + '" height="' + data.height + '">');
+    },
+    error: function(response){
+      if(response.status === 413){
+        $this.parent().find('.error').remove();
+        $this.after('<p class="error">Image too large, maximum file size for pasted images is 1MB</p>');
+      }
     }
   });
 });

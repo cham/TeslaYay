@@ -177,7 +177,8 @@ module.exports = function routing(){
 
         api.createImage(res, req.body, req.session.user, function(err, json){
             if(err){
-                console.log(err);
+                res.status(413);
+                return res.send(err);
             }
 
             res.send(json);
