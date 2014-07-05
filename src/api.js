@@ -48,7 +48,9 @@ function makeRequest(method, url, options, cb){
         if(!checkResponse(err, response, cb)) return;
 
         parseJson(json, cb, function(data){
-            cb(null, data);
+            if(cb){
+                cb(null, data);
+            }
         });
     });
 }
@@ -73,17 +75,7 @@ module.exports = {
             route = '/user/' + params.hidden + '/hidden/summary';
         }
 
-        request({
-            method: 'get',
-            uri: apiUrl + route,
-            qs: query
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(json){
-                cb(null, json);
-            });
-        });
+        makeRequest('get', apiUrl + route, {qs: query}, cb);
     },
 
     getThread: function(res, params, user, cb){
@@ -96,35 +88,14 @@ module.exports = {
         
         delete query.threadUrlName;
 
-        request({
-            method: 'get',
-            uri: uri,
-            qs: query
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(json){
-                cb(null, json);
-            });
-        });
+        makeRequest('get', uri, {qs: query}, cb);
     },
 
     getRandomThread: function(res, params, user, cb){
-        request({
-            method: 'get',
-            uri: apiUrl + '/randomthread'
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(json){
-                cb(null, json);
-            });
-        });
+        makeRequest('get', apiUrl + '/randomthread', null, cb);
     },
 
     getUsers: function(res, params, user, cb){
-        user = user || {};
-
         if(params.buddies){
             route = '/user/' + params.buddies + '/buddies/summary';
         }
@@ -132,63 +103,21 @@ module.exports = {
             route = '/user/' + params.ignores + '/ignores/summary';
         }
 
-        request({
-            method: 'get',
-            uri: apiUrl + route
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(json){
-                cb(null, json);
-            });
-        });
+        makeRequest('get', apiUrl + route, null, cb);
     },
 
     getUser: function(res, params, user, cb){
-        user = user || {};
         var route = '/user/' + params.username;
 
-        request({
-            method: 'get',
-            uri: apiUrl + route
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(json){
-                cb(null, json);
-            });
-        });
+        makeRequest('get', apiUrl + route, null, cb);
     },
 
     getComment: function(res, params, user, cb){
-        user = user || {};
-        var commentId = params.commentId;
-
-        request({
-            method: 'get',
-            uri: apiUrl + '/comment/' + commentId + '/summary'
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(json){
-                cb(null, json);
-            });
-        });
+        makeRequest('get', apiUrl + '/comment/' + params.commentId + '/summary', null, cb);
     },
 
     getUserComments: function(res, params, user, cb){
-        user = user || {};
-
-        request({
-            method: 'get',
-            uri: apiUrl + '/user/' + params.username + '/comments'
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(json){
-                cb(null, json);
-            });
-        });
+        makeRequest('get', apiUrl + '/user/' + params.username + '/comments', null, cb);
     },
 
     postThread: function(res, body, user, cb){
@@ -202,22 +131,14 @@ module.exports = {
             return cb(err);
         }
 
-        request({
-            method: 'post',
-            uri: apiUrl + '/thread',
+        makeRequest('post', apiUrl + '/thread', {
             form: {
                 categories: body.categories,
                 name: XSSWrapper(body.name).clean().value(),
                 content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value(),
                 postedby: user.username
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(thread){
-                cb(null, thread);
-            });
-        });
+        }, cb);
     },
 
     postComment: function(res, body, user, cb){
@@ -229,22 +150,14 @@ module.exports = {
         }catch(err){
             return cb(err);
         }
-
-        request({
-            method: 'post',
-            uri: apiUrl + '/comment',
+        
+        makeRequest('post', apiUrl + '/comment', {
             form: {
                 postedby: user.username,
                 content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value(),
                 threadid: body.threadid
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(comment){
-                cb(null, comment);
-            });
-        });
+        }, cb);
     },
 
     editComment: function(res, body, user, cb){
@@ -275,19 +188,11 @@ module.exports = {
                 return cb('Cannot edit posts over 10 minutes old');
             }
 
-            request({
-                method: 'put',
-                uri: apiUrl + '/comment/' + body.comment_id,
+            makeRequest('put', apiUrl + '/comment/' + body.comment_id, {
                 form: {
                     content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value()
                 }
-            }, function(err, response, json){
-                if(!checkResponse(err, response, cb)) return;
-
-                parseJson(json, cb, function(comment){
-                    cb(null, comment);
-                });
-            });
+            }, cb);
         });
     },
 
@@ -302,21 +207,13 @@ module.exports = {
             return cb(err);
         }
 
-        request({
-            method: 'post',
-            uri: apiUrl + '/user',
+        makeRequest('post', apiUrl + '/user', {
             form: {
                 username: body.username,
                 password: body.password,
                 email: body.email
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(user){
-                cb(null, user);
-            });
-        });
+        }, cb);
     },
 
     handleLogin: function(res, body, user, cb){
@@ -328,21 +225,13 @@ module.exports = {
         }catch(err){
             return cb(err);
         }
-
-        request({
-            method: 'post',
-            uri: apiUrl + '/login',
+        
+        makeRequest('post', apiUrl + '/login', {
             form: {
                 username: body.username,
                 password: body.password
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     modifyUserList: function(res, body, user, cb){
@@ -356,19 +245,11 @@ module.exports = {
             return cb(err);
         }
 
-        request({
-            method: 'put',
-            url: apiUrl + '/user/' + user.username + '/' + body.route,
+        makeRequest('put', apiUrl + '/user/' + user.username + '/' + body.route, {
             form: {
                 listval: body.listval
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     changeTitle: function(res, body, user, cb){
@@ -407,34 +288,24 @@ module.exports = {
 
     getInbox: function(res, body, user, cb){
         user = user || {};
-        if(!user.username) return cb();
+        try {
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
 
-        request({
-            method: 'get',
-            url: apiUrl + '/user/' + user.username + '/inbox'
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        makeRequest('get', apiUrl + '/user/' + user.username + '/inbox', null, cb);
     },
 
     getOutbox: function(res, body, user, cb){
         user = user || {};
-        if(!user.username) return cb();
+        try {
+            check(user.username, 'User not found').notNull();
+        }catch(e){
+            return cb(e);
+        }
 
-        request({
-            method: 'get',
-            url: apiUrl + '/user/' + user.username + '/outbox'
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        makeRequest('get', apiUrl + '/user/' + user.username + '/outbox', null, cb);
     },
 
     postMessage: function(req, body, user, cb){
@@ -450,21 +321,13 @@ module.exports = {
 
         var recipients = body.recipients.split(',');
 
-        request({
-            method: 'post',
-            url: apiUrl + '/user/' + user.username + '/sendmessage',
+        makeRequest('post', apiUrl + '/user/' + user.username + '/sendmessage', {
             form: {
                 recipients: recipients,
                 subject: XSSWrapper(body.subject).clean().value(),
                 content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value()
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     getMessage: function(req, body, user, cb){
@@ -477,22 +340,11 @@ module.exports = {
             return cb(e);
         }
 
-        request({
-            method: 'get',
-            url: apiUrl + '/user/' + user.username + '/message/' + body.messageid
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                if(user.username === data.recipient){
-                    request({
-                        method: 'put',
-                        url: apiUrl + '/user/' + user.username + '/message/' + body.messageid + '/read'
-                    });
-                }
-
-                cb(null, data);
-            });
+        makeRequest('get', apiUrl + '/user/' + user.username + '/message/' + body.messageid, null, function(err, data){
+            if(user.username === data.recipient){
+                makeRequest('put', apiUrl + '/user/' + user.username + '/message/' + body.messageid + '/read');
+            }
+            cb(null, data);
         });
     },
 
@@ -510,19 +362,11 @@ module.exports = {
             return cb(e);
         }
 
-        request({
-            method: 'put',
-            url: apiUrl + '/user/' + user.username + '/messages/' + body.batchType,
+        makeRequest('put', apiUrl + '/user/' + user.username + '/messages/' + body.batchType, {
             form: {
                 ids: body.ids
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     modifyPoints: function(res, body, user, cb){
@@ -536,37 +380,20 @@ module.exports = {
             return cb(e);
         }
 
-        request({
-            method: 'put',
-            url: apiUrl + '/points',
+        makeRequest('put', apiUrl + '/points', {
             form: {
                 commentId: body.commentId,
                 username: user.username,
                 numpoints: body.pointvalue
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     ping: function(res, body, user, cb){
         user = user || {};
         if(!user.username) return cb();
 
-        request({
-            method: 'get',
-            url: apiUrl + '/user/' + user.username + '/ping'
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        makeRequest('get', apiUrl + '/user/' + user.username + '/ping', null, cb);
     },
 
     getTitle: function(cb){
@@ -605,20 +432,12 @@ module.exports = {
             return cb(e);
         }
 
-        request({
-            method: 'put',
-            url: apiUrl + '/user/' + user.username + '/changepassword',
+        makeRequest('put', apiUrl + '/user/' + user.username + '/changepassword', {
             form: {
                 password: body.old_password,
                 new_password: body.password
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     updatePersonalDetails: function(res, body, user, cb){
@@ -630,21 +449,13 @@ module.exports = {
             return cb(e);
         }
 
-        request({
-            method: 'put',
-            url: apiUrl + '/user/' + user.username + '/personaldetails',
+        makeRequest('put', apiUrl + '/user/' + user.username + '/personaldetails', {
             form: {
                 realname: body.real_name,
                 location: body.location,
                 about: body.about_blurb
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     updateEmail: function(res, body, user, cb){
@@ -657,19 +468,11 @@ module.exports = {
             return cb(e);
         }
 
-        request({
-            method: 'put',
-            url: apiUrl + '/user/' + user.username + '/changeemail',
+        makeRequest('put', apiUrl + '/user/' + user.username + '/changeemail', {
             form: {
                 email: body.email
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     updateWebsites: function(res, body, user, cb){
@@ -694,9 +497,7 @@ module.exports = {
             return cb(e);
         }
 
-        request({
-            method: 'put',
-            url: apiUrl + '/user/' + user.username + '/websites',
+        makeRequest('put', apiUrl + '/user/' + user.username + '/websites', {
             form: {
                 websites: _(body).reduce(function(memo, value, key){
                     if(websiteKeys.indexOf(key) > -1){
@@ -705,13 +506,7 @@ module.exports = {
                     return memo;
                 }, {})
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     updateForumPreferences: function(res, body, user, cb){
@@ -739,9 +534,7 @@ module.exports = {
             numComments = 100;
         }
 
-        request({
-            method: 'put',
-            url: apiUrl + '/user/' + user.username + '/preferences',
+        makeRequest('put', apiUrl + '/user/' + user.username + '/preferences', {
             form: {
                 custom_css: body.custom_css,
                 custom_js: body.custom_js,
@@ -751,13 +544,7 @@ module.exports = {
                 comment_size: numComments,
                 fixed_chat_size: body.fixed_chat_size === '1'
             }
-        }, function(err, response, json){
-            if(!checkResponse(err, response, cb)) return;
-
-            parseJson(json, cb, function(data){
-                cb(null, data);
-            });
-        });
+        }, cb);
     },
 
     toggleHTML: function(res, body, user, cb){
