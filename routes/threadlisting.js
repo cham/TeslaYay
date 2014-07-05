@@ -101,7 +101,11 @@ module.exports = function routing(app, api, renderGenerator){
     });
 
     // search
-    app.get('/find/:term', ping, function(req, res, next){
+    app.get('/find/(:term)?', ping, function(req, res, next){
+        var term = req.route.params.term;
+        if(!term){
+            return res.redirect('/');
+        }
         buildListing(req, res, next, {
             name: req.route.params.term
         });

@@ -453,6 +453,13 @@ $(function () {
   }
   setTimeout(ping, 30000);
 
+  // search-box
+  $('#search-box').submit(function(e){
+    if(!$('#search-phrase').val().trim().length){
+      e.preventDefault();
+    }
+  });
+
   // error page
   if($('.amazing-game').length){
     function navigateTo(loc, x,y){
