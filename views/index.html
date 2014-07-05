@@ -47,7 +47,7 @@
 {{#ignored}}
         <div id="ignore-for-{{_id}}" class="ignore-container" onclick="$('#thread-{{_id}}').toggle();"></div>
 {{/ignored}}
-        <div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} {{#buddy}}buddy{{/buddy}} {{#ignored}}enemy{{/ignored}} {{#nsfw}}nsfw{{/nsfw}}">
+        <div id="thread-{{_id}}" class="thread{{#alt}} alt{{/alt}} {{#buddy}}buddy{{/buddy}} {{#ignored}}enemy{{/ignored}} {{#nsfw}}nsfw{{/nsfw}} {{#closed}}closed{{/closed}}">
            <div class="one">
             <div class="subject">
               <span class="subject-text"><a href="/thread/{{urlname}}">{{name}}</a></span>
