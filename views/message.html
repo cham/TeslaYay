@@ -32,7 +32,12 @@
             <span><span>Received:</span> {{created}}</span>
           </div>
           <div class="content">
+{{#viewhtml}}
             {{{content}}}
+{{/viewhtml}}
+{{^viewhtml}}
+            {{content}}
+{{/viewhtml}}
           </div>
           <div class="ctrl-bar">
             <div class="pagination">

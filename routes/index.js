@@ -297,7 +297,7 @@ module.exports = function routing(){
     });
 
     app.put('/togglehtml', function(req, res, next){
-        api.toggleHtml(res, {}, req.session.user, function(err, user){
+        api.toggleHTML(res, {}, req.session.user, function(err, user){
             if(err) return next(err);
 
             res.send(user);
