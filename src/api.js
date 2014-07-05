@@ -96,6 +96,10 @@ module.exports = {
     },
 
     getUsers: function(res, params, user, cb){
+        var query = _.defaults(params || {}, {
+                size: 40
+            });
+
         if(params.buddies){
             route = '/user/' + params.buddies + '/buddies/summary';
         }
@@ -106,7 +110,7 @@ module.exports = {
             route = '/users/summary';
         }
 
-        makeRequest('get', apiUrl + route, null, cb);
+        makeRequest('get', apiUrl + route, {qs: query}, cb);
     },
 
     getUser: function(res, params, user, cb){

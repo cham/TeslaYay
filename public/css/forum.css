@@ -1297,6 +1297,8 @@ width: 130px;
 margin: 0 10px 10px 0;
 padding: 10px;
 float: left;
+height: 62px;
+overflow: hidden;
 }
 .user-listing {
     background: #F4F4F4;

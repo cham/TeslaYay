@@ -85,14 +85,20 @@ module.exports = function routing(){
             renderGenerator.buddyListingHandler(req, res, next)(null, _(results).chain().reduce(function(memo, item){
                 return _(memo).extend(item);
             },{}).extend({
-                prefill: (req.route.params.username || '').replace(/^\//,'')
+                prefill: (req.route.params.username || '').replace('/','')
             }).value());
         });
     });
 
     // all users
-    app.get('/users', ping, function(req, res, next){
-        api.getUsers(res, {}, req.session.user, renderGenerator.userListingHandler(req, res, next));
+    app.get('/users(/:search)?', ping, function(req, res, next){
+        if(req.query.startswith){
+            return res.redirect('/users/' + req.query.startswith);
+        }
+
+        api.getUsers(res, {
+            startswith: (req.route.params.search || '').replace('/','')
+        }, req.session.user, renderGenerator.userListingHandler(req, res, next));
     });
 
     // view thread
