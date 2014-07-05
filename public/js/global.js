@@ -445,13 +445,13 @@ $(function () {
   });
 
   // ping
-  function ping(){
-    if($('.welcome').length){
-      $.ajax('/ping');
-    }
-    setTimeout(ping, 30000);
-  }
-  setTimeout(ping, 30000);
+  // function ping(){
+  //   if($('.welcome').length){
+  //     $.ajax('/ping');
+  //   }
+  //   setTimeout(ping, 30000);
+  // }
+  // setTimeout(ping, 30000);
 
   // search-box
   $('#search-box').submit(function(e){
