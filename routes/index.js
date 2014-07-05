@@ -95,6 +95,9 @@ module.exports = function routing(){
         if(req.query.startswith){
             return res.redirect('/users/' + req.query.startswith);
         }
+        if(req.query.startswith === ''){
+            return res.redirect('/users');
+        }
 
         api.getUsers(res, {
             startswith: (req.route.params.search || '').replace('/','')
