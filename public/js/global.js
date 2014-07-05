@@ -106,8 +106,12 @@ $(function () {
   });
 
   $('#toggle-html').bind('click', function(){
-    $.get('/ajax/toggle_html/'+ session_id, function(data) {
-      window.location.reload(true);
+    $.ajax({
+      method: 'put',
+      url: '/ajax/toggle_html',
+      success: function(data) {
+        window.location.reload(true);
+      }
     });
   });
   
