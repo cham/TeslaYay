@@ -11,6 +11,12 @@ function preferencesError(req, res, next, message){
     renderGenerator.preferencesHandler(req, res, next)(null, body);
 }
 
+function newThreadError(req, res, next, message){
+    var body = req.body;
+    body.errorMessage = message;
+    renderGenerator.newThreadHandler(req, res, next)(null, body);
+}
+
 routes = {
     login: {
         ValidatorError: {
@@ -23,26 +29,18 @@ routes = {
     newthread: {
         ValidatorError: {
             'Categories failed validation': function(err, req, res, next){
-                var body = req.body;
-                body.errorMessage = 'Please select a category.';
-                renderGenerator.newThreadHandler(req, res, next)(null, body);
+                newThreadError(req, res, next, 'Please select a category.');
             },
             'Name failed validation': function(err, req, res, next){
-                var body = req.body;
-                body.errorMessage = 'Please provide a valid name.';
-                renderGenerator.newThreadHandler(req, res, next)(null, body);
+                newThreadError(req, res, next, 'Please provide a valid name.');
             },
             'Content failed validation': function(err, req, res, next){
-                var body = req.body;
-                body.errorMessage = 'Please give your post some content.';
-                renderGenerator.newThreadHandler(req, res, next)(null, body);
+                newThreadError(req, res, next, 'Please give your post some content.');
             }
         },
         MongoDuplicateKey: {
             'any': function(err, req, res, next){
-                var body = req.body;
-                body.errorMessage = 'A thread with that name already exists.';
-                renderGenerator.newThreadHandler(req, res, next)(null, body);
+                newThreadError(req, res, next, 'A thread with that name already exists.');
             }
         }
     },
