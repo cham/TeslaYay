@@ -82,12 +82,17 @@ module.exports = function routing(){
                 });
             },
         ], function(err, results){
-            renderGenerator.userListingHandler(req, res, next)(null, _(results).chain().reduce(function(memo, item){
+            renderGenerator.buddyListingHandler(req, res, next)(null, _(results).chain().reduce(function(memo, item){
                 return _(memo).extend(item);
             },{}).extend({
                 prefill: (req.route.params.username || '').replace(/^\//,'')
             }).value());
         });
+    });
+
+    // all users
+    app.get('/users', ping, function(req, res, next){
+        api.getUsers(res, {}, req.session.user, renderGenerator.userListingHandler(req, res, next));
     });
 
     // view thread

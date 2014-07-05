@@ -102,6 +102,9 @@ module.exports = {
         if(params.ignores){
             route = '/user/' + params.ignores + '/ignores/summary';
         }
+        if(!params.buddies && !params.ignores){
+            route = '/users/summary';
+        }
 
         makeRequest('get', apiUrl + route, null, cb);
     },

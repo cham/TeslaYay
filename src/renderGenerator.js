@@ -199,7 +199,7 @@ module.exports = {
         };
     },
 
-    userListingHandler: function(req, res, next){
+    buddyListingHandler: function(req, res, next){
         var user = req.session.user || {};
 
         return function(err, json){
@@ -211,6 +211,34 @@ module.exports = {
                     buddies: json.buddies,
                     ignores: json.ignores,
                     prefill: json.prefill
+                }));
+            });
+        };
+    },
+
+    userListingHandler: function(req, res, next){
+        var user = req.session.user || {},
+            _userBuddies = _(user.buddies),
+            _userEnemies = _(user.enemies);
+
+        return function(err, json){
+            if(err) return next(err);
+            json = json || {};
+
+            renderUtils.getUserTemplateData(user, function(templateData){
+                res.render('users', _.extend(templateData, {
+                    users: json.users.map(function(singleuser){
+                        var isbuddy = _userBuddies.indexOf(singleuser.username) > -1,
+                            isenemy = _userEnemies.indexOf(singleuser.username) > -1;
+
+                        return _.extend(singleuser, {
+                            created: moment(singleuser.created).format('MMM Do YY'),
+                            last_login: moment(singleuser.last_login).format('MMM Do YY'),
+                            isbuddy: isbuddy,
+                            isenemy: isenemy,
+                            isregular: !(isbuddy || isenemy)
+                        });
+                    })
                 }));
             });
         };
@@ -271,7 +299,7 @@ module.exports = {
                         lastfm: getWebsiteUrl(selecteduser.websites, 'lastfm'),
                         twitter: getWebsiteUrl(selecteduser.websites, 'twitter'),
                         about: selecteduser.about,
-                        comments: selecteduser.comments.reduce(function(memo, comment){
+                        comments: _(selecteduser.comments || []).reduce(function(memo, comment){
                             var thread = comment.threadid || {};
                             memo.push({
                                 threadurl: thread.urlname,

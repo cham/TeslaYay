@@ -1,5 +1,5 @@
 {{>head}}
-<body class="yh_buddies" >
+<body class="yh_users">
 
   <a name="top"></a>
 
@@ -9,79 +9,91 @@
 {{>leftcolumn}}
 
     <div id="right-column">
-
-      <div id="main-title"><h3>Keep your friends close and your enemies closer</h3></div>
-
-      <div id="new-thread">
-
-          <p>We'll highlight your buddies posts and show you when they are online and you can ignore all those YH users you just can't tolerate.</p>
-
-          <div class="dotted-bar"></div>
-
-            <form action="/buddies" method="post" class="buddyform">
-              <input type="hidden" name="redirect" value="1">
-
-              <div class="biglabel">Add a Buddy / Ignore</div>
-
-              <div id="buddy-input">
-                <label for="username">Username:</label>
-                <input type="text" name="username" value="{{prefill}}" id="username" maxlength="18" size="30"  />
-                <input type="submit" name="submit" value="Add"  />
-              </div>
-
-              <div id="buddy-radios">
-                <label>Pick one:</label>
-                <div id="buddy-radio-inputs">
-                  <input type="radio" name="command" value="buddy" checked="checked" id="cmd-buddy"  />
-                  <label for="cmd-buddy">Buddy</label>
-                  <input type="radio" name="command" value="ignore" id="cmd-enemy"  />
-                  <label for="cmd-enemy">Ignore</label>
-                </div>
-              </div>
-
-            </form>
-
-          <div class="blueline"></div>
-
-          <div class="biglabel">Buddies</div>
-
-            <div id="buddy-listings">
-{{#buddies}}
-              <div class="buddy-listing">
-                <div class="username">
-                  <a href="/user/{{urlname}}">{{username}}</a>
-                </div>
-                <div class="online-status offline">offline</div>
-                <a class="remove-acq" rel="{{username}}">remove</a>
-                <a class="toggle-acq" rel="{{username}}">ignore</a>
-              </div>
-{{/buddies}}
-            </div>
-
-          <div class="blueline"></div>
-
-          <div class="biglabel">Ignores</div>
-
-          <div id="enemy-listings">
-{{#ignores}}
-              <div class="enemy-listing">
-                  <div class="username">
-                  <a href="/user/{{urlname}}">{{username}}</a>
-                  </div>
-                  <div class="online-status online">online</div>
-                  <a class="remove-acq" rel="{{username}}">remove</a>
-                  <a class="toggle-acq" rel="{{username}}">buddilize</a>
-              </div>
-{{/ignores}}
-          </div>
-
-          <div class="blueline"></div>
-
+      <div id="main-title"><h3>How many Yay freaks does it take to screw in a light bulb?</h3></div>
+      <div class="bottomdashed">
+        <form name="search-box-user" id="search-box-user" method="" action="">
+          Filter Usernames
+          <input type="text" value="" name="search-phrase-user" id="search-phrase-user" />
+          <input type="submit" value="Search" />
+          Type the first few characters of the username.
+        </form>
+        Browse Users
+        <a href="/users/0/0">0</a>
+        <a href="/users/0/1">1</a>
+        <a href="/users/0/2">2</a>
+        <a href="/users/0/3">3</a>
+        <a href="/users/0/4">4</a>
+        <a href="/users/0/5">5</a>
+        <a href="/users/0/6">6</a>
+        <a href="/users/0/7">7</a>
+        <a href="/users/0/8">8</a>
+        <a href="/users/0/9">9</a>
+        <a href="/users/0/A">A</a>
+        <a href="/users/0/B">B</a>
+        <a href="/users/0/C">C</a>
+        <a href="/users/0/D">D</a>
+        <a href="/users/0/E">E</a>
+        <a href="/users/0/F">F</a>
+        <a href="/users/0/G">G</a>
+        <a href="/users/0/H">H</a>
+        <a href="/users/0/I">I</a>
+        <a href="/users/0/J">J</a>
+        <a href="/users/0/K">K</a>
+        <a href="/users/0/L">L</a>
+        <a href="/users/0/M">M</a>
+        <a href="/users/0/N">N</a>
+        <a href="/users/0/O">O</a>
+        <a href="/users/0/P">P</a>
+        <a href="/users/0/Q">Q</a>
+        <a href="/users/0/R">R</a>
+        <a href="/users/0/S">S</a>
+        <a href="/users/0/T">T</a>
+        <a href="/users/0/U">U</a>
+        <a href="/users/0/V">V</a>
+        <a href="/users/0/W">W</a>
+        <a href="/users/0/X">X</a>
+        <a href="/users/0/Y">Y</a>
+        <a href="/users/0/Z">Z</a>
+      </div>
+      <div id="thread-navigation" class="pagination top">
+        <div class="main-pagination">
+          <div class="selected-page">1</div>
+          <a href="/users/40/">2</a>
+          <a href="/users/80/">3</a>
+          <span class="ellipsis">...</span>
+          &nbsp;
+          <a href="/users/3280/">83</a>
         </div>
+        <span class="paging-text">1 - 40 of 3298 Users</span>
+      </div>
+      <div id="users">
+{{#users}}
+        <div class="{{#isbuddy}}buddy-listing{{/isbuddy}} {{#isenemy}}enemy-listing{{/isenemy}} {{#isregular}}user-listing{{/isregular}}">
+          <div class="username"><a href="/user/{{urlname}}">{{username}}</a></div>
+          <div class="offline">NOT ONLINE</div>
+          <div class="user_startdate">Member since {{created}}</div>
+          <div class="user_logdate">Last log date {{last_login}}</div>
+          <div class="user_logdate">
+            {{threads_count}} threads &nbsp;|&nbsp; {{comments_count}} posts
+          </div>
+        </div>
+{{/users}}
+      </div>
 
+      <div class="blueline">&nbsp;</div>
+
+      <div class="pagination bottom">
+        <div class="main-pagination">
+          <div class="selected-page">1</div>
+          <a href="/users/40/">2</a>
+          <a href="/users/80/">3</a>
+          <span class="ellipsis">...</span>
+          &nbsp;
+          <a href="/users/3280/">83</a>
+        </div>
+        <span class="paging-text">1 - 40 of 3298 Users</span>
       </div>
 
     </div>
-
   </div>
 {{>footer}}
