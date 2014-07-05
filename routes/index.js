@@ -26,7 +26,8 @@ var _ = require('underscore'),
     },
     stresstest = false,
     stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
-    uiErrorHandler = require('../src/uiErrorHandler');
+    uiErrorHandler = require('../src/uiErrorHandler'),
+    newPostNotifier = require('../src/newPostNotifier');
 
 module.exports = function routing(){
 
@@ -113,6 +114,10 @@ module.exports = function routing(){
             return res.redirect('/thread/' + req.route.params.threadUrlName, 301);
         }
         api.getThread(res, req.route.params || {}, req.session.user, renderGenerator.threadDetailHandler(req, res, next));
+    });
+    // thread events
+    app.get('/thread/:threadUrlName/events', function(req, res, next){
+        newPostNotifier.listen(req, res, 'newpost:' +req.route.params.threadUrlName);
     });
 
     // post thread form
@@ -258,7 +263,8 @@ module.exports = function routing(){
                     return uiErrorHandler.handleError(err, req, res, next, 'postcomment');
                 });
             }
-            // io.sockets.emit('newpost:' + req.body.threadid);
+            
+            newPostNotifier.emit('newpost:' + req.route.params.threadUrlName);
 
             if(req.body.redirect){
                 res.redirect(req.headers['referer']+'#bottom');

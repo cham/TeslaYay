@@ -488,11 +488,14 @@ $('body').on('click', '#control-sfw', function(e){
 });
 
 (function(){
-  var threadid = $('input[name=threadid]').val(),
+  var threadurlname = $('input[name=threadurlname]').val(),
       $notifications = $('#notifications'),
-      postcount = 0;
+      postcount = 0,
+      threadEvents;
 
-  if(!threadid || !window.socket || !$notifications.length) return;
+  if(!threadurlname || !$notifications.length) return;
+
+  threadEvents = new EventSource('/thread/' + threadurlname + '/events');
 
   $notifications.on('click', '#closenotify', function(e){
     e.preventDefault();
@@ -503,9 +506,11 @@ $('body').on('click', '#control-sfw', function(e){
     window.location.reload(true);
   });
 
-  window.socket.on('newpost:' + threadid, function(data){
+  threadEvents.addEventListener('message', function(e){
     postcount++;
 
-    $notifications.html('<a id="closenotify"></a><div id="notifier"><a id="notify" href="">'+postcount+' new post'+(postcount === 1 ? '':'s')+' added</a></div>').show();
-  });
+    $notifications
+      .html('<a id="closenotify"></a><div id="notifier"><a id="notify" href="">'+postcount+' new post'+(postcount === 1 ? '':'s')+' added</a></div>')
+      .show();
+  }, false);
 })();
