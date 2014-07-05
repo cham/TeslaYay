@@ -171,6 +171,18 @@ module.exports = function routing(){
     });
 
     // POSTs
+    // upload image via clipboard post
+    app.post('/pasteimagedata', function(req, res, next){
+        var dataURL = req.body.dataURL;
+
+        api.createImage(res, req.body, req.session.user, function(err, json){
+            if(err){
+                console.log(err);
+            }
+
+            res.send(json);
+        });
+    });
     // preferences
     app.post('/preferences', checkAuth, function(req, res, next){
         var body = req.body,

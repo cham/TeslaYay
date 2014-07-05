@@ -135,6 +135,23 @@ $(document).ready(function(){
   format_special('.comment .content, .recent-post-content');
 });
 
+
+// paste image
+$('#thread-content-input').pasteImageReader(function(data){
+  var $this = $(this);
+
+  $.ajax({
+    method: 'post',
+    url: '/pasteimagedata',
+    data: {
+      dataURL: data.dataURL
+    },
+    success: function(responseData){
+      $this.val($this.val() + ' <img src="' + responseData.filepath + '">');
+    }
+  });
+});
+
 $('#preview-button').on('click', function(e){
   e.preventDefault();
   var post = $("#thread-content-input").val();

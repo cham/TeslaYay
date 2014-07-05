@@ -9,6 +9,8 @@ var _ = require('underscore'),
     sanitize = require('validator').sanitize,
     XSSWrapper = require('./xsswrapper'),
     apiUrl = 'http://localhost:3000',
+    crypto = require('crypto'),
+    md5sum = crypto.createHash('md5'),
     request = require('request').defaults({
         encoding: 'utf8',
         jar: false,
@@ -564,6 +566,30 @@ module.exports = {
         }
 
         makeRequest('put', apiUrl + '/user/' + user.username + '/togglehtml', null, cb);
+    },
+
+    createImage: function(res, body, user, cb){
+        var dataURL = body.dataURL || '',
+            filename = md5sum.update(dataURL + Date.now()).digest('hex') + '.png',
+            approot = __dirname.replace(/\/src$/, ''),
+            filepath = approot + '/public/img/userimages/' + filename,
+            dataMatches = dataURL.match(/^data:image\/png;base64,(.*)$/);
+
+        try{
+            check(dataMatches.length, 'dataURL invalid').is(2);
+        }catch(e){
+            return cb(e);
+        }
+
+        fs.writeFile(filepath, new Buffer(dataMatches[1], 'base64'), function(err){
+            if(err){
+                return cb(err);
+            }
+
+            cb(null,{
+                filepath: filepath.replace(approot + '/public', '')
+            });
+        });
     },
 
     updateAvatar: function(file, user, cb){

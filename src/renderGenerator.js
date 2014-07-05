@@ -167,13 +167,14 @@ module.exports = {
                     threadid: thread._id,
                     firstcategory: (thread.categories || []).pop(),
                     pages: pages,
+                    viewhtml: user.view_html,
                     paginationtext: renderUtils.generatePaginationText({
                         setsize: totaldocs,
                         pagesize: pagesize,
                         activepage: activepage
                     }),
                     errorMessage: json.errorMessage,
-                    comments: _(thread.comments).map(function(comment){
+                    comments: _(thread.comments).map(function(comment, index){
                         var dayslater = lastcomment ? moment(comment.created).diff(moment(lastcomment.created),'days') : 0,
                             newcomment = _.extend({
                                 id: comment._id,
@@ -188,7 +189,7 @@ module.exports = {
                                 dayslater: dayslater,
                                 dayslaterbanner: dayslater > 1,
                                 canpoint: templateData.canpoint && user.username !== comment.postedby,
-                                viewhtml: user.view_html
+                                showthreadcontrols: index === 0 && user.username === comment.postedby
                             }, comment);
 
                         lastcomment = comment;
