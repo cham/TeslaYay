@@ -176,6 +176,9 @@
           <p>I, {{username}}, do solemnly swear that in posting this comment I promise to be nice.</p>
           <button type="submit" id="submit-button" tabindex="2">Agree &amp; Post</button>
           <button type="button" id="preview-button" tabindex="3">Preview</button>
+{{#errorMessage}}
+          <p class="error">{{errorMessage}}</p>
+{{/errorMessage}}
         </form>
       </div>
 

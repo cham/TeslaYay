@@ -172,6 +172,7 @@ module.exports = {
                         pagesize: pagesize,
                         activepage: activepage
                     }),
+                    errorMessage: json.errorMessage,
                     comments: _(thread.comments).map(function(comment){
                         var dayslater = lastcomment ? moment(comment.created).diff(moment(lastcomment.created),'days') : 0,
                             newcomment = _.extend({
@@ -359,11 +360,17 @@ module.exports = {
     newThreadHandler: function(req, res, next){
         var user = req.session.user || {};
 
-        return function(err, message){
+        return function(err, postedData){
+            var postedCategories = (postedData || {}).categories || [];
             if(err) return next(err);
 
             renderUtils.getUserTemplateData(user, function(templateData){
-                res.render('post', templateData);
+                res.render('post', _.extend(templateData, postedData, {
+                    discussionsselected: postedCategories.indexOf('Discussions') > -1,
+                    projectsselected: postedCategories.indexOf('Projects') > -1,
+                    adviceselected: postedCategories.indexOf('Advice') > -1,
+                    meaninglessselected: postedCategories.indexOf('Meaningless') > -1
+                }));
             });
         };
     },
@@ -394,6 +401,7 @@ module.exports = {
                     hideenemyposts: user.hide_enemy_posts,
                     customcssurl: user.custom_css,
                     customjsurl: user.custom_js,
+                    errorMessage: preferences.errorMessage,
                     threadsperpage: [
                         {value: 25,  selected: user.thread_size === 25},
                         {value: 50,  selected: user.thread_size === 50},

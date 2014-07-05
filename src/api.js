@@ -38,9 +38,6 @@ function parseJson(json, next, success){
     }
     success(json);
 }
-function responseHandler(err, response, json){
-
-}
 
 module.exports = {
 
@@ -586,6 +583,10 @@ module.exports = {
 
         try{
             check(user.username, 'User not found').notNull();
+            check(body.old_password, 'Old password failed validation').len(6,30);
+            check(body.password, 'New password failed validation').len(6,30);
+            check(body.password2, 'Confirm password failed validation').len(6,30);
+            check(body.password2, 'Confirm password does not match').equals(body.password);
         }catch(e){
             return cb(e);
         }
@@ -622,6 +623,31 @@ module.exports = {
                 realname: body.real_name,
                 location: body.location,
                 about: body.about_blurb
+            }
+        }, function(err, response, json){
+            if(!checkResponse(err, response, cb)) return;
+
+            parseJson(json, cb, function(data){
+                cb(null, data);
+            });
+        });
+    },
+
+    updateEmail: function(res, body, user, cb){
+        user = user || {};
+
+        try{
+            check(user.username, 'User not found').notNull();
+            check(body.email, "Email failed validation").isEmail();
+        }catch(e){
+            return cb(e);
+        }
+
+        request({
+            method: 'put',
+            url: apiUrl + '/user/' + user.username + '/changeemail',
+            form: {
+                email: body.email
             }
         }, function(err, response, json){
             if(!checkResponse(err, response, cb)) return;
@@ -682,6 +708,12 @@ module.exports = {
 
         try{
             check(user.username, 'User not found').notNull();
+            if(body.custom_css){
+                check(body.custom_css, 'Custom CSS failed validation').isUrl();
+            }
+            if(body.custom_js){
+                check(body.custom_js, 'Custom JavaScript failed validation').isUrl();
+            }
         }catch(e){
             return cb(e);
         }

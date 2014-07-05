@@ -25,7 +25,8 @@ var _ = require('underscore'),
         numcomments: 100
     },
     stresstest = false,
-    stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}};
+    stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
+    uiErrorHandler = require('../src/uiErrorHandler');
 
 module.exports = function routing(){
 
@@ -175,7 +176,7 @@ module.exports = function routing(){
             }
         );
 
-        if(avatarFile){
+        if(avatarFile && avatarFile.size){
             callsToMake.push(function(done){
                 api.updateAvatar(avatarFile, req.session.user, done);
             });
@@ -187,8 +188,19 @@ module.exports = function routing(){
             });
         }
 
+        if(body.email && body.email !== req.session.user.email){
+            callsToMake.push(function(done){
+                api.updateEmail(res, body, req.session.user, done);
+            });
+        }
+
         async.parallel(callsToMake, function(err, responses){
-            if(err) return res.redirect('/preferences'); // show errors, not redirect
+            if(err){
+                return api.getPreferences(res, {}, req.session.user, function(preferencesErr, preferences){
+                    _.extend(req.body, preferences);
+                    uiErrorHandler.handleError(err, req, res, next, 'preferences');
+                });
+            }
 
             res.redirect('/preferences');
         });
@@ -198,7 +210,7 @@ module.exports = function routing(){
     app.post('/newthread', checkAuth, ping, function(req, res, next){
         api.postThread(res, req.body, req.session.user, function(err, thread){
             if(err){
-                return next(err);
+                return uiErrorHandler.handleError(err, req, res, next, 'newthread');
             }
             if(req.body.redirect){
                 res.redirect('/thread/' + thread.urlname);
@@ -213,8 +225,12 @@ module.exports = function routing(){
         var threadid = req.body.threadid;
 
         api.postComment(res, req.body, req.session.user, function(err, comment){
-            if(err) return next(err);
-
+            if(err){
+                return api.getThread(res, req.route.params || {}, req.session.user, function(currentThreadErr, currentThreadData){
+                    _.extend(req.body, currentThreadData);
+                    return uiErrorHandler.handleError(err, req, res, next, 'postcomment');
+                });
+            }
             // io.sockets.emit('newpost:' + req.body.threadid);
 
             if(req.body.redirect){
@@ -236,6 +252,9 @@ module.exports = function routing(){
     // login
     app.post('/login', ping, function(req, res, next){
         api.handleLogin(res, req.body, req.session.user, function(err, user){
+            if(err){
+                return uiErrorHandler.handleError(err, req, res, next, 'login');
+            }
             if(user && user.username){
                 setUser(req, user);
             }else{

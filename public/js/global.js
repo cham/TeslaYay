@@ -240,7 +240,7 @@ $(function () {
     $.ajax({
       url: '/login', type: 'POST', data: data
     }).fail(function(data) {
-      $('.error').text(JSON.parse(data.responseText).error);
+      $('.error').text('Login incorrect');
     }).then(function() {
       window.location.reload();
     });
@@ -452,6 +452,13 @@ $(function () {
     setTimeout(ping, 30000);
   }
   setTimeout(ping, 30000);
+
+  // search-box
+  $('#search-box').submit(function(e){
+    if(!$('#search-phrase').val().trim().length){
+      e.preventDefault();
+    }
+  });
 
   // error page
   if($('.amazing-game').length){
