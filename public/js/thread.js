@@ -147,7 +147,7 @@ $('#thread-content-input').pasteImageReader(function(data){
       dataURL: data.dataURL
     },
     success: function(responseData){
-      $this.val($this.val() + ' <img src="' + responseData.filepath + '">');
+      $this.val($this.val() + ' <img src="' + responseData.filepath + '" width="' + data.width + '" height="' + data.height + '">');
     }
   });
 });

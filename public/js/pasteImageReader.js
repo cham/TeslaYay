@@ -40,12 +40,18 @@
             file = clipboardData.items[i].getAsFile();
             reader = new FileReader();
             reader.onload = function(evt) {
-              return options.callback.call(element, {
-                dataURL: evt.target.result,
-                event: evt,
-                file: file,
-                name: file.name
-              });
+              var img = document.createElement('img');
+              img.onload = function(){
+                return options.callback.call(element, {
+                  dataURL: evt.target.result,
+                  width: img.naturalWidth,
+                  height: img.naturalHeight,
+                  event: evt,
+                  file: file,
+                  name: file.name
+                });
+              };
+              img.src = evt.target.result;
             };
             reader.readAsDataURL(file);
             return found = true;

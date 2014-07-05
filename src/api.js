@@ -587,7 +587,9 @@ module.exports = {
             }
 
             cb(null,{
-                filepath: filepath.replace(approot + '/public', '')
+                filepath: filepath.replace(approot + '/public', ''),
+                width: body.width,
+                height: body.height
             });
         });
     },
