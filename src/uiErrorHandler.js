@@ -39,6 +39,15 @@ routes = {
                 renderGenerator.newThreadHandler(req, res, next)(null, body);
             }
         }
+    },
+    postcomment: {
+        ValidatorError: {
+            'Content failed validation': function(err, req, res, next){
+                var body = req.body;
+                body.errorMessage = 'Please give your post some content.';
+                renderGenerator.threadDetailHandler(req, res, next)(null, body);
+            }
+        }
     }
 };
 
@@ -104,6 +113,9 @@ module.exports = {
 
         if(Array.isArray(err)){
             err = err[0];
+        }
+        if(!err){
+            err = {};
         }
         
         errorType = getErrorType(err);

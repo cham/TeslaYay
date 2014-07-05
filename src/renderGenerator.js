@@ -172,6 +172,7 @@ module.exports = {
                         pagesize: pagesize,
                         activepage: activepage
                     }),
+                    errorMessage: json.errorMessage,
                     comments: _(thread.comments).map(function(comment){
                         var dayslater = lastcomment ? moment(comment.created).diff(moment(lastcomment.created),'days') : 0,
                             newcomment = _.extend({

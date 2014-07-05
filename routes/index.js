@@ -214,8 +214,12 @@ module.exports = function routing(){
         var threadid = req.body.threadid;
 
         api.postComment(res, req.body, req.session.user, function(err, comment){
-            if(err) return next(err);
-
+            if(err){
+                return api.getThread(res, req.route.params || {}, req.session.user, function(currentThreadErr, currentThreadData){
+                    _.extend(req.body, currentThreadData);
+                    return uiErrorHandler.handleError(err, req, res, next, 'postcomment');
+                });
+            }
             // io.sockets.emit('newpost:' + req.body.threadid);
 
             if(req.body.redirect){
