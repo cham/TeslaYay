@@ -141,6 +141,7 @@ $('#thread-content-input').pasteImageReader(function(data){
   var $this = $(this);
 
   $this.parent().find('.error').remove();
+  $this.after('<p class="loading">Uploading image...</p>');
 
   $.ajax({
     method: 'post',
@@ -149,12 +150,13 @@ $('#thread-content-input').pasteImageReader(function(data){
       dataURL: data.dataURL
     },
     success: function(responseData){
+      $this.parent().find('.error,.loading').fadeOut();
       $this.val($this.val() + ' <img src="' + responseData.filepath + '" width="' + data.width + '" height="' + data.height + '">');
     },
     error: function(response){
       if(response.status === 413){
-        $this.parent().find('.error').remove();
-        $this.after('<p class="error">Image too large, maximum file size for pasted images is 1MB</p>');
+        $this.parent().find('.error,.loading').remove();
+        $this.after('<p class="error">Image too large, maximum file size for pasted images is 2MB</p>');
       }
     }
   });

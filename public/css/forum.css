@@ -2172,3 +2172,7 @@ Award Section
     color: red;
     margin-top: 14px;
 }
+.loading {
+    color: #ddd;
+}
+

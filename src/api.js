@@ -577,7 +577,7 @@ module.exports = {
 
         try{
             check(dataMatches.length, 'dataURL invalid').is(2);
-            check(dataURL, 'Image too large').len(1, 1024 * 1000 * 1);
+            check(dataURL, 'Image too large').len(1, 1024 * 1000 * 2);
         }catch(e){
             return cb(e);
         }
