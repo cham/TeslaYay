@@ -38,9 +38,6 @@ function parseJson(json, next, success){
     }
     success(json);
 }
-function responseHandler(err, response, json){
-
-}
 
 module.exports = {
 

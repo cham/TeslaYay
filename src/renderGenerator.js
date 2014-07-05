@@ -359,11 +359,17 @@ module.exports = {
     newThreadHandler: function(req, res, next){
         var user = req.session.user || {};
 
-        return function(err, message){
+        return function(err, postedData){
+            var postedCategories = (postedData || {}).categories || [];
             if(err) return next(err);
 
             renderUtils.getUserTemplateData(user, function(templateData){
-                res.render('post', templateData);
+                res.render('post', _.extend(templateData, postedData, {
+                    discussionsselected: postedCategories.indexOf('Discussions') > -1,
+                    projectsselected: postedCategories.indexOf('Projects') > -1,
+                    adviceselected: postedCategories.indexOf('Advice') > -1,
+                    meaninglessselected: postedCategories.indexOf('Meaningless') > -1
+                }));
             });
         };
     },

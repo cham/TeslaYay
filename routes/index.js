@@ -199,7 +199,7 @@ module.exports = function routing(){
     app.post('/newthread', checkAuth, ping, function(req, res, next){
         api.postThread(res, req.body, req.session.user, function(err, thread){
             if(err){
-                return next(err);
+                return uiErrorHandler.handleError(err, req, res, next, 'newthread');
             }
             if(req.body.redirect){
                 res.redirect('/thread/' + thread.urlname);
@@ -238,7 +238,7 @@ module.exports = function routing(){
     app.post('/login', ping, function(req, res, next){
         api.handleLogin(res, req.body, req.session.user, function(err, user){
             if(err){
-                return uiErrorHandler.handleError(res, err, req.body, 'login');
+                return uiErrorHandler.handleError(err, req, res, next, 'login');
             }
             if(user && user.username){
                 setUser(req, user);
