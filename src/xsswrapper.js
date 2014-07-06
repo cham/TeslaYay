@@ -37,22 +37,23 @@ function XSSWrapper(str){
 XSSWrapper.prototype.preserve = function(){
     var regstr = 'style=\"(.*?)\"',
         reg = new RegExp(regstr, 'g'),
-        matches = this.str.match(reg);
+        matches = this.str.match(reg),
+        that = this;
 
     if(!matches || !matches.length) return;
 
     _(matches).each(function(match, i){
-        this.str = this.str.replace(new RegExp(regstr), 'data-xsswrapperid="' + this.keeplist.length + '"');
-        this.keeplist[i] = match;
+        that.str = that.str.replace(new RegExp(regstr), 'data-xsswrapperid="' + that.keeplist.length + '"');
+        that.keeplist[i] = match;
     });
 };
 
 XSSWrapper.prototype.restore = function(){
-    var reg, matches;
+    var reg, matches, that = this;
 
     _(this.keeplist).each(function(replaceWith, i){
         reg = new RegExp('data-xsswrapperid=\"'+i+'\"');
-        this.str = this.str.replace(reg, this.sanitize(replaceWith));
+        that.str = that.str.replace(reg, that.sanitize(replaceWith));
     });
     this.keeplist = [];
 };
