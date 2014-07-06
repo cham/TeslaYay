@@ -10,7 +10,12 @@
 
       <div id="right-column">
         <div id="main-title" {{#user}}class="changeling" {{/user}}title="{{titleauthor}}">
+{{#randomtitles}}
           <h3>{{title}}</h3>
+{{/randomtitles}}
+{{^randomtitles}}
+          <h3>Yayhooray</h3>
+{{/randomtitles}}
         </div>
         <div id="thread-navigation" class="pagination top">
           {{#user}}

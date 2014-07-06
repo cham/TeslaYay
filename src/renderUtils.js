@@ -97,6 +97,7 @@ module.exports = {
                 inboxsize: inboxsize || 0,
                 inboxtext: inboxtext,
                 email: user.email,
+                randomtitles: user.random_titles,
                 canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
             });
         });
