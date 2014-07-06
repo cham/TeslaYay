@@ -5,16 +5,22 @@
 var renderGenerator = require('../src/renderGenerator'),
     routes;
 
+function newThreadError(req, res, next, message){
+    var body = req.body;
+    body.errorMessage = message;
+    renderGenerator.newThreadHandler(req, res, next)(null, body);
+}
+
 function preferencesError(req, res, next, message){
     var body = req.body;
     body.errorMessage = message;
     renderGenerator.preferencesHandler(req, res, next)(null, body);
 }
 
-function newThreadError(req, res, next, message){
+function registerError(req, res, next, message){
     var body = req.body;
     body.errorMessage = message;
-    renderGenerator.newThreadHandler(req, res, next)(null, body);
+    renderGenerator.registerHandler(req, res, next)(null, body);
 }
 
 routes = {
@@ -39,7 +45,7 @@ routes = {
             }
         },
         MongoDuplicateKey: {
-            'any': function(err, req, res, next){
+            'urlname': function(err, req, res, next){
                 newThreadError(req, res, next, 'A thread with that name already exists.');
             }
         }
@@ -79,6 +85,27 @@ routes = {
                 preferencesError(req, res, next, 'Invalid file.');
             }
         }
+    },
+    register: {
+        ValidatorError: {
+            'Username failed validation': function(err, req, res, next){
+                registerError(req, res, next, 'Invalid username');
+            },
+            'Password failed validation': function(err, req, res, next){
+                registerError(req, res, next, 'Your password must be at least 6 characters.');
+            },
+            'Email failed validation': function(err, req, res, next){
+                registerError(req, res, next, 'Please enter a valid email address.');
+            }
+        },
+        MongoDuplicateKey: {
+            'email': function(err, req, res, next){
+                registerError(req, res, next, 'That email address is already registered');
+            },
+            'username': function(err, req, res, next){
+                registerError(req, res, next, 'That username is already taken');
+            }
+        }
     }
 };
 
@@ -103,33 +130,37 @@ function getErrorHandler(subroute, errMsg){
 function isMongoDuplicateError(err){
     var parsed;
 
-    if(err.message){
-        try{
-            parsed = JSON.parse(err.message);
-        }catch(e){}
+    if(!err.message){
+        return false;
     }
+    
+    try{
+        parsed = JSON.parse(err.message);
+    }catch(e){}
+
     if(parsed && parsed.msg){
         return parsed.msg.indexOf('MongoError: E11000') > -1;
     }
-    return false;
+    return err.message.indexOf('MongoError: E11000') > -1;
 }
 
 function getErrorType(err){
-    var parsed;
-    
     if(isMongoDuplicateError(err)){
         return 'MongoDuplicateKey';
     }
     if(err.name){
         return err.name;
     }
-
-    return parsed;
 }
 
 function getErrorMessage(err){
+    var mongoDupKeynameMatches;
     if(isMongoDuplicateError(err)){
-        return 'any';
+        mongoDupKeynameMatches = err.message.match(/duplicate key error index:.*?\..*?\.\$(.*?)_/);
+        if(mongoDupKeynameMatches.length && mongoDupKeynameMatches.length === 2){
+            return mongoDupKeynameMatches[1];
+        }
+        return 'unknown';
     }
     return err.message;
 }
@@ -152,7 +183,7 @@ module.exports = {
         errorType = getErrorType(err);
         sourceRoute = getSourceRoute(errorSourceKey);
         errorTypesRoute = getErrorTypeRoute(sourceRoute, errorType);
-        
+
         errorMsg = getErrorMessage(err);
         errorHandler = getErrorHandler(errorTypesRoute, errorMsg);
 

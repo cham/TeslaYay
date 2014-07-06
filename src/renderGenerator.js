@@ -456,5 +456,13 @@ module.exports = {
                 }));
             });
         };
+    },
+
+    registerHandler: function(req, res, next){
+        return function(err, data){
+            if(err) return next(err);
+
+            res.render('register', data);
+        };
     }
 };

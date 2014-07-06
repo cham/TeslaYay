@@ -127,9 +127,7 @@ module.exports = function routing(){
 
     // register form
     app.get('/register', checkUnauth, ping, function(req, res, next){
-        res.render('register', {
-            user: req.session.user
-        });
+        renderGenerator.registerHandler(req, res, next)(null, {});
     });
 
     // user page
@@ -279,6 +277,9 @@ module.exports = function routing(){
     // register
     app.post('/register', ping, function(req, res, next){
         api.registerUser(res, req.body, req.session.user, function(err, user){
+            if(err){
+                return uiErrorHandler.handleError(err, req, res, next, 'register');
+            }
             setUser(req, user);
             res.redirect('/');
         });
@@ -340,7 +341,6 @@ module.exports = function routing(){
     });
 
     app.put('/thread/:threadUrlName/close', function(req, res, next){
-
         api.closeThread(req, {
             threadUrlName: req.route.params.threadUrlName
         }, req.session.user, function(err, json){
@@ -351,7 +351,6 @@ module.exports = function routing(){
     });
 
     app.put('/thread/:threadUrlName/open', function(req, res, next){
-
         api.openThread(req, {
             threadUrlName: req.route.params.threadUrlName
         }, req.session.user, function(err, json){
@@ -362,7 +361,6 @@ module.exports = function routing(){
     });
 
     app.put('/thread/:threadUrlName/nsfw', function(req, res, next){
-
         api.markThreadNSFW(req, {
             threadUrlName: req.route.params.threadUrlName
         }, req.session.user, function(err, json){
@@ -373,7 +371,6 @@ module.exports = function routing(){
     });
 
     app.put('/thread/:threadUrlName/sfw', function(req, res, next){
-
         api.markThreadSFW(req, {
             threadUrlName: req.route.params.threadUrlName
         }, req.session.user, function(err, json){
