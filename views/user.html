@@ -56,25 +56,29 @@
             </div>
             <div id="information-bio" class="standard_profile_info_box">
               <h3>Info</h3>
+{{#realname}}
+              <span class='small_profile_caps'>Name: {{realname}}</span><br/>
+{{/realname}}
+{{#location}}
+              <span class='small_profile_caps'>Location: {{location}}</span><br/>
+{{/location}}
 {{#website1}}
-              <span class='small_profile_caps'>URL 1: </span><a href="{{website1}}">{{website1}}</a><br/>
+              <span class='small_profile_caps'>URL 1: <a href="{{website1}}">{{website1}}</a></span><br/>
 {{/website1}}
-
 {{#website2}}
-              <span class='small_profile_caps'>URL 2: </span><a href="{{website2}}">{{website2}}</a><br/>
+              <span class='small_profile_caps'>URL 2: <a href="{{website2}}">{{website2}}</a></span><br/>
 {{/website2}}
-
 {{#website3}}
-              <span class='small_profile_caps'>URL 3: </span><a href="{{website3}}">{{website3}}</a><br/>
+              <span class='small_profile_caps'>URL 3: <a href="{{website3}}">{{website3}}</a></span><br/>
 {{/website3}}
 {{#aim}}
-              <span class='small_profile_caps'>AIM: </span><a href="{{aim}}">{{aim}}</a><br/>
+              <span class='small_profile_caps'>AIM: <a href="{{aim}}">{{aim}}</a></span><br/>
 {{/aim}}
 {{#gchat}}
-              <span class='small_profile_caps'>GChat: </span><a href="{{gchat}}">{{gchat}}</a><br/>
+              <span class='small_profile_caps'>GChat: <a href="{{gchat}}">{{gchat}}</a></span><br/>
 {{/gchat}}
 {{#msn}}
-              <span class='small_profile_caps'>MSN: </span><a href="{{msn}}">{{msn}}</a><br/>
+              <span class='small_profile_caps'>MSN: <a href="{{msn}}">{{msn}}</a></span><br/>
 {{/msn}}
 
               <div id="social_icons">
@@ -91,13 +95,16 @@
                 <a href="https://twitter.com/{{twitter}}"><img src="/img/social_icons/twitter-icon.png" alt="Twitter." class="info_icon" /></a>
 {{/twitter}}
               </div>
+
             </div>
+
 {{#about}}
             <div id="information-desc" class="standard_profile_info_box">
               <h3>Description</h3>
               {{about}}
             </div>
 {{/about}}
+
 {{#lastfm}}
             <!--div id="information-desc" class="standard_profile_info_box">
               <h3>Listening to...</h3>

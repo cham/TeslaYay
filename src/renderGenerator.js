@@ -282,6 +282,8 @@ module.exports = {
                 renderUtils.getUserTemplateData(user, function(templateData){
                     res.render('user', _.extend(templateData, {
                         profilename: selecteduser.username,
+                        realname: selecteduser.realname,
+                        location: selecteduser.location,
                         membersince: created.format('MMMM D YYYY'),
                         lastlogin: lastlogin.format('MMMM D YYYY') + ' at ' + lastlogin.format('h:mm a'), //September 16th 2013 at 4:47 pm
                         numthreads: selecteduser.threads_count,
