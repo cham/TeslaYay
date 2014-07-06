@@ -20,12 +20,18 @@ var _ = require('underscore'),
         numcomments: 50
     };
 
-var _errorCodes = _([500, 401, 404]);
+var _errorCodes = _([500, 401, 404]),
+    errorBodies = {
+        401: 'Unauthorised',
+        404: 'Route not found',
+        500: 'API error'
+    };
+
 function checkResponse(err, apiRes, next){
     if(err) return next(err);
 
     if(apiRes && _errorCodes.indexOf(apiRes.statusCode) > -1){
-        next(new Error(apiRes.body));
+        next(new Error(apiRes.body || errorBodies[apiRes.statusCode]));
         return false;
     }
     return true;
@@ -411,6 +417,7 @@ module.exports = {
         }
 
         makeRequest('get', apiUrl + '/user/' + user.username + '/message/' + body.messageid, null, function(err, data){
+            if(err) return cb(err);
             if(user.username === data.recipient){
                 makeRequest('put', apiUrl + '/user/' + user.username + '/message/' + body.messageid + '/read');
             }
