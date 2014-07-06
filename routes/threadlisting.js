@@ -177,4 +177,9 @@ module.exports = function routing(app, api, renderGenerator){
             makeSortFilter(req.route.params.sorttype)
         ));
     });
+
+    // startedby another user
+    app.get('/startedby/:username', ping, function(req, res, next){
+        buildListing(req, res, next, _.extend({}, req.query, makeTypeFilter('postedby', req.route.params.username)));
+    });
 };
