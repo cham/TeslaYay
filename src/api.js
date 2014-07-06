@@ -643,19 +643,23 @@ module.exports = {
     createImage: function(res, body, user, cb){
         var md5sum = crypto.createHash('md5'),
             dataURL = body.dataURL || '',
-            filename = md5sum.update(dataURL + Date.now()).digest('hex') + '.png',
-            approot = __dirname.replace(/\/src$/, ''),
-            filepath = approot + '/public/img/userimages/' + filename,
-            dataMatches = dataURL.match(/^data:image\/png;base64,(.*)$/);
+            dataMatches = dataURL.match(/^data:image\/(png|gif|jpg|jpeg);base64,(.*)$/),
+            filename,
+            approot,
+            filepath;
 
         try{
-            check(dataMatches.length, 'dataURL invalid').is(2);
+            check(dataMatches.length, 'dataURL invalid').is(3);
             check(dataURL, 'Image too large').len(1, 1024 * 1000 * 2);
         }catch(e){
             return cb(e);
         }
+        
+        filename = md5sum.update(dataURL + Date.now()).digest('hex') + '.' + dataMatches[1],
+        approot = __dirname.replace(/\/src$/, ''),
+        filepath = approot + '/public/img/userimages/' + filename;
 
-        fs.writeFile(filepath, new Buffer(dataMatches[1], 'base64'), function(err){
+        fs.writeFile(filepath, new Buffer(dataMatches[2], 'base64'), function(err){
             if(err){
                 return cb(err);
             }

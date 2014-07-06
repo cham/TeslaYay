@@ -162,6 +162,39 @@ $('#thread-content-input').pasteImageReader(function(data){
   });
 });
 
+document.getElementById('thread-content-input').addEventListener("drop", function(e){
+  e.preventDefault();
+
+  var file = e.dataTransfer.files[0],
+      reader = new FileReader(),
+      $this = $('#thread-content-input');
+
+  reader.onload = function(fileEvent){
+    var img = document.createElement('img');
+    img.onload = function(){
+      $.ajax({
+        method: 'post',
+        url: '/pasteimagedata',
+        data: {
+          dataURL: fileEvent.target.result
+        },
+        success: function(responseData){
+          $this.parent().find('.error,.loading').fadeOut();
+          $this.val($this.val() + ' <img src="' + responseData.filepath + '" width="' + img.naturalWidth + '" height="' + img.naturalHeight + '">');
+        },
+        error: function(response){
+          if(response.status === 413){
+            $this.parent().find('.error,.loading').remove();
+            $this.after('<p class="error">Image too large, maximum file size for pasted images is 2MB</p>');
+          }
+        }
+      });
+    };
+    img.src = fileEvent.target.result;
+  };
+  reader.readAsDataURL(file);
+}, false);
+
 $('#preview-button').on('click', function(e){
   e.preventDefault();
   var post = $("#thread-content-input").val();
