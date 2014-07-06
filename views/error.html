@@ -20,10 +20,13 @@
           (36 chars max)
         </script>
 
-        <h4>Congratulations!</h4>
-        <p>You have discovered an error.</p>
-        <p>Computer says: "{{errorMessage}}"</p>
-        <p>Hopefully someone will know what to do with that.</p>
+        <h1>Congratulations!</h1>
+
+        <div class="error-page-text">
+          <p>You have discovered a wild and unhandled error.</p>
+          <p>Computer says: <span class="error-page-message">&ldquo;{{errorMessage}}&rdquo;</span></p>
+          <p>Hopefully someone will know what to do with that.</p>
+        </div>
 
         <div class="amazing-game">
           <p class="gamestate">{{tileDescription}}</p>

@@ -2161,7 +2161,8 @@ Award Section
     background: #000;
     color: #0f0;
     border-radius: 4px;
-    padding: 3px 6px;
+    padding: 14px 18px;
+    font-size: 20px;
 }
 .amazing-game button {
     opacity: 0.8;
@@ -2174,5 +2175,11 @@ Award Section
 }
 .loading {
     color: #ddd;
+}
+.error-page-text {
+    margin: 24px 0;
+}
+.error-page-message {
+    font-weight: bold;
 }
 
