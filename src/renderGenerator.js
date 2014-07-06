@@ -272,7 +272,9 @@ module.exports = {
                 pointtime = 1000 * 60 * 60 * 8,
                 lastpointusage = selecteduser.lastpointusage || new Date(0,0,0),
                 nextpointtime = 'right now',
-                canpoint = (new Date().getTime() - new Date(lastpointusage).getTime()) > pointtime;
+                canpoint = (new Date().getTime() - new Date(lastpointusage).getTime()) > pointtime,
+                realname = selecteduser.realname && selecteduser.realname.length ? selecteduser.realname : false,
+                location = selecteduser.location && selecteduser.location.length ? selecteduser.location : false;
 
             WhosOnline.activeUsers([selecteduser.username], function(onlineuser){
                 if(!canpoint){
@@ -282,8 +284,8 @@ module.exports = {
                 renderUtils.getUserTemplateData(user, function(templateData){
                     res.render('user', _.extend(templateData, {
                         profilename: selecteduser.username,
-                        realname: selecteduser.realname,
-                        location: selecteduser.location,
+                        realname: realname,
+                        location: location,
                         membersince: created.format('MMMM D YYYY'),
                         lastlogin: lastlogin.format('MMMM D YYYY') + ' at ' + lastlogin.format('h:mm a'), //September 16th 2013 at 4:47 pm
                         numthreads: selecteduser.threads_count,
