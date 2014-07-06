@@ -115,9 +115,7 @@ module.exports = {
     },
 
     getUser: function(res, params, user, cb){
-        var route = '/user/' + params.username;
-
-        makeRequest('get', apiUrl + route, null, cb);
+        makeRequest('get', apiUrl + '/user/' + params.username, null, cb);
     },
 
     getComment: function(res, params, user, cb){
