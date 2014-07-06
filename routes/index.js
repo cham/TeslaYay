@@ -142,11 +142,14 @@ module.exports = function routing(){
             },
             user: function(done){
                 api.getUser(res, req.route.params || {}, req.session.user, done);
+            },
+            buddyof: function(done){
+                api.getBuddyOf(res, req.route.params || {}, req.session.user, done);
             }
         }, function(errs, data){
             if(errs) return next(errs);
 
-            renderer(null, _.extend(data.user, {comments: data.comments}));
+            renderer(null, _.extend(data.user, {comments: data.comments}, {numbuddyof: data.buddyof.totaldocs}));
         });
     });
 

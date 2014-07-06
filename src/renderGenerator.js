@@ -302,6 +302,9 @@ module.exports = {
                         lastfm: getWebsiteUrl(selecteduser.websites, 'lastfm'),
                         twitter: getWebsiteUrl(selecteduser.websites, 'twitter'),
                         about: selecteduser.about,
+                        online: onlineuser.length > 0,
+                        viewhtml: user.view_html,
+                        numbuddyof: selecteduser.numbuddyof,
                         comments: _(selecteduser.comments || []).reduce(function(memo, comment){
                             var thread = comment.threadid || {};
                             memo.push({
@@ -310,9 +313,7 @@ module.exports = {
                                 content: comment.content
                             });
                             return memo;
-                        }, []),
-                        online: onlineuser.length > 0,
-                        viewhtml: user.view_html
+                        }, [])
                     }));
                 });
             });

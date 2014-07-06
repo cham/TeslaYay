@@ -479,7 +479,7 @@ module.exports = {
         });
     },
 
-    getPreferences: function(res, body, user, cb){
+    getBuddyOf: function(res, body, user, cb){
         user = user || {};
 
         try {
@@ -488,7 +488,7 @@ module.exports = {
             return cb(e);
         }
 
-        cb(null, {});
+        makeRequest('get', apiUrl + '/user/' + user.username + '/buddyof', { qs: {countonly: true} }, cb);
     },
 
     changePassword: function(res, body, user, cb){
