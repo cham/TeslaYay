@@ -371,6 +371,7 @@ module.exports = {
             if(err) return next(err);
 
             renderUtils.getUserTemplateData(user, function(templateData){
+                message.created = moment(message.created).format('MMM Do \'YY @ h:mma');
                 res.render('message', _.extend(templateData, message, {
                     viewhtml: user.view_html
                 }));
