@@ -133,9 +133,16 @@ module.exports = {
     },
 
     postThread: function(res, body, user, cb){
+        var allowedCategories = ['Discussions','Projects','Advice','Meaningless'],
+            category = (body.categories || [])[0],
+            validCat = allowedCategories.indexOf(category) > -1;
+
+        if(!validCat){
+            return cb(new Error('Categories failed validation'));
+        }
+
         user = user || {};
         try {
-            check(body.categories, 'Categories failed validation').notNull();
             check(body.name, 'Name failed validation').notEmpty().len(1, 96);
             check(body.content, 'Content failed validation').notEmpty();
             check(user.username, 'User not found').notEmpty();
@@ -145,7 +152,7 @@ module.exports = {
 
         makeRequest('post', apiUrl + '/thread', {
             form: {
-                categories: body.categories,
+                categories: [category],
                 name: XSSWrapper(body.name).clean().value(),
                 content: XSSWrapper(body.content).convertNewlines().convertPinkies().convertMe(user).convertYou().clean().value(),
                 postedby: user.username

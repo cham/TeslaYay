@@ -33,6 +33,11 @@ routes = {
         }
     },
     newthread: {
+        Error: {
+            'Categories failed validation': function(err, req, res, next){
+                newThreadError(req, res, next, 'Please select a category.');
+            }
+        },
         ValidatorError: {
             'Categories failed validation': function(err, req, res, next){
                 newThreadError(req, res, next, 'Please select a category.');
