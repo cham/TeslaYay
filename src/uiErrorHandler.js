@@ -27,6 +27,16 @@ routes = {
     login: {
         ValidatorError: {
             'Password failed validation': function(err, req, res, next){
+                res.status(401);
+                res.end();
+            }
+        },
+        Error: {
+            'Invalid credentials': function(err, req, res, next){
+                res.status(401);
+                res.end();
+            },
+            'User is banned': function(err, req, res, next){
                 res.status(403);
                 res.end();
             }
@@ -156,6 +166,7 @@ function getErrorType(err){
     if(err.name){
         return err.name;
     }
+    return 'Error';
 }
 
 function getErrorMessage(err){
@@ -184,7 +195,7 @@ module.exports = {
         if(!err){
             err = {};
         }
-        
+
         errorType = getErrorType(err);
         sourceRoute = getSourceRoute(errorSourceKey);
         errorTypesRoute = getErrorTypeRoute(sourceRoute, errorType);

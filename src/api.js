@@ -20,9 +20,10 @@ var _ = require('underscore'),
         numcomments: 50
     };
 
-var _errorCodes = _([500, 401, 404]),
+var _errorCodes = _([500, 401, 403, 404]),
     errorBodies = {
         401: 'Unauthorised',
+        403: 'Forbidden',
         404: 'Route not found',
         500: 'API error'
     };

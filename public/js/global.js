@@ -173,8 +173,14 @@ $(function () {
 
     $.ajax({
       url: '/login', type: 'POST', data: data
-    }).fail(function(data) {
-      $('.error').text('Login incorrect');
+    }).fail(function(err) {
+      if(err.status === 401){
+        $('.error').text('Login incorrect');
+      }else if(err.status === 403){
+        $('.error').text('Account banned');
+      }else{
+        $('.error').text('Unknown error');
+      }
     }).then(function() {
       window.location.reload();
     });
