@@ -18,6 +18,12 @@ function getUserWebsiteValue(websites, key){
     return match.url || '';
 }
 
+function getGetOrdinal(n){
+    var s=["th","st","nd","rd"],
+        v=n%100;
+    return n+(s[(v-20)%10]||s[v]||s[0]);
+}
+
 module.exports = {
     
     threadsListingHandler: function(req, res, renderdata, next){
@@ -283,6 +289,7 @@ module.exports = {
 
                 renderUtils.getUserTemplateData(user, function(templateData){
                     res.render('user', _.extend(templateData, {
+                        membernumber: getGetOrdinal(selecteduser.membernumber),
                         profilename: selecteduser.username,
                         realname: realname,
                         location: location,
