@@ -173,7 +173,7 @@ module.exports = {
                     threadid: thread._id,
                     firstcategory: (thread.categories || []).pop(),
                     pages: pages,
-                    viewhtml: user.view_html,
+                    viewhtml: user.view_html === false ? false : true,
                     paginationtext: renderUtils.generatePaginationText({
                         setsize: totaldocs,
                         pagesize: pagesize,
