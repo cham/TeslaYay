@@ -89,6 +89,10 @@ module.exports = {
     getThread: function(res, params, user, cb){
         user = user || {};
 
+        if(!user.username){
+            return cb(new Error('Login required'));
+        }
+
         var uri = apiUrl + '/thread/' + encodeURIComponent(params.threadUrlName) + '/complete',
             query = _(params).defaults({
                 size: user.comment_size || defaultprefs.numcomments
@@ -100,6 +104,10 @@ module.exports = {
     },
 
     getRandomThread: function(res, params, user, cb){
+        if(!user.username){
+            return cb(new Error('Login required'));
+        }
+
         makeRequest('get', apiUrl + '/randomthread', null, cb);
     },
 

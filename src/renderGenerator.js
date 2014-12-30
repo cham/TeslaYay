@@ -145,7 +145,14 @@ module.exports = {
             that = this;
 
         return function(err, json){
-            if(err) return next(err);
+            if(err){
+                if(err.message === 'Login required'){
+                    return renderUtils.getUserTemplateData(user, function(templateData){
+                        res.render('login-required', templateData);
+                    });
+                }
+                return next(err);
+            }
 
             var totaldocs = json.totaldocs,
                 pagesize = json.limit,
