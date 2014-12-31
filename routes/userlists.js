@@ -25,6 +25,14 @@ function setUser(req, user){
     req.session.user.preferences = userprefs;
 }
 
+function getBuddyMessageContent(user){
+    var intro = 'Wow, what a momentous occasion! Now go return the favour...<br><br>';
+    var profile = 'Profile: <a href="/user/' + user.urlname + '">/user/' + user.username + '</a><br>';
+    var buddyBackLink = 'Add as buddy: <a href="/buddies/' + user.urlname + '">/buddies/' + user.username + '</a>';
+
+    return intro + profile + buddyBackLink;
+}
+
 module.exports = function routing(app, api){
 
     // favourites
@@ -100,14 +108,33 @@ module.exports = function routing(app, api){
         }, req.session.user, function(err, user){
             if(err) return next(err);
 
+            var redirectOnSuccess = req.body.redirect;
+            var redirectTo = req.headers['referer'];
+
             if(user._id){
                 setUser(req, user);
             }
 
-            if(req.body.redirect){
-                res.redirect(req.headers['referer']);
+            if(body.command === 'buddy'){
+                api.postMessage(res, {
+                    subject: user.username + ' just added you as a buddy',
+                    content: getBuddyMessageContent(user),
+                    recipients: body.username
+                }, req.session.user, function(err){
+                    if(err) return next(err);
+
+                    if(redirectOnSuccess){
+                        return res.redirect(redirectTo);
+                    }
+
+                    res.send(user);
+                });
             }else{
-                res.send(user);
+                if(redirectOnSuccess){
+                    res.redirect(redirectTo);
+                }else{
+                    res.send(user);
+                }
             }
         });
     });
