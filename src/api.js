@@ -8,7 +8,7 @@ var _ = require('underscore'),
     check = require('validator').check,
     sanitize = require('validator').sanitize,
     XSSWrapper = require('./xsswrapper'),
-    apiUrl = 'http://localhost:3000',
+    apiUrl = 'http://localhost:3100',
     crypto = require('crypto'),
     request = require('request').defaults({
         encoding: 'utf8',

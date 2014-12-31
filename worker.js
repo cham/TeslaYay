@@ -24,7 +24,7 @@ app.engine('html', require('hogan-express'));
 app.enable('view cache');
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3100);
+  app.set('port', process.env.PORT || 3000);
   app.set('view engine', 'html');
   app.set('partials', {head: 'head', footer: 'footer', leftcolumn: 'leftcolumn'});
   app.use(express.favicon(__dirname + '/public/favicon.ico'));
