@@ -956,9 +956,10 @@ blockquote.tquote p {
 
 blockquote.tquote div.tqname {
     font-size:11px;
-    display:inline;
+    display:block;
     font-style:normal;
     font-weight: bold;
+    margin-bottom: 5px;
 }
 .quote-nested-toggle {
     display: block;
