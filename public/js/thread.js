@@ -32,17 +32,6 @@ function responsiveEmbed(content) {
 
 function format_special(element)
 {
-  $('spoiler').each(function() {
-    var warning_msg = 'Warning! May contain spoilers. Click to reveal.',
-        $spoiler = $('<div class="spoiler"></div>'),
-        $disclaimer = $('<div class="spoiler-disclaimer"></div>').text(warning_msg),
-        $content = $('<div class="spoiler-content"></div>').html( $(this).html() );
-    $spoiler.append($disclaimer).append($content).click(function(){
-      $disclaimer.toggle();
-      $content.toggleClass('spoiled');
-    });
-    $(this).replaceWith($spoiler);
-  });
 
   var ytube = new RegExp('(?:")?http(?:s)?://(?:www.)?youtu(?:be)?.(?:[a-z]){2,3}' +
                          '(?:[a-z/?=]+)([a-zA-Z0-9-_]{11})(?:[a-z0-9?&-_=]+)?');
@@ -137,6 +126,18 @@ function format_special(element)
       }
     });
   }
+
+  $('spoiler').each(function() {
+    var warning_msg = 'Warning! May contain spoilers. Click to reveal.',
+        $spoiler = $('<div class="spoiler"></div>'),
+        $disclaimer = $('<div class="spoiler-disclaimer"></div>').text(warning_msg),
+        $content = $('<div class="spoiler-content"></div>').html( $(this).html() );
+    $spoiler.append($disclaimer).append($content).click(function(){
+      $disclaimer.toggle();
+      $content.toggleClass('spoiled');
+    });
+    $(this).replaceWith($spoiler);
+  });
 }
 
 $(document).ready(function(){
