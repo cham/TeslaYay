@@ -2134,6 +2134,7 @@ Award Section
     font-size: 9px;
     color: #bbb;
     padding-top: 14px;
+    display: none;
 }
 
 /* -- Responsive Embed: http://embedresponsively.com/ ---------------------- */

@@ -162,6 +162,7 @@ $('#thread-content-input').pasteImageReader(function(data){
   });
 });
 
+if(document.getElementById('thread-content-input')){
 document.getElementById('thread-content-input').addEventListener("drop", function(e){
   e.preventDefault();
 
@@ -194,6 +195,7 @@ document.getElementById('thread-content-input').addEventListener("drop", functio
   };
   reader.readAsDataURL(file);
 }, false);
+}
 
 $('#preview-button').on('click', function(e){
   e.preventDefault();

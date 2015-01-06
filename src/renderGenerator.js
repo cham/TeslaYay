@@ -204,7 +204,8 @@ module.exports = {
                                 dayslater: dayslater,
                                 dayslaterbanner: dayslater > 1,
                                 canpoint: templateData.canpoint && user.username !== comment.postedby,
-                                showthreadcontrols: index === 0 && user.username === comment.postedby
+                                showthreadcontrols: index === 0 && user.username === comment.postedby,
+                                avatarurl: comment.postedby.replace(/\s/g,'-')
                             }, comment);
 
                         lastcomment = comment;

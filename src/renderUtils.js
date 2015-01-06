@@ -98,7 +98,8 @@ module.exports = {
                 inboxtext: inboxtext,
                 email: user.email,
                 randomtitles: user.random_titles,
-                canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime
+                canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime,
+                customcss: user.custom_css
             });
         });
     }
