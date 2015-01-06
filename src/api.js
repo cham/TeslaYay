@@ -275,9 +275,10 @@ module.exports = {
                 res.status(401);
                 return cb('User does not own this comment');
             }
-            if(moment(comment.created).diff(new Date())<-600000){
+
+            if(body.isFirst !== 'true' && moment(comment.created).diff(new Date())<-3600000){
                 res.status(401);
-                return cb('Cannot edit posts over 10 minutes old');
+                return cb('Cannot edit posts over 1 hour old');
             }
 
             makeRequest('put', apiUrl + '/comment/' + body.comment_id, {

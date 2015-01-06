@@ -203,7 +203,7 @@ $('#preview-button').on('click', function(e){
   $.post('/ajax/preview', {content: post}).then(function(data) {
     $("#comment-preview .content").html(data);
     format_special("#comment-preview .content");
-    prettyPrint();
+    // prettyPrint();
     $("#comment-preview").show();
   });
 });
@@ -285,7 +285,7 @@ thread = {
           rendered: $container.html(),
           data: {
             content: data.content.replace(/<br>/g, "\n"),
-            owner: (data.postedby === currentUser && moment(data.created).diff(new Date())>-600000)
+            owner: (data.postedby === currentUser && moment(data.created).diff(new Date())>-3600000)
           },
           author: author
         };
@@ -327,7 +327,8 @@ thread = {
   {
     var post_data = {
       comment_id: comment_id,
-      content: $('#comment-'+comment_id+' .content textarea').val()
+      content: $('#comment-'+comment_id+' .content textarea').val(),
+      isFirst: $('#comment-'+comment_id+' .user-block').length === 1
     };
 
     $.ajax({
@@ -341,7 +342,7 @@ thread = {
         }
         format_special($('#comment-'+comment_id+' .content').html(html));
         delete thread.comments[data._id];
-        prettyPrint();
+        // prettyPrint();
       }
     });
   },
