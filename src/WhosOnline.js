@@ -73,7 +73,7 @@ var WhosOnline = {
                 }, []);
             }
 
-            cb(users.map(function(user){
+            cb(_.uniq(users).map(function(user){
                 return {
                     username: user,
                     urlname: urlencode(user)
