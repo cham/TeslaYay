@@ -293,7 +293,7 @@ thread = {
           rendered: $container.html(),
           data: {
             content: data.content.replace(/<br>/g, "\n").replace(/<br \/>/g, "\n"),
-            owner: (data.postedby === currentUser && moment(data.created).diff(new Date())>-3600000)
+            owner: (data.postedby === currentUser) && $('#comment-'+comment_id+' #thread-control').length === 1 || moment(data.created).diff(new Date())>-3600000
           },
           author: author
         };
