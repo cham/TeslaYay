@@ -284,7 +284,7 @@ thread = {
           container: $container,
           rendered: $container.html(),
           data: {
-            content: data.content.replace(/<br>/g, "\n"),
+            content: data.content.replace(/<br>/g, "\n").replace(/<br \/>/g, "\n"),
             owner: (data.postedby === currentUser && moment(data.created).diff(new Date())>-3600000)
           },
           author: author
