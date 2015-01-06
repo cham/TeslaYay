@@ -158,6 +158,11 @@
       </div>
 
 {{#user}}
+{{^authedusercanpost}}
+      <h3>You cannot post in this thread</h3>
+      <input type="hidden" name="threadurlname" value="{{threadurlname}}">
+{{/authedusercanpost}}
+{{#authedusercanpost}}
 {{#closed}}
       <h3>This thread is closed</h3>
       <input type="hidden" name="threadurlname" value="{{threadurlname}}">
@@ -238,6 +243,7 @@
       </div>
     </div>
 {{/closed}}
+{{/authedusercanpost}}
 {{/user}}
 
     <div id="notifications">

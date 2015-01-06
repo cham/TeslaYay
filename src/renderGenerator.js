@@ -172,6 +172,8 @@ module.exports = {
             }
             thread = json.threads[0];
 
+            var authedUserCanPost = thread.postedby_ignores.indexOf(user.username) === -1;
+
             renderUtils.getUserTemplateData(user, function(templateData){
                 res.render('thread', _.extend(templateData, {
                     id: thread._id,
@@ -211,7 +213,8 @@ module.exports = {
 
                         lastcomment = comment;
                         return newcomment;
-                    })
+                    }),
+                    authedusercanpost: authedUserCanPost
                 }));
             });
         };
