@@ -129,6 +129,14 @@ function format_special(element)
       });
     });
   });
+
+  if(Autolinker){
+    Array.apply(null, document.querySelectorAll('.content')).forEach(function(node){
+      if(!node.querySelector('.youtube_wrapper')){
+        node.innerHTML = Autolinker.link(node.innerHTML);
+      }
+    });
+  }
 }
 
 $(document).ready(function(){
