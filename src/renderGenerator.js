@@ -5,7 +5,8 @@
 var _ = require('underscore'),
     moment = require('moment'),
     renderUtils = require('./renderUtils'),
-    WhosOnline = require('./WhosOnline');
+    WhosOnline = require('./WhosOnline'),
+    bcrypt = require('bcrypt');
 
 function getUserWebsiteValue(websites, key){
     var match = _.find(websites, function(website){
@@ -482,6 +483,37 @@ module.exports = {
             if(err) return next(err);
 
             res.render('register', data);
+        };
+    },
+
+    forgotPasswordHandler: function(req, res, next){
+        return function(err, data){
+            if(err) return next(err);
+
+            res.render('forgot-password', data);
+        };
+    },
+
+    passwordResetHandler: function(req, res, next){
+        return function(err, data){
+            if(err) return next(err);
+
+            var query = req.query;
+            var body = req.body;
+
+            var username = query.username || body.username;
+            var token = query.token || body.token;
+            var compareStr = username + ':topsecret:' + moment().format('YYYY-MM-DD');
+
+            if(!bcrypt.compareSync(compareStr, token)){
+                return next(new Error('token is invalid'));
+            }
+
+            res.render('password-reset', {
+                errorMessage: body.errorMessage,
+                username: username,
+                token: token
+            });
         };
     }
 };

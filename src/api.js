@@ -10,6 +10,7 @@ var _ = require('underscore'),
     XSSWrapper = require('./xsswrapper'),
     apiUrl = 'http://localhost:3100',
     crypto = require('crypto'),
+    bcrypt = require('bcrypt'),
     request = require('request').defaults({
         encoding: 'utf8',
         jar: false,
@@ -538,6 +539,29 @@ module.exports = {
         }, cb);
     },
 
+    resetPassword: function(res, body, cb){
+        var compareStr = body.username + ':topsecret:' + moment().format('YYYY-MM-DD');
+
+        if(!bcrypt.compareSync(compareStr, body.token)){
+            return cb(new Error('token is invalid'));
+        }
+
+        try{
+            check(body.username, 'Username failed validation').notNull();
+            check(body.password, 'New password failed validation').len(6,30);
+            check(body.password2, 'Confirm password failed validation').len(6,30);
+            check(body.password2, 'Confirm password does not match').equals(body.password);
+        }catch(e){
+            return cb(e);
+        }
+
+        makeRequest('put', apiUrl + '/user/' + body.username + '/resetpassword', {
+            form: {
+                password: body.password
+            }
+        }, cb);
+    },
+
     updatePersonalDetails: function(res, body, user, cb){
         user = user || {};
 
@@ -655,6 +679,44 @@ module.exports = {
         }
 
         makeRequest('put', apiUrl + '/user/' + user.username + '/togglehtml', null, cb);
+    },
+
+    forgottenPasswordEmail: function(res, body, user, cb){
+        try{
+            check(body.email, 'Email address is required').notNull();
+        }catch(e){
+            return cb(e);
+        }
+
+        this.getUsers(res, {
+            email: body.email
+        }, user, function(err, json){
+            if(err) return cb(err);
+            if(!json.users || !json.users.length){
+                return cb(new Error('No user found for that email address'));
+            }
+
+            var username = json.users[0].username;
+            var hash = bcrypt.hashSync(username + ':topsecret:' + moment().format('YYYY-MM-DD'), bcrypt.genSaltSync(12));
+            var message = 'Follow this link to reset the password for ' + username + ':\n\n' +
+                          'http://yayhooray.com/password-reset?username=' + username + '&token=' + hash + '\n\n' +
+                          'This link is valid until midnight (GMT), 8th January 2015';
+
+            request({
+                method: 'post',
+                url: 'http://localhost:3025',
+                form: {
+                    message: message,
+                    email: body.email
+                }
+            }, function(err, response, json){
+                if(response.statusCode === 200){
+                    return cb();
+                }
+
+                return cb(new Error('Could not send password reminder email'));
+            });
+        });
     },
 
     createImage: function(res, body, user, cb){

@@ -175,6 +175,14 @@ module.exports = function routing(){
         api.getPreferences(res, {}, req.session.user, renderGenerator.preferencesHandler(req, res, next));
     });
 
+    // forgot password
+    app.get('/forgot-password', function(req, res, next){
+        renderGenerator.forgotPasswordHandler(req, res, next)(null, {});
+    });
+    app.get('/password-reset', function(req, res, next){
+        renderGenerator.passwordResetHandler(req, res, next)(null, {});
+    });
+
     // POSTs
     // upload image via clipboard post
     app.post('/pasteimagedata', function(req, res, next){
@@ -316,6 +324,31 @@ module.exports = function routing(){
     app.post('/logout', ping, function(req, res, next){
         delete req.session.user;
         res.redirect('/');
+    });
+
+    // forgot password
+    app.post('/forgot-password', function(req, res, next){
+        api.forgottenPasswordEmail(res, req.body, {}, function(err, success){
+            if(err) return next(err);
+
+            res.send(success);
+        });
+    });
+    app.post('/password-reset', function(req, res, next){
+        api.resetPassword(res, req.body, function(err, json){
+            if(err){
+                return uiErrorHandler.handleError(err, req, res, next, 'password-reset');
+            }
+
+            var user = json.user;
+
+            if(user && user.username){
+                setUser(req, user);
+                res.redirect('/');
+            }else{
+                console.log(user);
+            }
+        });
     });
 
     // PUT

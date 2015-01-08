@@ -23,6 +23,12 @@ function registerError(req, res, next, message){
     renderGenerator.registerHandler(req, res, next)(null, body);
 }
 
+function passwordResetError(req, res, next, message){
+    var body = req.body;
+    body.errorMessage = message;
+    renderGenerator.passwordResetHandler(req, res, next)(null, body);
+}
+
 routes = {
     login: {
         ValidatorError: {
@@ -119,6 +125,22 @@ routes = {
             },
             'username': function(err, req, res, next){
                 registerError(req, res, next, 'That username is already taken');
+            }
+        }
+    },
+    'password-reset': {
+        ValidatorError: {
+            'Confirm password does not match': function(err, req, res, next){
+                passwordResetError(req, res, next, 'Your passwords did not match');
+            },
+            'Username failed validation': function(err, req, res, next){
+                passwordResetError(req, res, next, 'There is an error with your username');
+            },
+            'New password failed validation': function(err, req, res, next){
+                passwordResetError(req, res, next, 'Your password must be at least 6 characters.');
+            },
+            'Confirm password failed validation': function(err, req, res, next){
+                passwordResetError(req, res, next, 'Your confirm password must be at least 6 characters.');
             }
         }
     }
