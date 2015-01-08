@@ -131,7 +131,7 @@ module.exports = function routing(){
     });
 
     // user page
-    app.get('/user/:username', ping, function(req, res, next){
+    app.get('/user/:username', checkAuth, ping, function(req, res, next){
         var renderer = renderGenerator.userDetailHandler(req, res, next);
         async.parallel({
             comments: function(done){
