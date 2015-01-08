@@ -6,3 +6,5 @@ current.json
 history.txt
 public/img/userimages/*
 public/avatars
+public/titles/current.json
+public/titles/history.txt
