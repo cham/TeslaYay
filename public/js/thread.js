@@ -119,10 +119,10 @@ function format_special(element)
     });
   });
 
-  if(Autolinker){
-    Array.apply(null, document.querySelectorAll('.content')).forEach(function(node){
-      if(!node.querySelector('.youtube_wrapper')){
-        node.innerHTML = Autolinker.link(node.innerHTML);
+  if(window.Autolinker){
+    $('.content').each(function(){
+      if(!$(this).find('.youtube_wrapper').length){
+        this.innerHTML = Autolinker.link(this.innerHTML);
       }
     });
   }
@@ -538,7 +538,7 @@ $('body').on('click', '#control-sfw', function(e){
       postcount = 0,
       threadEvents;
 
-  if(!threadurlname || !$notifications.length) return;
+  if(!threadurlname || !$notifications.length || !window.EventSource) return;
 
   threadEvents = new EventSource('/thread/' + threadurlname + '/events');
 
