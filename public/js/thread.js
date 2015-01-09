@@ -223,6 +223,10 @@ $("#comment-form").on("submit", function() {
     return false;
   }
   $("#submit-button").attr('disabled', 'disabled');
+
+  if (hasStorage) {
+    localStorage.removeItem(key);
+  }
   this.submit();
 });
 
@@ -570,28 +574,25 @@ $('body').on('click', '#control-sfw', function(e){
 /**
  *  Save post content, local storage, moved from .net
  */
-;(function(document, $) {
+var $input = $('#thread-content-input');
+var $form = $input.parents('form');
+var key = document.title;
 
-  var $input = $('#thread-content-input');
-  var $form = $input.parents('form');
-  var key = document.title;
-
-  var hasStorage = (function() {
-    try {
-      return !!localStorage.getItem;
-    } catch(e) {
-      return false;
-    }
-  }());
-
-  if ($input.length !== 0 && hasStorage) {
-
-    if (localStorage.getItem(key)) {
-      $input.val(localStorage.getItem(key));
-    }
-
-    $input.bind('keyup change', function() {
-      localStorage.setItem(key, $input.val());
-    });
+var hasStorage = (function() {
+  try {
+    return !!localStorage.getItem;
+  } catch(e) {
+    return false;
   }
-})(document, jQuery);
+}());
+
+if ($input.length !== 0 && hasStorage) {
+
+  if (localStorage.getItem(key)) {
+    $input.val(localStorage.getItem(key));
+  }
+
+  $input.bind('keyup change', function() {
+    localStorage.setItem(key, $input.val());
+  });
+}
