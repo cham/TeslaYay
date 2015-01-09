@@ -189,7 +189,35 @@ $(function () {
 
   $('#forgot-password').on('click', function(e){
     e.preventDefault();
-    $('#login-box').load('/auth/forgot_password');
+
+    var $loginBox = $('#login-box');
+
+    $.ajax({
+      url: '/forgot-password',
+      success: function(content){
+        $loginBox.html(content);
+        $loginBox.find('form').submit(function(e){
+          e.preventDefault();
+          var emailAddress = $('#forgot-email').val();
+
+          if(emailAddress && emailAddress.length > 1){
+            $.ajax({
+              type: 'post',
+              url: '/forgot-password',
+              data: {
+                email: emailAddress
+              },
+              success: function(){
+                $loginBox.html('<h5>Check your email!</h5><p>An email containing a link to reset your password has been sent to ' + emailAddress + '</p>');
+              },
+              error: function(){
+                $loginBox.html('<h5>Could not send email :(</h5><p>Could not send email to ' + emailAddress + '</p>');
+              }
+            });
+          }
+        });
+      }
+    });
   });
 
   $('#forgot-request').on('submit', function(e){

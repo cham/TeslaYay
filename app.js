@@ -6,6 +6,8 @@
 var cluster   = require('cluster'),
     redisClient = require('redis').createClient();
 
+var workersPerCPU = 4;
+
 console.log('Master process starting');
 
 redisClient.set("verify-redis-connectivity - app.js", "seems to be working", function(err, response){
@@ -18,7 +20,9 @@ redisClient.set("verify-redis-connectivity - app.js", "seems to be working", fun
 
     // Create a worker for each CPU
     for(var i = 0; i < cpuCount; i += 1){
-        cluster.fork();
+        for(var j = 0; j < workersPerCPU; j += 1){
+            cluster.fork();
+        }
     }
 
     // Restart dead workers

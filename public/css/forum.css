@@ -687,6 +687,7 @@ font-size: 8px;
 padding-left: 20px;
 background-repeat: no-repeat !important;
 background-position: 0 1px !important;
+background-size: 16px;
 }
 
 .comment  .user-information a, .test-comment  .user-information a,
@@ -2094,7 +2095,6 @@ line-height: 20px;
 
 .tquote img {
     max-width: 250px !important;
-    height: 100%;
 }
 .tquote .youtube_wrapper{
     width: 250px !important;
