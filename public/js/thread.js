@@ -533,10 +533,11 @@ $('body').on('click', '#control-sfw', function(e){
   });
 });
 
-(function(){
+;(function($){
   var threadurlname = $('input[name=threadurlname]').val(),
       $notifications = $('#notifications'),
       postcount = 0,
+      originalThreadTitle = $('title').text(),
       threadEvents;
 
   if(!threadurlname || !$notifications.length || !window.EventSource) return;
@@ -555,10 +556,42 @@ $('body').on('click', '#control-sfw', function(e){
   threadEvents.addEventListener('message', function(e){
     postcount++;
 
+    $('title').text(['(', postcount, ') ', originalThreadTitle].join(''));
+
+
     $notifications
       .html('<a id="closenotify"></a><div id="notifier"><a id="notify" href="">'+postcount+' new post'+(postcount === 1 ? '':'s')+' added</a></div>')
       .show();
   }, false);
 
-})();
+})(jQuery);
 
+
+/**
+ *  Save post content, local storage, moved from .net
+ */
+;(function(document, $) {
+
+  var $input = $('#thread-content-input');
+  var $form = $input.parents('form');
+  var key = document.title;
+
+  var hasStorage = (function() {
+    try {
+      return !!localStorage.getItem;
+    } catch(e) {
+      return false;
+    }
+  }());
+
+  if ($input.length !== 0 && hasStorage) {
+
+    if (localStorage.getItem(key)) {
+      $input.val(localStorage.getItem(key));
+    }
+
+    $input.bind('keyup change', function() {
+      localStorage.setItem(key, $input.val());
+    });
+  }
+})(document, jQuery);
