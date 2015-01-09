@@ -27,7 +27,9 @@ var _ = require('underscore'),
     stresstest = false,
     stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
     uiErrorHandler = require('../src/uiErrorHandler'),
-    newPostNotifier = require('../src/newPostNotifier');
+    newPostNotifier = require('../src/newPostNotifier'),
+    XSSWrapper = require('../src/xsswrapper');
+
 
 module.exports = function routing(){
 
@@ -378,6 +380,23 @@ module.exports = function routing(){
 
             res.send(json);
         });
+    });
+
+    /**
+     *  Send the body directly back to the client after lean
+     *  /ajax/preview
+     */
+    app.post('/ajax/preview', function(req, res, next) {
+      var data;
+      data = XSSWrapper(req.body.content)
+        .convertNewlines()
+        .convertPinkies()
+        .convertMe(req.session.user)
+        .convertYou()
+        .clean()
+        .value();
+
+      res.send({content: data});
     });
 
     return app.middleware;

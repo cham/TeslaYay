@@ -209,12 +209,13 @@ document.getElementById('thread-content-input').addEventListener("drop", functio
 $('#preview-button').on('click', function(e){
   e.preventDefault();
   var post = $("#thread-content-input").val();
-  $.post('/ajax/preview', {content: post}).then(function(data) {
-    $("#comment-preview .content").html(data);
-    format_special("#comment-preview .content");
-    // prettyPrint();
-    $("#comment-preview").show();
-  });
+  $.post('/ajax/preview', {content: post})
+    .then(function(data) {
+      $("#comment-preview .content").html(data.content);
+      format_special("#comment-preview .content");
+      //prettyPrint();
+      $("#comment-preview").show();
+    });
 });
 
 $("#comment-form").on("submit", function() {
@@ -558,4 +559,6 @@ $('body').on('click', '#control-sfw', function(e){
       .html('<a id="closenotify"></a><div id="notifier"><a id="notify" href="">'+postcount+' new post'+(postcount === 1 ? '':'s')+' added</a></div>')
       .show();
   }, false);
+
 })();
+
