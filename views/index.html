@@ -59,7 +59,7 @@
 {{#nsfw}}
               <span class="naughty-tag">[NAUGHTY!]</span>
 {{/nsfw}}
-              <a href="/thread/{{urlname}}/page/{{numpages}}#bottom" class='end-link'>#</a>
+              <a href="/thread/{{urlname}}{{^singlepage}}/page/{{numpages}}{{/singlepage}}#bottom" class='end-link'>#</a>
             </div>
             <div class="category">
               {{categories}}

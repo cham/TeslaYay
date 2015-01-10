@@ -106,6 +106,7 @@ module.exports = {
                         
                         thread.threadpages = threadpages;
                         thread.numpages = (threadpages[threadpages.length-1] || {num:1}).num;
+                        thread.singlepage = thread.numpages === 1;
                         thread.haspagination = threadpages.length > 1;
 
                         thread.favourite = _userFavourites.indexOf(thread._id) > -1;
