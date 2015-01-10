@@ -759,6 +759,9 @@ padding: 2px;
 
 .comment .censor .content {
 padding: 2px;
+text-align: left;
+display: none;
+background: #fff;
 }
 
 .comment .content-block, .test-comment .content-block {
