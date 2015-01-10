@@ -225,6 +225,11 @@ module.exports = function routing(){
         renderGenerator.passwordResetHandler(req, res, next)(null, {});
     });
 
+    // chat
+    app.get('/chat', function(req, res, next){
+        renderGenerator.chatHandler(req, res, next)(null, {});
+    });
+
     // POSTs
     // upload image via clipboard post
     app.post('/pasteimagedata', function(req, res, next){

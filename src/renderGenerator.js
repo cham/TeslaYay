@@ -517,5 +517,15 @@ module.exports = {
                 token: token
             });
         };
+    },
+
+    chatHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, data){
+            renderUtils.getUserTemplateData(user, function(templateData){
+                res.render('chat', templateData);
+            });
+        };
     }
 };
