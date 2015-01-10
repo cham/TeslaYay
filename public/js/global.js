@@ -143,7 +143,9 @@ $(function () {
   
     var button = $(this),
         threadurl = button.attr('href'),
-        threadid = button.data('id');
+        threadid = button.data('id'),
+        splitUrl = threadurl.split('/'),
+        favouriteType = splitUrl[splitUrl.length-1];
   
     $.ajax({
       method: 'put',
@@ -153,6 +155,9 @@ $(function () {
       },
       success: function(data){
         button.toggleClass('added');
+        favouriteType = button.hasClass('added') ? 'unfavourite' : 'favourite';
+        splitUrl[splitUrl.length-1] = favouriteType;
+        button.attr('href', splitUrl.join('/'));
       }
     });
   });

@@ -209,12 +209,13 @@ document.getElementById('thread-content-input').addEventListener("drop", functio
 $('#preview-button').on('click', function(e){
   e.preventDefault();
   var post = $("#thread-content-input").val();
-  $.post('/ajax/preview', {content: post}).then(function(data) {
-    $("#comment-preview .content").html(data);
-    format_special("#comment-preview .content");
-    // prettyPrint();
-    $("#comment-preview").show();
-  });
+  $.post('/ajax/preview', {content: post})
+    .then(function(data) {
+      $("#comment-preview .content").html(data.content);
+      format_special("#comment-preview .content");
+      //prettyPrint();
+      $("#comment-preview").show();
+    });
 });
 
 $("#comment-form").on("submit", function() {
@@ -222,6 +223,10 @@ $("#comment-form").on("submit", function() {
     return false;
   }
   $("#submit-button").attr('disabled', 'disabled');
+
+  if (hasStorage) {
+    localStorage.removeItem(key);
+  }
   this.submit();
 });
 
@@ -532,10 +537,11 @@ $('body').on('click', '#control-sfw', function(e){
   });
 });
 
-(function(){
+;(function($){
   var threadurlname = $('input[name=threadurlname]').val(),
       $notifications = $('#notifications'),
       postcount = 0,
+      originalThreadTitle = $('title').text(),
       threadEvents;
 
   if(!threadurlname || !$notifications.length || !window.EventSource) return;
@@ -554,8 +560,39 @@ $('body').on('click', '#control-sfw', function(e){
   threadEvents.addEventListener('message', function(e){
     postcount++;
 
+    $('title').text(['(', postcount, ') ', originalThreadTitle].join(''));
+
+
     $notifications
       .html('<a id="closenotify"></a><div id="notifier"><a id="notify" href="">'+postcount+' new post'+(postcount === 1 ? '':'s')+' added</a></div>')
       .show();
   }, false);
-})();
+
+})(jQuery);
+
+
+/**
+ *  Save post content, local storage, moved from .net
+ */
+var $input = $('#thread-content-input');
+var $form = $input.parents('form');
+var key = document.title;
+
+var hasStorage = (function() {
+  try {
+    return !!localStorage.getItem;
+  } catch(e) {
+    return false;
+  }
+}());
+
+if ($input.length !== 0 && hasStorage) {
+
+  if (localStorage.getItem(key)) {
+    $input.val(localStorage.getItem(key));
+  }
+
+  $input.bind('keyup change', function() {
+    localStorage.setItem(key, $input.val());
+  });
+}
