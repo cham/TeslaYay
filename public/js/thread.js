@@ -560,7 +560,7 @@ $('body').on('click', '#control-sfw', function(e){
   threadEvents.addEventListener('message', function(e){
     postcount++;
 
-    $('title').text(['(', postcount, ') ', originalThreadTitle].join(''));
+    $('title').text([postcount, ' new posts | ', originalThreadTitle].join(''));
 
 
     $notifications
