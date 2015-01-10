@@ -325,7 +325,12 @@ module.exports = {
                 username: body.username,
                 password: body.password
             }
-        }, cb);
+        }, function(err, user){
+            if(err) return cb(err);
+
+            user.rememberMeToken = bcrypt.hashSync(user.password, bcrypt.genSaltSync(12));
+            cb(null, user);
+        });
     },
 
     modifyUserList: function(res, body, user, cb){

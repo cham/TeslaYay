@@ -28,43 +28,83 @@ var _ = require('underscore'),
     stressTester = stresstest ? require('../src/stressTester') : {routing:function(){}},
     uiErrorHandler = require('../src/uiErrorHandler'),
     newPostNotifier = require('../src/newPostNotifier'),
-    XSSWrapper = require('../src/xsswrapper');
+    XSSWrapper = require('../src/xsswrapper'),
+    bcrypt = require('bcrypt');
 
+function setUser(req, user){
+    req.session.user = user;
+}
+
+function rememberUser(res, username, token){
+    var cookieOptions = {
+        maxAge: 1000 * 60 * 60 * 24 * 365
+    };
+    res.cookie('rememberUser', username, cookieOptions);
+    res.cookie('rememberToken', token, cookieOptions);
+}
+
+function forgetUser(res){
+    var cookieOptions = {
+        maxAge: 0
+    };
+    res.cookie('rememberUser', '', cookieOptions);
+    res.cookie('rememberToken', '', cookieOptions);
+}
+
+function checkAuth(req, res, next){
+    if(!req.session || !req.session.user || req.session.user.banned){
+        res.status(401);
+        if(req.route.method === 'get'){
+            return res.redirect('/');
+        }
+        return res.end();
+    }
+    next();
+}
+
+function checkUnauth(req, res, next){
+    if(req.session && req.session.user){
+        return res.redirect('/');
+    }
+    next();
+}
+
+function ping(req, res, next){
+    if(!req.session.user) return next();
+    api.ping(res, {}, req.session.user, function(err, user){
+        if(err) return next(err);
+        req.session.user = user;
+        next();
+    });
+}
 
 module.exports = function routing(){
 
     var app = new express.Router();
-
-    function setUser(req, user){
-        req.session.user = user;
-    }
-    function checkAuth(req, res, next){
-        if(!req.session || !req.session.user || req.session.user.banned){
-            res.status(401);
-            if(req.route.method === 'get'){
-                return res.redirect('/');
-            }
-            return res.end();
-        }
-        next();
-    }
-    function checkUnauth(req, res, next){
-        if(req.session && req.session.user){
-            return res.redirect('/');
-        }
-        next();
-    }
-    function ping(req, res, next){
-        if(!req.session.user) return next();
-        api.ping(res, {}, req.session.user, function(err, user){
-            if(err) return next(err);
-            req.session.user = user;
-            next();
-        });
-    }
     if(stresstest){
         stressTester.routing(app);
     }
+
+    app.get('*', function(req, res, next){
+        if(!req.session.user && req.cookies.rememberUser && req.cookies.rememberToken){
+            api.getUser(res, {
+                username: req.cookies.rememberUser
+            }, {}, function(err, user){
+                if(err || !user) return next();
+
+                if(!bcrypt.compareSync(user.password, req.cookies.rememberToken)){
+                    return next();
+                }
+
+                setUser(req, user);
+                rememberUser(res, req.cookies.rememberUser, req.cookies.rememberToken);
+
+                next();
+            });
+        }else{
+            next();
+        }
+    });
 
     listingRoutes(app, api, renderGenerator);
     messageRoutes(app, api, renderGenerator);
@@ -303,6 +343,9 @@ module.exports = function routing(){
             }
             if(user && user.username){
                 setUser(req, user);
+                if(user.rememberMeToken){
+                    rememberUser(res, user.username, user.rememberMeToken);
+                }
             }else{
                 delete req.session.user;
             }
@@ -325,6 +368,7 @@ module.exports = function routing(){
     // logout
     app.post('/logout', ping, function(req, res, next){
         delete req.session.user;
+        forgetUser(res);
         res.redirect('/');
     });
 
