@@ -411,7 +411,7 @@ module.exports = {
         user = user || {};
 
         try {
-            check(body.subject, 'Subject failed validation').len(1, 36);
+            check(body.subject, 'Subject failed validation').len(1, 100);
             check(body.content, 'Content failed validation').notEmpty();
             check(user.username, 'User not found').notNull();
         }catch(e){
