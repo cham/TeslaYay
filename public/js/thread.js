@@ -111,9 +111,11 @@ function format_special(element)
         url: 'http://gdata.youtube.com/feeds/api/videos/' + $(this).attr('id') + '?v=2&alt=jsonc',
         dataType: "jsonp",
         success: function(data) {
-          $(self).append('<img src="' + data.data.thumbnail.hqDefault +
+          if(data.data && data.data.thumbnail){
+            $(self).append('<img src="' + data.data.thumbnail.hqDefault +
                          '" class="youtube_placeholder" title="Click to play this video" /><h2>' +
                          data.data.title + '</h2><div class="youtube_playbutton"></div>');
+          }
         }
       });
     });
@@ -272,7 +274,7 @@ $('.content').click(function() {
   }
 });
 
-$('.content .censor').click(function() {
+$('.censor').click(function() {
   $(this).children('.content').toggle();
 });
 

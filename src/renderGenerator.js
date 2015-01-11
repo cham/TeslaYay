@@ -179,11 +179,12 @@ module.exports = {
             /**
              *  Adding favourites and hidden to context
              */
-            var _userFavourites = _(user.favourites || []),
-                _userHidden = _(user.hidden || []);
 
-            thread.favourite = _userFavourites.indexOf(thread._id) > -1;
-            thread.ishidden = _userHidden.indexOf(thread._id) > -1;
+            var userFavourites = user.favourites || [],
+                userHidden = user.hidden || [];
+
+            thread.favourite = userFavourites.indexOf(thread._id) > -1;
+            thread.ishidden = userHidden.indexOf(thread._id) > -1;
 
             renderUtils.getUserTemplateData(user, function(templateData){
                 res.render('thread', _.extend(templateData, {

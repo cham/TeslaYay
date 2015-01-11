@@ -74,6 +74,7 @@ code {
     height:23px;
     background:url(/img/yay-logo.svg) no-repeat;
     margin-bottom:15px;
+    background-size: 80px;
 }
 
 #left-column {
@@ -759,6 +760,9 @@ padding: 2px;
 
 .comment .censor .content {
 padding: 2px;
+text-align: left;
+display: none;
+background: #fff;
 }
 
 .comment .content-block, .test-comment .content-block {

@@ -112,6 +112,9 @@
               </div>
 
               <div class="content-block">
+{{#banned}}
+               <div class="censor">user has been banned, click here to see original content
+{{/banned}}
                 <div class="content">
 {{#viewhtml}}
                   {{{content}}}
@@ -123,6 +126,9 @@
                   <div class="edited-percent">Edited {{editPercent}}%</div>
 {{/editPercent}}
                 </div>
+{{#banned}}
+               </div>
+{{/banned}}
               </div>
               <div style="clear: both;"></div>
             </div>
