@@ -74,6 +74,7 @@ code {
     height:23px;
     background:url(/img/yay-logo.svg) no-repeat;
     margin-bottom:15px;
+    background-size: 80px;
 }
 
 #left-column {
