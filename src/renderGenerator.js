@@ -176,6 +176,16 @@ module.exports = {
 
             var authedUserCanPost = thread.postedby_ignores.indexOf(user.username) === -1;
 
+            /**
+             *  Adding favourites and hidden to context
+             */
+
+            var userFavourites = user.favourites || [],
+                userHidden = user.hidden || [];
+
+            thread.favourite = userFavourites.indexOf(thread._id) > -1;
+            thread.ishidden = userHidden.indexOf(thread._id) > -1;
+
             renderUtils.getUserTemplateData(user, function(templateData){
                 res.render('thread', _.extend(templateData, {
                     id: thread._id,
@@ -217,7 +227,9 @@ module.exports = {
                         lastcomment = comment;
                         return newcomment;
                     }),
-                    authedusercanpost: authedUserCanPost
+                    authedusercanpost: authedUserCanPost,
+                    favourite: thread.favourite,
+                    ishidden: thread.ishidden
                 }));
             });
         };

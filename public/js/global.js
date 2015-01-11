@@ -122,7 +122,10 @@ $(function () {
     var button = $(this),
         toHide = button.hasClass('added'),
         threadurl = button.attr('href'),
-        threadid = button.data('id');
+        threadid = button.data('id'),
+        splitUrl = threadurl.split('/'),
+        hideType = splitUrl[splitUrl.length-1];
+
   
     $.ajax({
       method: 'put',
@@ -133,6 +136,10 @@ $(function () {
       success: function(data) {
         button.toggleClass('added', !toHide);
         button.parent('.five').parent('.thread').slideUp().next().slideUp();
+        hideType = button.hasClass('added') ? 'unhide' : 'hide';
+        splitUrl[splitUrl.length-1] = hideType;
+        button.attr('href', splitUrl.join('/'));
+
       }
     });
   });
