@@ -13,8 +13,10 @@
         <div id="thread">
           <div id="main-title">
             <h3>{{title}}</h3>
-            <a class="favourite"></a>
-            <a class="hide-thread"></a>
+            {{#user}}
+              <a class="favourite{{#favourite}} added{{/favourite}}" href="{{^favourite}}/thread/{{urlname}}/favourite{{/favourite}}{{#favourite}}/thread/{{urlname}}/unfavourite{{/favourite}}" data-id="{{id}}"></a>
+              <a class="hide-thread" href="/thread/{{urlname}}/{{#ishidden}}unhide{{/ishidden}}{{^ishidden}}hide{{/ishidden}}" data-id="{{id}}"></a>
+            {{/user}}
           </div>
 
           
