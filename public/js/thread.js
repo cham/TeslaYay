@@ -27,7 +27,7 @@ $.fn.selectRange = function(start, end) {
 
 
 /**
- *  Edit Post Fix: Preserve carriage returns in when using .val()
+ *  Edit Post Fix: Preserve carriage returns when using .val()
  *  Stack Overflow post: http://bit.ly/1DTD34k
  */
 jQuery.valHooks.textarea = {
