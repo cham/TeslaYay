@@ -25,6 +25,18 @@ $.fn.selectRange = function(start, end) {
   });
 };
 
+
+/**
+ *  Edit Post Fix: Preserve carriage returns when using .val()
+ *  Stack Overflow post: http://bit.ly/1DTD34k
+ */
+jQuery.valHooks.textarea = {
+  get: function(elem) {
+    return elem.value.replace( /\r?\n/g, "\r\n" );
+  } 
+};
+
+
 // ### Respsonsive Embed
 function responsiveEmbed(content) {
   return ['<div class="embed-container">', content, '</div>'].join('');
