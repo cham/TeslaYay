@@ -104,6 +104,10 @@ module.exports = function routing(app, api, renderGenerator){
         });
     }
 
+    function startedby(req, res, next){
+        buildListing(req, res, next, _.extend({}, req.query, makeTypeFilter('postedby', req.route.params.username)));
+    }
+
     // thread listing
     app.get('/(page(/:page)?)?', ping, function(req, res, next){
         if(req.query.name) return res.redirect('/find/' + req.query.name);
@@ -182,7 +186,6 @@ module.exports = function routing(app, api, renderGenerator){
     });
 
     // startedby another user
-    app.get('/startedby/:username', ping, function(req, res, next){
-        buildListing(req, res, next, _.extend({}, req.query, makeTypeFilter('postedby', req.route.params.username)));
-    });
+    app.get('/startedby/:username/page/:page', ping, startedby);
+    app.get('/startedby/:username', ping, startedby);
 };
