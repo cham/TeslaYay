@@ -55,17 +55,26 @@
         <a href="/users/Y">Y</a>
         <a href="/users/Z">Z</a>
       </div>
-      <!--div id="thread-navigation" class="pagination top">
+
+      <div class="pagination" id="pagination-top">
         <div class="main-pagination">
-          <div class="selected-page">1</div>
-          <a href="/users/40/">2</a>
-          <a href="/users/80/">3</a>
+          {{#pages}}
+          {{#separator}}
           <span class="ellipsis">...</span>
-          &nbsp;
-          <a href="/users/3280/">83</a>
+          {{/separator}}
+          {{^separator}}
+            {{#active}}
+          <div class="selected-page">{{num}}</div>
+            {{/active}}
+            {{^active}}
+          <a href="{{paginationroot}}{{url}}#pagination-top">{{num}}</a>
+            {{/active}}
+          {{/separator}}
+          {{/pages}}
+          <span class="paging-text">{{paginationtext}} users</span>
         </div>
-        <span class="paging-text">1 - 40 of 3298 Users</span>
-      </div-->
+      </div>
+
       <div id="users">
 {{#users}}
         <div class="{{#isbuddy}}buddy-listing{{/isbuddy}} {{#isenemy}}enemy-listing{{/isenemy}} {{#isregular}}user-listing{{/isregular}}">

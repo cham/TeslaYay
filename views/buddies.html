@@ -45,18 +45,37 @@
 
           <div class="biglabel">Buddies</div>
 
-            <div id="buddy-listings">
-{{#buddies}}
-              <div class="buddy-listing">
-                <div class="username">
-                  <a href="/user/{{urlname}}">{{username}}</a>
-                </div>
-                <div class="online-status offline">offline</div>
-                <a class="remove-acq" rel="{{username}}">remove</a>
-                <a class="toggle-acq" rel="{{username}}">ignore</a>
-              </div>
-{{/buddies}}
+          <div class="pagination" id="pagination-top">
+            <div class="main-pagination">
+              {{#pages}}
+              {{#separator}}
+              <span class="ellipsis">...</span>
+              {{/separator}}
+              {{^separator}}
+                {{#active}}
+              <div class="selected-page">{{num}}</div>
+                {{/active}}
+                {{^active}}
+              <a href="{{paginationroot}}{{url}}#pagination-top">{{num}}</a>
+                {{/active}}
+              {{/separator}}
+              {{/pages}}
+              <span class="paging-text">{{paginationtext}} users</span>
             </div>
+          </div>
+
+          <div id="buddy-listings" style="display:inline-block">
+{{#buddies}}
+            <div class="buddy-listing">
+              <div class="username">
+                <a href="/user/{{urlname}}">{{username}}</a>
+              </div>
+              <div class="online-status offline">offline</div>
+              <a class="remove-acq" rel="{{username}}">remove</a>
+              <a class="toggle-acq" rel="{{username}}">ignore</a>
+            </div>
+{{/buddies}}
+          </div>
 
           <div class="blueline"></div>
 

@@ -114,7 +114,8 @@ module.exports = {
 
     getUsers: function(res, params, user, cb){
         var query = _.defaults(params || {}, {
-                size: 40
+                size: 25,
+                page: 1
             });
 
         if(params.buddies){

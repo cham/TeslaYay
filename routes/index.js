@@ -111,16 +111,33 @@ module.exports = function routing(){
     userListRoutes(app, api);
     pointRoutes(app, api);
 
-    // buddy / ignore listing
-    app.get('/buddies(/:username)?', checkAuth, ping, function(req, res, next){
+    function buddyListing(req, res, next){
+        var activeUsername = req.session.user.username;
+        var username = req.route.params.username || '';
+        var page = parseInt(req.route.params.page, 10) || 1;
+
         async.parallel([
             function(done){
-                api.getUsers(res, { buddies: req.session.user.username }, req.session.user, function(err, json){
+                api.getUsers(res, {
+                    buddies: activeUsername,
+                    page: page
+                }, req.session.user, function(err, json){
                     done(err, {buddies: json.users});
                 });
             },
             function(done){
-                api.getUsers(res, { ignores: req.session.user.username }, req.session.user, function(err, json){
+                api.getUsers(res, {
+                    buddies: activeUsername,
+                    countonly: true
+                }, req.session.user, function(err, json){
+                    done(err, {totalbuddies: json.totaldocs});
+                });
+            },
+            function(done){
+                api.getUsers(res, {
+                    ignores: activeUsername,
+                    size: 1000
+                }, req.session.user, function(err, json){
                     done(err, {ignores: json.users});
                 });
             },
@@ -128,13 +145,15 @@ module.exports = function routing(){
             renderGenerator.buddyListingHandler(req, res, next)(null, _(results).chain().reduce(function(memo, item){
                 return _(memo).extend(item);
             },{}).extend({
-                prefill: (req.route.params.username || '').replace('/','')
+                prefill: username.replace('/',''),
+                page: page
             }).value());
         });
-    });
+    }
 
-    // all users
-    app.get('/users(/:search)?', ping, function(req, res, next){
+    function userListing(req, res, next){
+        var page = parseInt(req.route.params.page, 10) || 1;
+
         if(req.query.startswith){
             return res.redirect('/users/' + req.query.startswith);
         }
@@ -143,8 +162,34 @@ module.exports = function routing(){
         }
 
         api.getUsers(res, {
-            startswith: (req.route.params.search || '').replace('/','')
-        }, req.session.user, renderGenerator.userListingHandler(req, res, next));
+            startswith: (req.route.params.search || '').replace('/',''),
+            page: page
+        }, req.session.user, function(err, json){
+            json.page = page;
+            renderGenerator.userListingHandler(req, res, next)(err, json);
+        });
+    }
+
+    // buddy / ignore listing
+    app.get('/buddies/:username/page/:page$', checkAuth, ping, function(req, res, next){
+        buddyListing(req, res, next);
+    });
+    app.get('/buddies/:username?', checkAuth, ping, function(req, res, next){
+        buddyListing(req, res, next);
+    });
+    app.get('/buddies/page/:page$', checkAuth, ping, function(req, res, next){
+        buddyListing(req, res, next);
+    });
+
+    // all users
+    app.get('/users/:search/page/:page$', ping, function(req, res, next){
+        userListing(req, res, next);
+    });
+    app.get('/users(/:search)?', ping, function(req, res, next){
+        userListing(req, res, next);
+    });
+    app.get('/users/page/:page$', ping, function(req, res, next){
+        userListing(req, res, next);
     });
 
     // view thread

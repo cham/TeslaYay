@@ -471,6 +471,10 @@ margin: 0 0 10px 0;
 
 #buddy-list div {}
 #buddy-list div span {font-size: 11px;}
+#buddy-listings {
+    display: inline-block;
+    margin-top: 10px;
+}
 
 #right-column {
     margin: 25px 0 0 240px;

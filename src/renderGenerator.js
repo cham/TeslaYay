@@ -242,11 +242,28 @@ module.exports = {
             if(err) return next(err);
             json = json || {};
 
+            var pages = renderUtils.generatePaging({
+                setsize: json.totalbuddies,
+                pagesize: 25,
+                activepage: json.page
+            });
+            var paginationtext = renderUtils.generatePaginationText({
+                setsize: json.totalbuddies,
+                pagesize: 25,
+                activepage: json.page
+            });
+            var paginationroot = (req.url.replace(/\/page(\/[0-9]*)/, '')).replace(/\/\//g, '/').replace(/\/$/,'');
+
             renderUtils.getUserTemplateData(user, function(templateData){
                 res.render('buddies', _.extend(templateData, {
                     buddies: json.buddies,
                     ignores: json.ignores,
-                    prefill: json.prefill
+                    prefill: json.prefill,
+                    page: json.page,
+                    pages: pages,
+                    numpages: pages.length,
+                    paginationtext: paginationtext,
+                    paginationroot: paginationroot
                 }));
             });
         };
@@ -261,6 +278,18 @@ module.exports = {
             if(err) return next(err);
             json = json || {};
 
+            var pages = renderUtils.generatePaging({
+                setsize: json.totaldocs,
+                pagesize: 25,
+                activepage: json.page
+            });
+            var paginationtext = renderUtils.generatePaginationText({
+                setsize: json.totaldocs,
+                pagesize: 25,
+                activepage: json.page
+            });
+            var paginationroot = (req.url.replace(/\/page(\/[0-9]*)/, '')).replace(/\/\//g, '/').replace(/\/$/,'');
+
             renderUtils.getUserTemplateData(user, function(templateData){
                 res.render('users', _.extend(templateData, {
                     users: json.users.map(function(singleuser){
@@ -274,7 +303,11 @@ module.exports = {
                             isenemy: isenemy,
                             isregular: !(isbuddy || isenemy)
                         });
-                    })
+                    }),
+                    pages: pages,
+                    numpages: pages.length,
+                    paginationtext: paginationtext,
+                    paginationroot: paginationroot
                 }));
             });
         };
