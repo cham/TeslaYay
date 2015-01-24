@@ -37,8 +37,16 @@ b, strong {
     font-weight:bolder;
 }
 
-ol, ul {
-    list-style: none;
+ul {
+    list-style: none
+}
+
+ol{
+    padding-left:30px;
+}
+
+ol li{
+    margin: 5px 0
 }
 
 p {
