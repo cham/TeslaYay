@@ -99,7 +99,8 @@ module.exports = {
                 email: user.email,
                 randomtitles: user.random_titles,
                 canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime,
-                customcss: user.custom_css
+                customcss: user.custom_css,
+                customjs: user.custom_js
             });
         });
     }
