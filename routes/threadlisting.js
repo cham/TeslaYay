@@ -94,14 +94,7 @@ module.exports = function routing(app, api, renderGenerator){
         };
     }
 
-    // thread listing
-    app.get('/(page(/:page)?)?', ping, function(req, res, next){
-        if(req.query.name) return res.redirect('/find/' + req.query.name);
-        buildListing(req, res, next);
-    });
-
-    // search
-    app.get('/find/(:term)?', ping, function(req, res, next){
+    function search(req, res, next){
         var term = req.route.params.term;
         if(!term){
             return res.redirect('/');
@@ -109,7 +102,17 @@ module.exports = function routing(app, api, renderGenerator){
         buildListing(req, res, next, {
             name: req.route.params.term
         });
+    }
+
+    // thread listing
+    app.get('/(page(/:page)?)?', ping, function(req, res, next){
+        if(req.query.name) return res.redirect('/find/' + req.query.name);
+        buildListing(req, res, next);
     });
+
+    // search
+    app.get('/find/:term/page/:page', ping, search);
+    app.get('/find/(:term)?', ping, search);
 
     // sorting
     app.get('/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', ping, function(req, res, next){
