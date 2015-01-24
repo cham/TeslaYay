@@ -99,9 +99,14 @@ module.exports = function routing(app, api, renderGenerator){
         if(!term){
             return res.redirect('/');
         }
-        buildListing(req, res, next, {
+        buildListing(req, res, next, _.extend(req.query, {
             name: req.route.params.term
-        });
+        }));
+    }
+
+    function searchWithSorting(req, res, next){
+        req.query = _(req.query || {}).extend(makeSortFilter(req.route.params.sorttype));
+        search(req, res, next);
     }
 
     function startedby(req, res, next){
@@ -122,6 +127,8 @@ module.exports = function routing(app, api, renderGenerator){
     // search
     app.get('/find/:term/page/:page', ping, search);
     app.get('/find/(:term)?', ping, search);
+    app.get('/find/:term/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', ping, searchWithSorting);
+    app.get('/find/:term/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', ping, searchWithSorting);
 
     // sorting
     app.get('/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', ping, function(req, res, next){
