@@ -311,7 +311,7 @@ module.exports = function routing(){
     app.post('/thread/:threadUrlName', checkAuth, ping, function(req, res, next){
         var threadid = req.body.threadid;
 
-        api.postComment(res, req.body, req.session.user, function(err, comment){
+        api.postComment(res, req.body, req.session.user, function(err, json){
             if(err){
                 return api.getThread(res, req.route.params || {}, req.session.user, function(currentThreadErr, currentThreadData){
                     _.extend(req.body, currentThreadData);
@@ -322,7 +322,20 @@ module.exports = function routing(){
             newPostNotifier.emit('newpost:' + req.route.params.threadUrlName);
 
             if(req.body.redirect){
-                res.redirect(req.headers['referer']+'#bottom');
+                var pageNum = Math.ceil(json.comment.positionInThread / req.session.user.comment_size);
+                var url = [
+                    'thread',
+                    req.route.params.threadUrlName
+                ];
+
+                if(pageNum > 1){
+                    url = url.concat([
+                        'page',
+                        pageNum
+                    ]);
+                }
+
+                res.redirect(url.join('/') + '#bottom');
             }else{
                 res.send(comment);
             }
