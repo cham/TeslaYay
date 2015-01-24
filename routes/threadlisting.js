@@ -108,6 +108,11 @@ module.exports = function routing(app, api, renderGenerator){
         buildListing(req, res, next, _.extend({}, req.query, makeTypeFilter('postedby', req.route.params.username)));
     }
 
+    function startedbyWithSorting(req, res, next){
+        req.query = _(req.query || {}).extend(makeSortFilter(req.route.params.sorttype));
+        startedby(req, res, next);
+    }
+
     // thread listing
     app.get('/(page(/:page)?)?', ping, function(req, res, next){
         if(req.query.name) return res.redirect('/find/' + req.query.name);
@@ -188,4 +193,6 @@ module.exports = function routing(app, api, renderGenerator){
     // startedby another user
     app.get('/startedby/:username/page/:page', ping, startedby);
     app.get('/startedby/:username', ping, startedby);
+    app.get('/startedby/:username/sort/:sorttype(started|latest|posts|-started|-latest|-posts)', ping, startedbyWithSorting);
+    app.get('/startedby/:username/sort/:sorttype(started|latest|posts|-started|-latest|-posts)/page/:page', ping, startedbyWithSorting);
 };
