@@ -15,7 +15,24 @@
 {{#errorMessage}}
         <p class="error">{{errorMessage}}</p>
 {{/errorMessage}}
-        <p>Registration is temporarily disabled</p>
+        <div id="new-thread">
+          <form method="post" action="/register" id="register-form" name="register-form" autocomplete="off">
+            <div class="inp">
+              <label for="username">Username:</label>
+              <input type="text" name="username" value="{{username}}" id="username" maxlength="32" size="30" autocomplete="off" />
+            </div>
+
+            <div class="inp">
+              <label for="email">Email Address:</label>
+              <input type="text" name="email" value="{{email}}" id="email" maxlength="255" size="30" autocomplete="off" />
+            </div>
+
+            <div class="inp">
+              <label for="password">Password:</label>
+              <input type="password" name="password" value="{{password}}" id="password" size="30" autocomplete="off" />
+            </div><input type="submit" value="Register" />
+          </form>
+        </div>
 
       </div>
       
