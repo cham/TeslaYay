@@ -494,7 +494,11 @@ module.exports = {
         user = user || {};
         if(!user.username) return cb();
 
-        makeRequest('get', apiUrl + '/user/' + user.username + '/ping', null, cb);
+        makeRequest('put', apiUrl + '/user/' + user.username + '/ping', {
+            form: {
+                ip: body.ip
+            }
+        }, cb);
     },
 
     getTitle: function(cb){

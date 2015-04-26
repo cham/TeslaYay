@@ -35,7 +35,9 @@ module.exports = function routing(app, api, renderGenerator){
     
     function ping(req, res, next){
         if(!req.session.user) return next();
-        api.ping(res, {}, req.session.user, function(err, user){
+        api.ping(res, {
+            ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        }, req.session.user, function(err, user){
             if(err) return next(err);
             req.session.user = user;
             next();
