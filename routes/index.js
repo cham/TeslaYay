@@ -392,7 +392,7 @@ module.exports = function routing(){
     });
 
     // register
-    /*app.post('/register', ping, function(req, res, next){
+    app.post('/register', ping, function(req, res, next){
         api.registerUser(res, req.body, req.session.user, function(err, user){
             if(err){
                 return uiErrorHandler.handleError(err, req, res, next, 'register');
@@ -400,7 +400,7 @@ module.exports = function routing(){
             setUser(req, user);
             res.redirect('/');
         });
-    });*/
+    });
 
     // login
     app.post('/login', ping, function(req, res, next){
