@@ -728,7 +728,7 @@ module.exports = {
     createImage: function(res, body, user, cb){
         var md5sum = crypto.createHash('md5'),
             dataURL = body.dataURL || '',
-            dataMatches = dataURL.match(/^data:image\/(png|gif|jpg|jpeg);base64,(.*)$/),
+            dataMatches = dataURL.match(/^data:image\/(png|gif|gifv|jpg|jpeg);base64,(.*)$/),
             filename,
             approot,
             filepath;
