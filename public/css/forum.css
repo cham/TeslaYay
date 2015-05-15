@@ -789,7 +789,8 @@ display: block;
 padding: 10px 0;
 }
 
-.content img {
+.content img ,
+.content .gifv {
     max-width: 100%;
     height: auto;
 }
