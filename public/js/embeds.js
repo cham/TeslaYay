@@ -99,7 +99,7 @@ window.videoEmbedder = (function(){
     }
 
     function embedVideo(url, id){
-        return '<video loop controls>' +
+        return '<video loop controls class="gifv">' +
                 '<source type="video/webm" src="https://i.imgur.com/' + id + '.webm">' +
                 '<source type="video/mp4" src="https://i.imgur.com/' + id + '.mp4">' +
                '</video>';
