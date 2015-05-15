@@ -50,7 +50,7 @@ window.videoEmbedder = (function(){
         var iframe = document.createElement('iframe');
         iframe.width = w;
         iframe.height = h;
-        iframe.src = 'https://www.youtube.com/embed/' + id + '?rel=&amp;showinfo=0&amp;start=' + start;
+        iframe.src = 'https://www.youtube.com/embed/' + id + '?rel=&amp;autoplay=1&amp;showinfo=0&amp;start=' + start;
         iframe.frameborder = 0;
         iframe.allowfullscreen = true;
         return iframe;
