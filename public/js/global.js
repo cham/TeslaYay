@@ -75,16 +75,6 @@ $(function () {
     }
   });
 
-  $('.youtube_wrapper').on("click", function() {
-    var obj = $(this);
-    if (!obj.data('active')) {
-      obj.data('active', true);
-      $(this).html('<div class="embed-container"><iframe src="http://www.youtube.com/embed/' +
-                   obj.attr('id') + '?autoplay=1' + obj.data('extra') +
-                   '" frameborder="0" allowfullscreen></iframe></div><br />');
-    }
-  });
-
   $("body").on("click", "#cancel-title", function(){
     $('h3', "#main-title").empty().text(title);
     $("#main-title").removeClass("editing");

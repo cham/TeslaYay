@@ -22,7 +22,8 @@ var frontend = {
     './public/js/pasteImageReader.js',
     './public/js/thread.js',
     './public/js/global.js',
-    './public/js/messages.js'
+    './public/js/messages.js',
+    './public/js/embeds.js'
   ]
 };
 

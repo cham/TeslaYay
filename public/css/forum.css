@@ -2200,3 +2200,10 @@ Award Section
     font-weight: bold;
 }
 
+.embed-wrapper {
+    position: relative;
+}
+.embed-wrapper iframe {
+    width: 100%;
+}
+

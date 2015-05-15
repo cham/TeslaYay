@@ -59,44 +59,9 @@ function format_special(element)
 
       var tmp = this.textContent;
 
-      tmp = tmp.replace(ytube, function(a, b) {
-
-        var url_items = a.substring(a.indexOf('?') + 1).split('&');
-        var youtube_param = [];
-        var video_width = 425;
-        var video_height = 349;
-        var video_url_append = [];
-        var video_url_autoplay = "?autoplay=1";
-        var video_url_append_string = "";
-
-        $.each(url_items, function(index, val) {
-
-          var element = val.split('=');
-          if (element[0] == 't') {
-            video_url_append.push("t=" + element[1]);
-          }
-
-          if (element[0] == 'size') {
-            var width_height_params = element[1].split("x");
-            video_width = width_height_params[0];
-            video_height = width_height_params[1];
-          }
-        });
-
-        for (var m=0;m<video_url_append.length;m++) {
-          video_url_append_string += "#";
-          video_url_append_string += video_url_append[m];
-        }
-
-        var youtube_html;
-        if (a.indexOf("\"") != -1) {
-          youtube_html = a;
-        } else {
-          youtube_html = "<div id='" + b + "' class='youtube_wrapper' " +
-            "data-extra='" + video_url_append_string + "'></div><br/>";
-        }
-        return youtube_html;
-      });
+      if(window.videoEmbedder && videoEmbedder.embedYoutube){
+        tmp = tmp.replace(ytube, videoEmbedder.embedYoutube);
+      }
 
       tmp = tmp.replace(vimeo, function(a, b){
         return (a.indexOf("\"") != -1) ? a :
@@ -115,21 +80,6 @@ function format_special(element)
     $(this).find('blockquote').reverse().each(function(){
       var user = $(this).attr('title') || 'Someone';
       $(this).prepend('<div class="tqname">' + user + ' said:</div>').addClass('tquote');
-    });
-
-    $(this).find('.youtube_wrapper').each(function() {
-      var self = this;
-      $.ajax({
-        url: 'http://gdata.youtube.com/feeds/api/videos/' + $(this).attr('id') + '?v=2&alt=jsonc',
-        dataType: "jsonp",
-        success: function(data) {
-          if(data.data && data.data.thumbnail){
-            $(self).append('<img src="' + data.data.thumbnail.hqDefault +
-                         '" class="youtube_placeholder" title="Click to play this video" /><h2>' +
-                         data.data.title + '</h2><div class="youtube_playbutton"></div>');
-          }
-        }
-      });
     });
   });
 
