@@ -291,6 +291,39 @@ module.exports = {
         });
     },
 
+    getInterviewQuestions: function(res, body, user, cb){
+        var questions = [];
+
+        function nextQuestion(done){
+            makeRequest('get', apiUrl + '/randomquestion', {}, function(err, data){
+                if(err){
+                    return cb(err);
+                }
+
+                var question = data.question;
+                var seenAlready = questions.reduce(function(memo, q){
+                    return memo || q._id === question._id;
+                }, false);
+
+                if(!seenAlready){
+                    question.number = questions.length + 1;
+                    questions.push(question);
+                }
+
+                done();
+            });
+        }
+
+        function buildQuestionsRecursive(){
+            if(questions.length < 3){
+                return nextQuestion(buildQuestionsRecursive);
+            }
+            cb(null, {questions: questions});
+        }
+
+        buildQuestionsRecursive();
+    },
+
     registerUser: function(res, body, user, cb){
         user = user || {};
 
@@ -302,11 +335,18 @@ module.exports = {
             return cb(err);
         }
 
-        makeRequest('post', apiUrl + '/user', {
+        makeRequest('post', apiUrl + '/pendingusers', {
             form: {
                 username: body.username,
                 password: body.password,
-                email: body.email
+                email: body.email,
+                question1: body.detail1,
+                answer1: body.answer1,
+                question2: body.detail2,
+                answer2: body.answer2,
+                question3: body.detail3,
+                answer3: body.answer3,
+                ip: body.ip
             }
         }, cb);
     },
@@ -486,6 +526,24 @@ module.exports = {
                 commentId: body.commentId,
                 username: user.username,
                 numpoints: body.pointvalue
+            }
+        }, cb);
+    },
+
+    voteForPendingUser: function(res, body, user, cb){
+        user = user || {};
+
+        try {
+            check(user.username, 'User not found').notNull();
+            check(body.pendingUserId, 'pendingUserId failed validation').isHexadecimal().len(24, 24);
+        }catch(e){
+            return cb(e);
+        }
+
+        makeRequest('put', apiUrl + '/pendingusers/' + body.pendingUserId + '/points', {
+            form: {
+                username: user.username,
+                numpoints: 1
             }
         }, cb);
     },
@@ -782,6 +840,14 @@ module.exports = {
                 cb();
             });
         });
+    },
+
+    getNumberOfApplicants: function(cb){
+        makeRequest('get', apiUrl + '/pendingusers/count', null, cb);
+    },
+
+    getPendingApplicants: function(cb){
+        makeRequest('get', apiUrl + '/pendingusers', null, cb);
     }
 
 };

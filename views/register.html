@@ -17,26 +17,75 @@
 {{/errorMessage}}
         <div id="new-thread">
           <form method="post" action="/register" id="register-form" name="register-form" autocomplete="off">
-            <div class="inp">
-              <label for="username">Username:</label>
-              <input type="text" name="username" value="{{username}}" id="username" maxlength="32" size="30" autocomplete="off" />
+            <!-- chrome autofill and bots dummy fields -->
+            <input style="visibility:hidden" type="text" name="dummyname"/>
+            <input style="visibility:hidden" type="password" name="dummypassword"/>
+            <p>
+              Complete the following form to submit your account for registration.
+            </p>
+            <p>
+              A secret council of intelligent and attractive people will review your application, and grant you membership if they see fit.
+            </p>
+
+            <br>
+            <div class="blueline"></div>
+
+            <h4 class="biglabel">Account Stuff</h4>
+            <div class="input text {{#validatorErrorUsername}}uierror{{/validatorErrorUsername}}">
+              <label for="username">Username</label>
+              <input type="text" name="username" value="{{username}}" id="username" maxlength="32" size="30" autocomplete="off">
+            </div>
+            <div class="input text {{#validatorErrorPassword}}uierror{{/validatorErrorPassword}}">
+              <label for="email">Password</label>
+              <input type="password" name="password" value="{{password}}" id="password" size="30" autocomplete="off">
+            </div>
+            <div class="input text {{#validatorErrorEmail}}uierror{{/validatorErrorEmail}}">
+              <label for="email">Email Address</label>
+              <input type="text" name="email" value="{{email}}" id="email" maxlength="255" size="30" autocomplete="off">
+            </div>
+            <div class="input text {{#validatorErrorConfirm}}uierror{{/validatorErrorConfirm}}">
+              <label for="email">Confirm Email</label>
+              <input type="text" name="confemail" value="{{confemail}}" id="email" maxlength="255" size="30" autocomplete="off">
             </div>
 
-            <div class="inp">
-              <label for="email">Email Address:</label>
-              <input type="text" name="email" value="{{email}}" id="email" maxlength="255" size="30" autocomplete="off" />
+            <br>
+            <div class="blueline"></div>
+
+            <h4 class="biglabel">Questions</h4>
+            <div class="{{#validatorErrorQuestions}}uierror{{/validatorErrorQuestions}}">
+              <p class="question-detail">
+                <label>1. {{detail1}}</label>
+              </p>
+              <input type="hidden" name="question1" value="{{question1}}">
+              <input type="hidden" name="detail1" value="{{detail1}}">
+              <textarea name="answer1" cols="45" rows="6">{{answer1}}</textarea>
+            </div>
+            <div class="{{#validatorErrorQuestions}}uierror{{/validatorErrorQuestions}}">
+              <p class="question-detail">
+                <label>2. {{detail2}}</label>
+              </p>
+              <input type="hidden" name="question2" value="{{question2}}">
+              <input type="hidden" name="detail2" value="{{detail2}}">
+              <textarea name="answer2" cols="45" rows="6">{{answer2}}</textarea>
+            </div>
+            <div class="{{#validatorErrorQuestions}}uierror{{/validatorErrorQuestions}}">
+              <p class="question-detail">
+                <label>3. {{detail3}}</label>
+              </p>
+              <input type="hidden" name="question3" value="{{question3}}">
+              <input type="hidden" name="detail3" value="{{detail3}}">
+              <textarea name="answer3" cols="45" rows="6">{{answer3}}</textarea>
             </div>
 
-            <div class="inp">
-              <label for="password">Password:</label>
-              <input type="password" name="password" value="{{password}}" id="password" size="30" autocomplete="off" />
-            </div><input type="submit" value="Register" />
+            <p class="question-detail">
+              <input type="submit" name="submit" value="Register">
+            </p>
           </form>
         </div>
 
       </div>
       
     </div>
-    
+
   </div>
 {{>footer}}

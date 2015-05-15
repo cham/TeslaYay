@@ -110,13 +110,27 @@ routes = {
     register: {
         ValidatorError: {
             'Username failed validation': function(err, req, res, next){
+                req.body.validatorErrorUsername = true;
                 registerError(req, res, next, 'Invalid username');
             },
             'Password failed validation': function(err, req, res, next){
+                req.body.validatorErrorPassword = true;
                 registerError(req, res, next, 'Your password must be at least 6 characters.');
             },
             'Email failed validation': function(err, req, res, next){
+                req.body.validatorErrorEmail = true;
                 registerError(req, res, next, 'Please enter a valid email address.');
+            },
+            'Confirm email does not match': function(err, req, res, next){
+                req.body.validatorErrorConfirm = true;
+                registerError(req, res, next, 'Your confirm email does not match.');
+            },
+            'You must answer all questions': function(err, req, res, next){
+                req.body.validatorErrorQuestions = true;
+                registerError(req, res, next, 'You must answer all questions.');
+            },
+            'Question id failed validation': function(err, req, res, next){
+                registerError(req, res, next, 'There was a problem with your form submission, please try again.');
             }
         },
         MongoDuplicateKey: {
@@ -125,6 +139,11 @@ routes = {
             },
             'username': function(err, req, res, next){
                 registerError(req, res, next, 'That username is already taken');
+            }
+        },
+        Error: {
+            'Error: a pending user already exists for that ip': function(err, req, res, next){
+                registerError(req, res, next, 'There is already a pending user for your IP');
             }
         }
     },
@@ -200,7 +219,7 @@ function getErrorMessage(err){
         }
         return 'unknown';
     }
-    return err.message;
+    return err.message.split("\n")[0];
 }
 
 module.exports = {
@@ -217,7 +236,6 @@ module.exports = {
         if(!err){
             err = {};
         }
-
         errorType = getErrorType(err);
         sourceRoute = getSourceRoute(errorSourceKey);
         errorTypesRoute = getErrorTypeRoute(sourceRoute, errorType);

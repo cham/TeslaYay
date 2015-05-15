@@ -1,0 +1,63 @@
+{{>head}}
+<body class="yh_auth yh_register">
+
+  <a name="top"></a>
+
+  <div id="wrapper">
+    <div id="middle">
+
+{{>leftcolumn}}
+      <div id="right-column">
+
+        <div id="main-title">
+          <h3>Pending Registrations</h3>
+        </div>
+{{#errorMessage}}
+        <p class="error">{{errorMessage}}</p>
+{{/errorMessage}}
+{{#pendingUsers}}
+        <div class="pendinguser">
+          <p class="pendinguser-username">
+            {{username}}
+          </p>
+          <p class="pendinguser-points">
+            <span class="current-points">{{pointstext}}</span>
+{{#canpoint}}
+            <a class="give-point" data-pendinguserid="{{_id}}" data-type="plus">+1</a>
+{{/canpoint}}
+          </p>
+          <p class="pendinguser-question">
+            {{question1}}
+          </p>
+          <p class="pendinguser-answer">
+            {{answer1}}
+          </p>
+          <p class="pendinguser-question">
+            {{question2}}
+          </p>
+          <p class="pendinguser-answer">
+            {{answer2}}
+          </p>
+          <p class="pendinguser-question">
+            {{question3}}
+          </p>
+          <p class="pendinguser-answer">
+            {{answer3}}
+          </p>
+          <p class="pendinguser-otheraccounts">
+            Accounts known at this IP:
+{{#accountsKnownOnIp}}
+            <a href="/user/{{.}}">{{.}}</a>
+{{/accountsKnownOnIp}}
+{{^accountsKnownOnIp}}
+            None
+{{/accountsKnownOnIp}}
+          </p>
+        </div>
+{{/pendingUsers}}
+      </div>
+
+    </div>
+
+  </div>
+{{>footer}}

@@ -57,4 +57,18 @@ module.exports = function routing(app, api, renderGenerator){
         });
     });
 
+    app.put('/pendingusers/:pendingUserId/addpoint', checkAuth, function(req, res, next){
+        var pendingUserId = req.route.params.pendingUserId;
+
+        api.voteForPendingUser(res, {
+            pendingUserId: pendingUserId
+        }, req.session.user, function(err, json){
+            if(err) return next(err);
+
+            if(req.body.redirect) return res.redirect(req.headers.referer);
+
+            res.send(json);
+        });
+    });
+
 };

@@ -2,8 +2,9 @@
  * renderUtils
  * set of stateless reusable methods to assist with rendering
  */
-var _ = require('underscore'),
-    WhosOnline = require('./WhosOnline');
+var _ = require('underscore');
+var WhosOnline = require('./WhosOnline');
+var pendingApplicants = require('./pendingApplicants');
 
 function pagingObject(num, active){
     return {
@@ -14,8 +15,8 @@ function pagingObject(num, active){
 }
 function hasPagingObject(arr, pagingObject){
     return !!_(arr).find(function(po){
-                return po.num === pagingObject.num;
-            });
+        return po.num === pagingObject.num;
+    });
 }
 
 module.exports = {
@@ -81,12 +82,17 @@ module.exports = {
 
     getUserTemplateData: function(user, cb){
         WhosOnline.activeUsers(user.buddies, function(onlinebuddies){
-            var inboxsize = user.inbox,
-                pointtime = 1000 * 60 * 60 * 8,
-                inboxtext = 'No New Messages';
+            var numPendingApplicants = pendingApplicants.getCount();
+            var inboxsize = user.inbox;
+            var pointtime = 1000 * 60 * 60 * 8;
+            var inboxtext = 'No New Messages';
+            var applicanttext = 'No Pending Registrations';
 
             if(inboxsize > 0){
                 inboxtext = inboxsize + ' New Message' + (inboxsize > 1 ? 's' : '');
+            }
+            if(numPendingApplicants > 0){
+                applicanttext = numPendingApplicants + ' Pending Registration' + (numPendingApplicants > 1 ? 's' : '');
             }
 
             cb({
@@ -96,6 +102,7 @@ module.exports = {
                 numtotalbuddies: (user.buddies || []).length,
                 inboxsize: inboxsize || 0,
                 inboxtext: inboxtext,
+                applicanttext: applicanttext,
                 email: user.email,
                 randomtitles: user.random_titles,
                 canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime,

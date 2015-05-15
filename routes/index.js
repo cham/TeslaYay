@@ -216,7 +216,7 @@ module.exports = function routing(){
 
     // register form
     app.get('/register', checkUnauth, ping, function(req, res, next){
-        renderGenerator.registerHandler(req, res, next)(null, {});
+        api.getInterviewQuestions(res, {}, req.session.user, renderGenerator.registerHandler(req, res, next));
     });
 
     // user page
@@ -277,6 +277,11 @@ module.exports = function routing(){
     // chat
     app.get('/chat', function(req, res, next){
         renderGenerator.chatHandler(req, res, next)(null, {});
+    });
+
+    // pending registrations
+    app.get('/pendingregistrations', checkAuth, function(req, res, next){
+        renderGenerator.pendingRegistrationsHandler(req, res, next)(null, {});
     });
 
     // POSTs
@@ -393,11 +398,13 @@ module.exports = function routing(){
 
     // register
     app.post('/register', ping, function(req, res, next){
-        api.registerUser(res, req.body, req.session.user, function(err, user){
+        var body = req.body;
+        body.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+        api.registerUser(res, body, req.session.user, function(err, user){
             if(err){
                 return uiErrorHandler.handleError(err, req, res, next, 'register');
             }
-            setUser(req, user);
             res.redirect('/');
         });
     });

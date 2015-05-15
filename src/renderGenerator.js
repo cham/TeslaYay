@@ -2,11 +2,12 @@
  * renderGenerator
  * generates rendering middleware for use with express routing
  */
-var _ = require('underscore'),
-    moment = require('moment'),
-    renderUtils = require('./renderUtils'),
-    WhosOnline = require('./WhosOnline'),
-    bcrypt = require('bcrypt');
+var _ = require('underscore');
+var moment = require('moment');
+var renderUtils = require('./renderUtils');
+var WhosOnline = require('./WhosOnline');
+var bcrypt = require('bcrypt');
+var pendingApplicants = require('./pendingApplicants');
 
 function getUserWebsiteValue(websites, key){
     var match = _.find(websites, function(website){
@@ -30,13 +31,13 @@ module.exports = {
     threadsListingHandler: function(req, res, renderdata, next){
         renderdata = renderdata || {};
 
-        var activepage = renderdata.page,//parseInt(req.route.params.page, 10) || 1,
-            user = req.session.user || {},
-            numcomments = (user.comment_size) || 50,
-            title = (renderdata.titledata || {}).title,
-            titleauthor = (renderdata.titledata || {}).username,
-            sortBy = renderdata.sortBy,
-            that = this;
+        var activepage = renderdata.page;
+        var user = req.session.user || {};
+        var numcomments = (user.comment_size) || 50;
+        var title = (renderdata.titledata || {}).title;
+        var titleauthor = (renderdata.titledata || {}).username;
+        var sortBy = renderdata.sortBy;
+        var that = this;
 
 
         return function(err, json){
@@ -529,6 +530,15 @@ module.exports = {
         return function(err, data){
             if(err) return next(err);
 
+            if(data.questions){
+                data.question1 = data.questions[0]._id;
+                data.detail1 = data.questions[0].detail;
+                data.question2 = data.questions[1]._id;
+                data.detail2 = data.questions[1].detail;
+                data.question3 = data.questions[2]._id;
+                data.detail3 = data.questions[2].detail;
+            }
+
             res.render('register', data);
         };
     },
@@ -536,7 +546,6 @@ module.exports = {
     forgotPasswordHandler: function(req, res, next){
         return function(err, data){
             if(err) return next(err);
-
             res.render('forgot-password', data);
         };
     },
@@ -570,6 +579,22 @@ module.exports = {
         return function(err, data){
             renderUtils.getUserTemplateData(user, function(templateData){
                 res.render('chat', templateData);
+            });
+        };
+    },
+
+    pendingRegistrationsHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, data){
+            pendingApplicants.update(function(){
+                renderUtils.getUserTemplateData(user, function(templateData){
+                    templateData.pendingUsers = pendingApplicants.getPendingApplicants().map(function(applicant){
+                        applicant.pointstext = applicant.points + ' point' + (applicant.points === 1 ? '' : 's');
+                        return applicant;
+                    });
+                    res.render('pendingregistrations', templateData);
+                });
             });
         };
     }

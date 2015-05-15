@@ -145,11 +145,13 @@ margin-right: 5px;
 color: #FAA4A4;
 }
 
-.lc-node#messaging .messages {
+.lc-node#messaging {
 font-size: 10px;
+line-height:11px;    
+}
+.lc-node#messaging .messages {
 background: url("/img/iconmessage.gif") no-repeat scroll 0 0 transparent;
 padding-left: 20px;
-line-height:11px;
 }
 
 .lc-node#messaging .invites {
@@ -1469,6 +1471,14 @@ div.error {
     float:right;
 }
 
+.uierror label {
+    color: #f33;
+}
+.uierror input ,
+.uierror textarea {
+    background: #faa;
+}
+
 .prefpink {
     color: #ED135A;
 }
@@ -1605,6 +1615,36 @@ color: #494949;
 
 #ajax_errs {
     border-bottom:1px dotted #959595;
+}
+
+.pendinguser {
+    width: 250px;
+    margin: 0 10px 10px 0;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+    background: #eee;
+    position: relative;
+}
+.pendinguser-username {
+    font-weight: bold;
+}
+.pendinguser-question {
+    font-style: italic;
+    padding-top: 10px;
+    border-top: 1px dotted #999;
+}
+.pendinguser .give-point {
+    background: #fff;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
+.pendinguser .give-point:hover {
+    background: #494949;
+}
+.pendinguser .current-points {
+    float: none;
 }
 
 @media screen and (max-width: 600px) {
@@ -2057,6 +2097,10 @@ padding: 0px;
 
 .comment .content-block, .test-comment .content-block {
     margin: 0px;
+}
+
+.pendinguser {
+    width: 100%;
 }
 
 }

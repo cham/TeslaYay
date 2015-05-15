@@ -327,19 +327,26 @@ $(function () {
   // points
   var $pointsButtons = $('.give-point, .take-point');
   $pointsButtons.click(function(e){
-    var $this = $(this),
-        $pointscontainer = $this.parent().find('.current-points'),
-        routeEnd = $this.data('type') === 'minus' ? 'removepoint' : 'addpoint',
-        commentId = $this.data('commentid');
+    var $this = $(this);
+    var $pointscontainer = $this.parent().find('.current-points');
+    var routeEnd = $this.data('type') === 'minus' ? 'removepoint' : 'addpoint';
+    var commentId = $this.data('commentid');
+    var pendingUserId = $this.data('pendinguserid');
+    var url = '/comment/' + commentId + '/' + routeEnd;
+    if(pendingUserId){
+        url = '/pendingusers/' + pendingUserId + '/' + routeEnd;
+    }
 
     e.preventDefault();
 
     $.ajax({
       method: 'put',
-      url: '/comment/' + commentId + '/' + routeEnd,
-      success: function(comment){
-        var pointsNow = comment.points;
-
+      url: url,
+      success: function(json){
+        var pointsNow = json.points;
+        if(json.pendingUsers){
+          pointsNow = json.pendingUsers.points;
+        }
         $pointsButtons.css({visibility: 'hidden'});
         $pointscontainer.text(pointsNow + ' point' + (pointsNow !== 1 ? 's': ''));
       },
