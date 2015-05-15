@@ -98,6 +98,13 @@ window.videoEmbedder = (function(){
         return embed.el.innerHTML;
     }
 
+    function embedVideo(url, id){
+        return '<video loop controls>' +
+                '<source type="video/webm" src="https://i.imgur.com/' + id + '.webm">' +
+                '<source type="video/mp4" src="https://i.imgur.com/' + id + '.mp4">' +
+               '</video>';
+    }
+
     function listenForEvents(node){
         node.addEventListener('click', function(e){
             if(!e.target.className){
@@ -142,7 +149,8 @@ window.videoEmbedder = (function(){
     listenForEvents(document.body);
 
     return {
-        embedYoutube: embedYoutube
+        embedYoutube: embedYoutube,
+        embedVideo: embedVideo
     };
 
 })();

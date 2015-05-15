@@ -48,6 +48,7 @@ function format_special(element)
   var ytube = new RegExp('(?:")?http(?:s)?://(?:www.)?youtu(?:be)?.(?:[a-z]){2,3}' +
                          '(?:[a-z/?=]+)([a-zA-Z0-9-_]{11})(?:[a-z0-9?&-_=]+)?');
   var vimeo = new RegExp('http(?:s)?://(?:www.)?vimeo.com/([0-9]+)(?:#[a-z0-9?&-_=]*)?');
+  var gifv = new RegExp('http(?:s)?://.*?\.imgur\.com\/(.*?)\.gifv');
 
   $(element).each(function(){
 
@@ -61,6 +62,7 @@ function format_special(element)
 
       if(window.videoEmbedder && videoEmbedder.embedYoutube){
         tmp = tmp.replace(ytube, videoEmbedder.embedYoutube);
+        tmp = tmp.replace(gifv, videoEmbedder.embedVideo);
       }
 
       tmp = tmp.replace(vimeo, function(a, b){
