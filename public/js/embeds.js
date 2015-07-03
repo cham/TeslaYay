@@ -1,7 +1,7 @@
 window.videoEmbedder = (function(){
     'use strict';
 
-    if(!document.body.addEventListener){
+    if(!document.body.addEventListener || !document.createElement('div').dataset){
         return {};
     }
 
