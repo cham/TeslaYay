@@ -54,7 +54,7 @@ p {
 }
 
 code {
-    font-family: 'Courier New',monospace;
+    font-family: monospace;
     font-size: 9pt;
     color: #000000;
     white-space: pre;
@@ -152,6 +152,9 @@ line-height:11px;
 .lc-node#messaging .messages {
 background: url("/img/iconmessage.gif") no-repeat scroll 0 0 transparent;
 padding-left: 20px;
+}
+.applicants {
+    margin-top: 2px;
 }
 
 .lc-node#messaging .invites {
@@ -785,10 +788,7 @@ font-size: 14px;
 }
 
 .comment .content-block code {
-white-space: pre;
-background: #FFFFEE;
 display: block;
-padding: 10px 0;
 }
 
 .content img ,
@@ -1695,7 +1695,10 @@ color: #494949;
 
 #special-threads { border-bottom: 0; }
 #search-title { clear: both; }
-#search-box { margin: 0 5px 5px 5px; width:100%; }
+#search-box {
+    margin: 0 10px 3px;
+    width:100%;
+}
 #search-phrase { float:left; width:82%!important; margin-right:2%; }
 #search-box input[type="submit"] { float:left!important; width:16%; }
 #search-title strong, #search-title br { display: none; }
@@ -1734,6 +1737,22 @@ div.category,
     line-height:22px;
     padding-left:24px;
     background-position:6px 4px;
+}
+.applicants {
+    padding-left: 24px;
+    padding-bottom: 5px;
+}
+.pendinguser .give-point {
+    right: 21px;
+}
+form .input label {
+    font-size: 12px;
+}
+.lc-node.login {
+    padding: 10px;
+}
+#new-thread {
+    padding: 10px;
 }
 #pm-inbox .message div {
     overflow-x:hidden;
