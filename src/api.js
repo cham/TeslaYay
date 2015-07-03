@@ -794,8 +794,7 @@ module.exports = {
             filename,
             approot,
             filepath;
-console.log(dataURL.length, 1024 * 1000 * 10);
-console.log(dataURL.length > 1024 * 1000 * 10);
+
         try{
             check(dataMatches.length, 'dataURL invalid').is(3);
             check(dataURL, 'Image too large').len(1, 1024 * 1000 * 10);
