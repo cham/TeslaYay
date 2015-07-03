@@ -131,7 +131,7 @@ $('#thread-content-input').pasteImageReader(function(data){
     error: function(response){
       if(response.status === 413){
         $this.parent().find('.error,.loading').remove();
-        $this.after('<p class="error">Image too large, maximum file size for pasted images is 2MB</p>');
+        $this.after('<p class="error">Image too large</p>');
       }
     }
   });
