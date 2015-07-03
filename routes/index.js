@@ -401,11 +401,16 @@ module.exports = function routing(){
         var body = req.body;
         body.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-        api.registerUser(res, body, req.session.user, function(err, user){
+        api.registerUser(res, body, req.session.user, function(err, pendingUser){
             if(err){
                 return uiErrorHandler.handleError(err, req, res, next, 'register');
             }
-            res.redirect('/');
+            api.resetAvatar(pendingUser, function(err){
+                if(err){
+                    return uiErrorHandler.handleError(err, req, res, next, 'register');
+                }
+                res.redirect('/registration-pending');
+            });
         });
     });
 

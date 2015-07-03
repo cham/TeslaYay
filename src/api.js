@@ -819,6 +819,19 @@ module.exports = {
         });
     },
 
+    resetAvatar: function(user, cb){
+        var dirRoot = __dirname.replace(/\/src$/, '');
+        var sourceFile = dirRoot + '/public/img/pinkies/18.gif';
+        var destFile = dirRoot + '/public/avatars/' + user.username;
+
+        fs.readFile(sourceFile, function(err, sourceData){
+            if(err){
+                return cb(err);
+            }
+            fs.writeFile(destFile, sourceData, cb);
+        });
+    },
+
     updateAvatar: function(file, user, cb){
         var filename;
 
