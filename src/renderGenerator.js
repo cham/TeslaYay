@@ -597,5 +597,16 @@ module.exports = {
                 });
             });
         };
+    },
+
+    registrationSuccessHandler: function(req, res, next){
+        var user = req.session.user || {};
+
+        return function(err, pendingUser){
+            renderUtils.getUserTemplateData(user, function(templateData){
+                templateData.email = pendingUser.email;
+                res.render('registration-success', templateData);
+            });
+        };
     }
 };

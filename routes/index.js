@@ -409,7 +409,7 @@ module.exports = function routing(){
                 if(err){
                     return uiErrorHandler.handleError(err, req, res, next, 'register');
                 }
-                res.redirect('/registration-pending');
+                renderGenerator.registrationSuccessHandler(req, res, next)(null, pendingUser);
             });
         });
     });
@@ -472,6 +472,7 @@ module.exports = function routing(){
                 res.redirect('/');
             }else{
                 console.log(user);
+                res.end();
             }
         });
     });
