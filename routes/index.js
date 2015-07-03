@@ -280,7 +280,7 @@ module.exports = function routing(){
     });
 
     // pending registrations
-    app.get('/pendingregistrations', checkAuth, function(req, res, next){
+    app.get('/pendingregistrations', checkAuth, ping, function(req, res, next){
         renderGenerator.pendingRegistrationsHandler(req, res, next)(null, {});
     });
 
