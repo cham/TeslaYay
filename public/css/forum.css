@@ -1675,7 +1675,21 @@ color: #494949;
 }
 
 @media screen and (max-width: 600px) {
-
+.yh_register #right-column {
+    padding-top: 10px;
+}
+.yh_register #right-column > p {
+    margin: 10px;
+}
+.yh_register #right-column > .dotted-bar {
+    display: none;
+}
+.yh_register #wrapper {
+    padding-bottom: 0;
+}
+.yh_register #bottom {
+    display: none;
+}
 #ad-space { display:none; }
 #left-column { position:relative; width: 100%; top:0px; left: 0px;}
 #right-column { margin: 0; padding: 0px; }
@@ -2147,8 +2161,8 @@ padding: 0px;
 
 .pendinguser {
     width: 100%;
-    padding: 5px 0;
-    margin: 0 0 10px 0;
+    padding: 0;
+    margin: 15px 0 30px 0;
     border-left: none;
     border-right: none;
 }
