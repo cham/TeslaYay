@@ -334,7 +334,6 @@ module.exports = {
         }catch(err){
             return cb(err);
         }
-console.log('registerUser api body', body);
 
         makeRequest('post', apiUrl + '/pendingusers', {
             form: {

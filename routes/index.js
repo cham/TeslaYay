@@ -400,16 +400,11 @@ module.exports = function routing(){
     app.post('/register', ping, function(req, res, next){
         var body = req.body;
         body.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-console.log('x-forwarded-for', req.headers['x-forwarded-for']);
-console.log('req.connection.remoteAddress', req.connection.remoteAddress);
-console.log('route body', body);
 
         api.registerUser(res, body, req.session.user, function(err, pendingUser){
             if(err){
                 return uiErrorHandler.handleError(err, req, res, next, 'register');
             }
-console.log('route response pendingUser', pendingUser);
-
             api.resetAvatar(pendingUser, function(err){
                 if(err){
                     return uiErrorHandler.handleError(err, req, res, next, 'register');
