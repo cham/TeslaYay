@@ -157,6 +157,7 @@ padding-left: 20px;
     margin-top: 2px;
     padding-left: 20px;
     background: url('/img/registrations.gif') no-repeat scroll 0 0 transparent;
+    line-height: 12px;
 }
 .noapplicants {
     background: url('/img/registrations_no.gif') no-repeat scroll 0 0 transparent;
@@ -1738,14 +1739,17 @@ div.category,
     height:20px;
 }
 
+#messaging {
+    padding: 5px;
+}
 .lc-node#messaging .messages ,
 .applicants {
-    line-height:22px;
-    padding-left:24px;
-    background-position:6px 4px;
+    line-height: 17px;
+    padding-left: 24px;
+    background-position: 6px 2px;
 }
 .pendinguser .give-point {
-    right: 21px;
+    right: 10px;
 }
 form .input label {
     font-size: 12px;
@@ -2122,6 +2126,11 @@ padding: 0px;
 
 .pendinguser {
     width: 100%;
+    padding: 5px 0;
+    margin: 0 0 10px 0;
+}
+.pendinguser p {
+    padding: 5px 10px;
 }
 
 }
