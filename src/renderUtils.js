@@ -86,14 +86,14 @@ module.exports = {
             var inboxsize = user.inbox;
             var pointtime = 1000 * 60 * 60 * 8;
             var inboxtext = 'No New Messages';
-            var applicanttext = 'No Pending Registrations';
+            var applicanttext = 'No Applicants';
             var noapplicants = true;
 
             if(inboxsize > 0){
                 inboxtext = inboxsize + ' New Message' + (inboxsize > 1 ? 's' : '');
             }
             if(numPendingApplicants > 0){
-                applicanttext = numPendingApplicants + ' Pending Registration' + (numPendingApplicants > 1 ? 's' : '');
+                applicanttext = numPendingApplicants + ' Applicant' + (numPendingApplicants > 1 ? 's' : '');
                 noapplicants = false;
             }
 

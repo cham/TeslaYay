@@ -10,22 +10,36 @@
       <div id="right-column">
 
         <div id="main-title">
-          <h3>Pending Registrations</h3>
+          <h3>Applicants to YayHooray!</h3>
         </div>
+
+        <p>
+          <strong>These people have recently registered with YayHooray, but are yet to have their accounts activated.</strong>
+        </p>
+        <p>
+          Here's what they have to say about themselves.<br>
+          Give them a point if you like what you see!
+        </p>
+
+        <div class="dotted-bar"></div>
+
 {{#errorMessage}}
         <p class="error">{{errorMessage}}</p>
 {{/errorMessage}}
+
 {{#pendingUsers}}
         <div class="pendinguser">
-          <p class="pendinguser-username">
-            {{username}}
-          </p>
-          <p class="pendinguser-points">
-            <span class="current-points">{{pointstext}}</span>
+          <div class="pendinguser-header">
+            <p class="pendinguser-username">
+              {{username}}
+            </p>
+            <p class="pendinguser-points">
+              <span class="current-points">{{pointstext}}</span>
 {{#canpoint}}
-            <a class="give-point" data-pendinguserid="{{_id}}" data-type="plus">+1</a>
+              <a class="give-point" data-pendinguserid="{{_id}}" data-type="plus">+1</a>
 {{/canpoint}}
-          </p>
+            </p>
+          </div>
           <p class="pendinguser-question">
             {{question1}}
           </p>
@@ -44,7 +58,7 @@
           <p class="pendinguser-answer">
             {{answer3}}
           </p>
-          <!--p class="pendinguser-otheraccounts">
+          <p class="pendinguser-otheraccounts">
             Accounts known at this IP:
 {{#accountsKnownOnIp}}
             <a href="/user/{{.}}">{{.}}</a>
@@ -52,8 +66,13 @@
 {{^accountsKnownOnIp}}
             None
 {{/accountsKnownOnIp}}
-          </p-->
+          </p>
         </div>
+{{/pendingUsers}}
+{{^pendingUsers}}
+        <p>
+          <strong>There are no applicants to YayHooray right now!</strong>
+        </p>
 {{/pendingUsers}}
       </div>
 

@@ -1625,21 +1625,45 @@ color: #494949;
 
 .pendinguser {
     width: 250px;
-    margin: 0 10px 10px 0;
-    padding: 10px;
+    margin: 10px 10px 0 0;
     display: inline-block;
     vertical-align: top;
     position: relative;
     border: 1px solid #aaa;
 }
+.pendinguser p {
+    padding: 10px;
+}
 .pendinguser-username {
     font-weight: bold;
     font-size: 14px;
 }
-.pendinguser-question {
+.pendinguser .pendinguser-question {
     font-weight: bold;
-    padding-top: 10px;
     border-top: 1px dotted #999;
+}
+.pendinguser .pendinguser-question ,
+.pendinguser .pendinguser-username {
+    padding-bottom: 0;
+}
+.pendinguser .pendinguser-answer ,
+.pendinguser .pendinguser-points {
+    padding-top: 0;
+}
+.pendinguser .pendinguser-points {
+    margin: 0;
+}
+.pendinguser-otheraccounts {
+    background: #eee;
+    border-top: 1px dotted #999;
+    margin: 0;
+}
+.pendinguser-otheraccounts ,
+.pendinguser-otheraccounts a {
+    color: #999;
+}
+.pendinguser-header {
+    background: #EDF5E1;
 }
 .pendinguser .give-point {
     position: absolute;
