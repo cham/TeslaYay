@@ -87,12 +87,14 @@ module.exports = {
             var pointtime = 1000 * 60 * 60 * 8;
             var inboxtext = 'No New Messages';
             var applicanttext = 'No Pending Registrations';
+            var noapplicants = true;
 
             if(inboxsize > 0){
                 inboxtext = inboxsize + ' New Message' + (inboxsize > 1 ? 's' : '');
             }
             if(numPendingApplicants > 0){
                 applicanttext = numPendingApplicants + ' Pending Registration' + (numPendingApplicants > 1 ? 's' : '');
+                noapplicants = false;
             }
 
             cb({
@@ -103,6 +105,7 @@ module.exports = {
                 inboxsize: inboxsize || 0,
                 inboxtext: inboxtext,
                 applicanttext: applicanttext,
+                noapplicants: noapplicants,
                 email: user.email,
                 randomtitles: user.random_titles,
                 canpoint: (user.username && !user.lastpointusage) || (new Date().getTime() - new Date(user.lastpointusage).getTime()) > pointtime,

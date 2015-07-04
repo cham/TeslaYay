@@ -155,6 +155,11 @@ padding-left: 20px;
 }
 .applicants {
     margin-top: 2px;
+    padding-left: 20px;
+    background: url('/img/registrations.gif') no-repeat scroll 0 0 transparent;
+}
+.noapplicants {
+    background: url('/img/registrations_no.gif') no-repeat scroll 0 0 transparent;
 }
 
 .lc-node#messaging .invites {
@@ -1733,14 +1738,11 @@ div.category,
     height:20px;
 }
 
-.lc-node#messaging .messages {
+.lc-node#messaging .messages ,
+.applicants {
     line-height:22px;
     padding-left:24px;
     background-position:6px 4px;
-}
-.applicants {
-    padding-left: 24px;
-    padding-bottom: 5px;
 }
 .pendinguser .give-point {
     right: 21px;
