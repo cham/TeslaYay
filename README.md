@@ -19,7 +19,7 @@ Tesla Yayhooray app, runs on top of TeslaAPI https://github.com/cham/TeslaAPI
 5. run `npm install`
 6. run `node app.js`
 
-Yay is now running on port 3100.
+Yay is now running on port 3000.
 
 
 ## Editing Javascript / Stylesheets
