@@ -2,6 +2,11 @@
   <div id="bottom"></div>
 
   <script src="/js/main.min.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/js/worker.js");
+    }
+  </script>
 {{#customjs}}
   <script src="{{customjs}}"></script>
 {{/customjs}}
