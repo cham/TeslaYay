@@ -4,7 +4,10 @@
  */
 
 var cluster   = require('cluster'),
-    redisClient = require('redis').createClient();
+    redisClient = require('redis').createClient(
+        6379,
+        process.env.REDIS_HOST || 'localhost'
+    );
 
 var workersPerCPU = 4;
 

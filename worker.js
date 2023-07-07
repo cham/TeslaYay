@@ -5,7 +5,10 @@
 
 var express = require('express'),
     RedisStore = require('connect-redis')(express),
-    redisClient = require('redis').createClient(),
+    redisClient = require('redis').createClient(
+      6379,
+      process.env.REDIS_HOST || 'localhost'
+    ),
     routes = require('./routes'),
     http = require('http'),
     path = require('path'),

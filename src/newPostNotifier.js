@@ -1,11 +1,17 @@
 /*jshint node:true*/
 'use strict';
 
-var emitter = require('redis').createClient();
+var emitter = require('redis').createClient(
+    6379,
+    process.env.REDIS_HOST || 'localhost'
+);
 
 module.exports = {
     listen: function(req, res, eventName, cb){
-        var subscriber = require('redis').createClient();
+        var subscriber = require('redis').createClient(
+            6379,
+            process.env.REDIS_HOST || 'localhost'
+        );
 
         req.socket.setTimeout(Infinity);
         res.writeHead(200, {
