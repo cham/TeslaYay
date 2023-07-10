@@ -127,7 +127,7 @@ module.exports = {
     },
 
     errorPageHandler: function(req, res, renderdata, next){
-        var user = req.session.user || {},
+        var user = req.session?.user || {},
             title = (renderdata.titledata || {}).title,
             titleauthor = (renderdata.titledata || {}).username,
             errorMessage = (renderdata || {}).errorMessage,
