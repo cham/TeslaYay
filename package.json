@@ -9,6 +9,7 @@
     "start": "node app"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "argsparser": "0.0.6",
     "async": "0.2.9",
     "bcrypt": "3.0.6",

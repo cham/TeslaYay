@@ -9,6 +9,7 @@ var _ = require('underscore'),
     sanitize = require('validator').sanitize,
     XSSWrapper = require('./xsswrapper'),
     apiUrl = process.env.API_URL || 'http://localhost:3100',
+    sgMail = require('@sendgrid/mail'),
     crypto = require('crypto'),
     bcrypt = require('bcrypt'),
     request = require('request').defaults({
@@ -770,20 +771,25 @@ module.exports = {
                           'http://yayhooray.com/password-reset?username=' + username + '&token=' + hash + '\n\n' +
                           'This link is valid until midnight (GMT), 8th January 2015';
 
-            request({
-                method: 'post',
-                url: 'http://localhost:3025',
-                form: {
-                    message: message,
-                    email: body.email
-                }
-            }, function(err, response, json){
-                if(response.statusCode === 200){
-                    return cb();
-                }
-
-                return cb(new Error('Could not send password reminder email'));
-            });
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+            sgMail
+            .send({
+                to: body.email,
+                from: 'yh@tinybluerobot.com',
+                subject: 'Password reset',
+                text: message,
+                trackingSettings: {
+                    clickTracking: {
+                        enable: false,
+                        enableText: false,
+                    },
+                    openTracking: {
+                        enable: false,
+                    },
+                },
+            })
+            .then(() => cb())
+            .catch(cb);
         });
     },
 
